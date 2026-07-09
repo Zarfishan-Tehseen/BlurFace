@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!-- Brand -->
+    <color name="purple_primary">#6C4DF6</color>
+    <color name="purple_dark">#5B3DE0</color>
+    <color name="purple_light">#8F73F5</color>
+
+    <!-- Neutrals -->
+    <color name="bg_scaffold">#F6F5FB</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#8E8E9B</color>
+    <color name="divider">#ECECF2</color>
+    <color name="icon_inactive">#B7B7C3</color>
+
+    <!-- Quick action accents -->
+    <color name="accent_purple_bg">#EFE9FE</color>
+    <color name="accent_purple">#7C4DFF</color>
+
+    <color name="accent_blue_bg">#E8F0FE</color>
+    <color name="accent_blue">#4285F4</color>
+
+    <color name="accent_pink_bg">#FDE8ED</color>
+    <color name="accent_pink">#F0507B</color>
+
+    <color name="accent_yellow_bg">#FFF6DF</color>
+    <color name="accent_yellow">#F5B400</color>
+
+    <color name="accent_teal">#26A69A</color>
+</resources>

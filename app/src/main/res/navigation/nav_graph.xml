@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.blurface.ui.home.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.blurface.ui.history.HistoryFragment"
+        android:label="History" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.blurface.ui.settings.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/detectingFacesFragment"
+        android:name="com.example.blurface.ui.detecting.DetectingFacesFragment"
+        android:label="Detecting Faces">
+        <argument
+            android:name="imageUri"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectFacesFragment"
+        android:name="com.example.blurface.ui.selectfaces.SelectFacesFragment"
+        android:label="Select Faces" />
+
+    <fragment
+        android:id="@+id/blurEditorFragment"
+        android:name="com.example.blurface.ui.blureditor.BlurEditorFragment"
+        android:label="Blur Editor" />
+
+    <!-- More fragments (edit, video edit, export) will be added here
+         as we build each screen -->
+
+</navigation>

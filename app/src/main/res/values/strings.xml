@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Blur Face</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hero_title">Protect Privacy \nBlur Faces Instantly</string>
+    <string name="hero_subtitle">AI detect faces and lets you blur with a tap</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="blur_faces">Blur Faces</string>
+    <string name="blur_faces_subtitle">Auto detect and blur faces</string>
+    <string name="blur_background">Blur Background</string>
+    <string name="blur_background_subtitle">Blur the background</string>
+    <string name="pixelate_faces">Pixelate Faces</string>
+    <string name="pixelate_faces_subtitle">Pixelate selected faces</string>
+    <string name="emoji_cover">Emoji Cover</string>
+    <string name="emoji_cover_subtitle">Cover faces with emoji</string>
+
+    <string name="recent_edits">Recent Edits</string>
+    <string name="see_all">See All</string>
+
+    <string name="detecting_subtitle">AI is scanning your photo to find and detect faces.</string>
+    <string name="please_wait">Please wait a moment…</string>
+    <string name="ai_working_title">AI is working</string>
+    <string name="ai_working_subtitle">This may take a few seconds depending on the number of faces.</string>
+    <string name="privacy_note">Your photo is private and never leaves your device.</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_selected_photo">Selected photo</string>
+
+    <string name="select_faces_title">Select Faces</string>
+    <string name="found_faces_subtitle">We found %1$d faces in this photo.\nSelect the faces you want to blur.</string>
+    <string name="detected_faces_count">Detected Faces (%1$d)</string>
+    <string name="select_all">Select All</string>
+    <string name="tap_to_preview">Tap to preview</string>
+    <string name="manual_select">Manual Select</string>
+    <string name="continue_to_blur">Continue to Blur</string>
+
+    <string name="blur_editor_title">Blur Editor</string>
+    <string name="blur_editor_subtitle">Apply blur settings</string>
+    <string name="effect_gaussian">Gaussian</string>
+    <string name="effect_mosaic">Mosaic</string>
+    <string name="effect_color">Color</string>
+    <string name="effect_emoji">Emoji</string>
+    <string name="intensity_label">Intensity</string>
+    <string name="reset_label">Reset</string>
+    <string name="selected_faces_count">Selected Faces (%1$d)</string>
+    <string name="clear_all">Clear All</string>
+    <string name="cd_remove_face">Remove face from selection</string>
+    <string name="cd_export">Export</string>
+
+    <string name="save_export_title">Save &amp; Export</string>
+    <string name="choose_format_subtitle">Choose a format</string>
+    <string name="jpeg_compressed_title">JPEG (Compressed)</string>
+    <string name="jpeg_compressed_subtitle">Smaller file size, good for sharing and most compatible.</string>
+    <string name="jpeg_lossless_title">JPEG (Lossless)</string>
+    <string name="jpeg_lossless_subtitle">High quality, no loss in image quality. Larger file size.</string>
+    <string name="png_title">PNG</string>
+    <string name="png_subtitle">Best quality with transparency support. Larger file size.</string>
+    <string name="save_photo">Save Photo</string>
+    <string name="saved_to_gallery">Saved to gallery</string>
+    <string name="storage_permission_needed">Storage permission needed to save</string>
+</resources>
