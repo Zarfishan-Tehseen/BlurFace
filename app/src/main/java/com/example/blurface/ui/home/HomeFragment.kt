@@ -42,6 +42,10 @@ class HomeFragment : Fragment() {
             )
         }
 
+        binding.cardBlurBackground.setOnClickListener {
+            findNavController().navigate(R.id.videoEditorFragment)
+        }
+
         // TODO: wire up Quick Action cards (cardBlurFaces, cardBlurBackground,
         // cardPixelateFaces, cardEmojiCover) once their destination screens exist.
         // TODO: wire up rvRecentEdits adapter once we have a history data source.
