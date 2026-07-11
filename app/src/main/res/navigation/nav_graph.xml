@@ -31,6 +31,10 @@
         android:id="@+id/selectFacesFragment"
         android:name="com.example.blurface.ui.selectfaces.SelectFacesFragment"
         android:label="Select Faces" />
+    <fragment
+        android:id="@+id/manualSelectionFragment"
+        android:name="com.example.blurface.ui.manualselection.ManualSelectionFragment"
+        android:label="Manual Selection" />
 
     <fragment
         android:id="@+id/blurEditorFragment"

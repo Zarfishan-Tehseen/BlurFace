@@ -1,5 +1,6 @@
 package com.example.blurface.ui.selectfaces
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -45,7 +46,9 @@ class DetectedFaceAdapter(
         override fun areItemsTheSame(oldItem: Item, newItem: Item) =
             oldItem.face.id == newItem.face.id
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Item, newItem: Item) =
-            oldItem.face.isSelected == newItem.face.isSelected
+            oldItem.face.isSelected == newItem.face.isSelected &&
+                    oldItem.thumbnail == newItem.thumbnail
     }
 }

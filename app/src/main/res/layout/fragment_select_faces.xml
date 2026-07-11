@@ -50,9 +50,16 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnBack"
                     app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose faces to blur"
+                    app:layout_constraintTop_toBottomOf="@id/tvSelectFaces"
+                    app:layout_constraintStart_toStartOf="@id/tvSelectFaces"
+                    android:textColor="@color/text_secondary"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -65,8 +72,8 @@
                 android:layout_marginTop="6dp"
                 android:gravity="center"
                 android:textSize="13sp"
-                android:textColor="@color/text_secondary"
-                tools:text="We found 5 faces in this photo.\nSelect the faces you want to blur." />
+                android:textColor="@color/text_primary"
+                tools:text="We found 5 faces in this photo." />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -83,7 +90,7 @@
                         android:id="@+id/ivPreview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
                         tools:src="@color/divider"
                         android:contentDescription="@string/cd_selected_photo" />
                 </androidx.cardview.widget.CardView>
@@ -169,41 +176,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnManualSelect"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/bg_button_outline_pill"
-            android:drawableStart="@drawable/ic_hand"
-            android:drawablePadding="8dp"
-            android:gravity="center"
+            android:backgroundTint="@android:color/transparent"
+            app:strokeColor="@color/purple_primary"
+            app:strokeWidth="1dp"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_hand"
+            app:iconPadding="8dp"
+            app:iconGravity="textStart"
+            android:textAllCaps="false"
+            app:iconTint="@color/purple_primary"
             android:paddingVertical="14dp"
             android:text="@string/manual_select"
             android:textColor="@color/purple_primary"
             android:textStyle="bold"
-            android:textSize="14sp"
-            android:clickable="true"
-            android:focusable="true" />
+            android:textSize="14sp" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="10dp"
-            android:background="@drawable/bg_button_filled_pill"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:drawablePadding="8dp"
-            android:gravity="center"
+            android:backgroundTint="@color/purple_primary"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconPadding="8dp"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/white"
             android:paddingVertical="14dp"
+            android:paddingHorizontal="0dp"
             android:text="@string/continue_to_blur"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:clickable="true"
-            android:focusable="true" />
+            android:textAllCaps="false"
+            android:maxLines="1"
+            android:ellipsize="end" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

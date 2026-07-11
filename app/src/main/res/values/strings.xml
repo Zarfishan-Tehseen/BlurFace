@@ -10,8 +10,8 @@
     <string name="blur_faces_subtitle">Auto detect and blur faces</string>
     <string name="blur_background">Blur Background</string>
     <string name="blur_background_subtitle">Blur the background</string>
-    <string name="pixelate_faces">Pixelate Faces</string>
-    <string name="pixelate_faces_subtitle">Pixelate selected faces</string>
+    <string name="blur_video">Blur Video</string>
+    <string name="blur_video_subtitle">Detect and blur faces across your video</string>
     <string name="emoji_cover">Emoji Cover</string>
     <string name="emoji_cover_subtitle">Cover faces with emoji</string>
 
@@ -58,4 +58,12 @@
     <string name="save_photo">Save Photo</string>
     <string name="saved_to_gallery">Saved to gallery</string>
     <string name="storage_permission_needed">Storage permission needed to save</string>
+
+    <string name="manual_selection_title">Manual Selection</string>
+    <string name="manual_selection_subtitle">Select and add faces.</string>
+    <string name="drag_to_paint">Drag to paint</string>
+    <string name="add_face">Add Face</string>
+    <string name="add_mode">Add</string>
+    <string name="remove_mode">Remove</string>
+    <string name="brush_size_label">Brush Size</string>
 </resources>

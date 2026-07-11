@@ -3,12 +3,16 @@ package com.example.blurface.ui.blureditor
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.widget.FrameLayout
 import android.widget.ImageView
+import com.example.blurface.domain.model.DetectedFace
 
 class ZoomableImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -17,6 +21,16 @@ class ZoomableImageView @JvmOverloads constructor(
     private val imageView: ImageView
     private val matrix = Matrix()
     private var bitmap: Bitmap? = null
+
+    // Store only the faces to draw outlines around them
+    private var overlayFaces: List<DetectedFace> = emptyList()
+
+    // Clean outline paint configuration for face bounding boxes
+    private val faceOutlinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = 5f              // Thickness of the box border line
+        color = Color.parseColor("#FFC400") // Clean Amber/Yellow indicator color
+    }
 
     private var minScale = 1f
     private val maxScale = 6f
@@ -30,6 +44,8 @@ class ZoomableImageView @JvmOverloads constructor(
     private val scaleDetector: ScaleGestureDetector
 
     init {
+        setWillNotDraw(false)
+
         imageView = ImageView(context).apply {
             scaleType = ImageView.ScaleType.MATRIX
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -57,6 +73,12 @@ class ZoomableImageView @JvmOverloads constructor(
             })
     }
 
+    /** Update bounding box coordinates dynamically */
+    fun setFaceOverlays(faces: List<DetectedFace>) {
+        this.overlayFaces = faces
+        invalidate()
+    }
+
     /** First image load - resets zoom/pan to fit the view. */
     fun setImageBitmap(bmp: Bitmap) {
         bitmap = bmp
@@ -64,11 +86,12 @@ class ZoomableImageView @JvmOverloads constructor(
         post { resetMatrixToFit() }
     }
 
-    /** Swap in a new (effect-applied) bitmap while keeping the user's current zoom/pan. */
+    /** Swap in the effect-applied bitmap while preserving user pan/zoom position */
     fun updateImagePreservingMatrix(bmp: Bitmap) {
         bitmap = bmp
         imageView.setImageBitmap(bmp)
         imageView.imageMatrix = matrix
+        invalidate()
     }
 
     private fun resetMatrixToFit() {
@@ -92,6 +115,23 @@ class ZoomableImageView @JvmOverloads constructor(
 
     private fun applyMatrix() {
         imageView.imageMatrix = matrix
+        invalidate()
+    }
+
+    override fun dispatchDraw(canvas: Canvas) {
+        // 1. Draw the actual image underneath (with the merged effects included)
+        super.dispatchDraw(canvas)
+
+        // 2. Draw vector outlines tracking alongside the panning/zooming matrix coordinates
+        canvas.save()
+        canvas.concat(matrix)
+
+        overlayFaces.filter { it.isSelected }.forEach { face ->
+            // Draw clean empty rounded corner outlines over selected faces
+            canvas.drawRoundRect(face.boundingBox, 16f, 16f, faceOutlinePaint)
+        }
+
+        canvas.restore()
     }
 
     private fun constrainMatrix() {
@@ -123,9 +163,6 @@ class ZoomableImageView @JvmOverloads constructor(
 
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                // Claim the gesture immediately - a NestedScrollView (or any scrolling
-                // parent) must not steal this touch stream once it starts on the image,
-                // otherwise a single-finger pan gets interpreted as a page scroll instead.
                 parent?.requestDisallowInterceptTouchEvent(true)
                 panPointerId = event.getPointerId(0)
                 lastPanX = event.x

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -43,7 +44,14 @@ class SelectFacesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.setOnClickListener { navigateHome() }
+
+        // Physical/gesture back button goes through NavController's default single-step
+        // pop otherwise, which would land on the Detecting Faces loading screen instead
+        // of Home - route it through the same logic as the on-screen back icon.
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            navigateHome()
+        }
 
         adapter = DetectedFaceAdapter(
             onFaceClicked = { /* TODO: tap-to-preview - zoom into that face */ },
@@ -61,7 +69,7 @@ class SelectFacesFragment : Fragment() {
         }
 
         binding.btnManualSelect.setOnClickListener {
-            // TODO: hook up manual brush-mask selection (see prototype's BrushMaskView)
+            findNavController().navigate(R.id.manualSelectionFragment)
         }
 
         val imageUri = sharedViewModel.imageUri
@@ -69,6 +77,10 @@ class SelectFacesFragment : Fragment() {
             binding.ivPreview.setImageURI(imageUri)
             loadBitmapAndObserveFaces(imageUri)
         }
+    }
+
+    private fun navigateHome() {
+        findNavController().popBackStack(R.id.homeFragment, false)
     }
 
     private fun loadBitmapAndObserveFaces(imageUri: android.net.Uri) {

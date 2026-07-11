@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.graphics.Color
+import kotlinx.coroutines.flow.combine
 
 class BlurEditorFragment : Fragment() {
 
@@ -156,6 +157,11 @@ class BlurEditorFragment : Fragment() {
                             }
                         }
                         chipAdapter.submitList(items)
+                    }
+                }
+                launch {
+                    sharedViewModel.faces.collect { faces ->
+                        binding.zoomableImage.setFaceOverlays(faces)
                     }
                 }
             }

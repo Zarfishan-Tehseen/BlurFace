@@ -18,10 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp"
+            android:paddingHorizontal="16dp"
             android:paddingTop="20dp">
 
-            <!-- ── Header row: FaceBlur logo + crown button ── -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +66,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_hero_gradient">
 
                 <ImageView
@@ -182,36 +181,32 @@
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/iconContainer" />
 
                     <TextView
                         android:id="@+id/tvBlurFacesSubtitle"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/blur_faces_subtitle"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvBlurFacesTitle" />
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/ic_chevron_right"
-                        app:layout_constraintBottom_toTopOf="@id/tvBlurFacesTitle"
+                        app:layout_constraintTop_toTopOf="@id/tvBlurFacesTitle"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainer"
+                        app:layout_constraintBottom_toBottomOf="@id/tvBlurFacesTitle"
                         app:tint="@color/purple_primary" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/cardBlurBackground"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -241,12 +236,12 @@
 
                     <ImageView
                         android:id="@+id/ivChevron"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:src="@drawable/ic_chevron_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvBlurBgTitle"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainerBg"
-                        app:layout_constraintBottom_toTopOf="@id/tvBlurBgTitle"
+                        app:layout_constraintTop_toTopOf="@+id/tvBlurBgTitle"
                         app:tint="@color/purple_primary" />
 
                     <TextView
@@ -272,7 +267,6 @@
                         android:text="@string/blur_background_subtitle"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tvBlurBgTitle" />
 
@@ -286,7 +280,7 @@
                 android:orientation="horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cardPixelateFaces"
+                    android:id="@+id/cardBlurVideo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -294,15 +288,13 @@
                     android:background="@drawable/bg_card_rounded"
                     android:padding="16dp"
                     android:clickable="true"
-                    android:focusable="true"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto">
+                    android:focusable="true">
 
                     <FrameLayout
-                        android:id="@+id/iconContainerPixelate"
+                        android:id="@+id/iconContainerVideo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_icon_circle_pink"
+                        android:background="@drawable/bg_icon_circle_yellow"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent">
 
@@ -315,108 +307,39 @@
                     </FrameLayout>
 
                     <ImageView
-                        android:id="@+id/ivChevronPixelate"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:id="@+id/ivChevronVideo"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:contentDescription="@null"
-                        android:tint="@color/purple_primary"
                         android:src="@drawable/ic_chevron_right"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainerPixelate"
-                        app:layout_constraintBottom_toTopOf="@id/tvPixelateTitle" />
+                        app:layout_constraintTop_toTopOf="@id/tvVideoTitle"
+                        app:tint="@color/purple_primary" />
 
                     <TextView
-                        android:id="@+id/tvPixelateTitle"
+                        android:id="@+id/tvVideoTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
                         android:layout_marginEnd="8dp"
-                        android:text="@string/pixelate_faces"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/blur_video"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainerPixelate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ivChevronPixelate" />
+                        app:layout_constraintEnd_toStartOf="@id/ivChevronVideo"
+                        app:layout_constraintStart_toEndOf="@+id/iconContainerVideo"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvPixelateSubtitle"
+                        android:id="@+id/tvVideoSubtitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/pixelate_faces_subtitle"
+                        android:text="@string/blur_video_subtitle"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp"
-                        app:layout_constraintTop_toBottomOf="@id/tvPixelateTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cardEmojiCover"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_card_rounded"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-                    <FrameLayout
-                        android:id="@+id/iconContainerEmoji"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/bg_icon_circle_yellow"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_emoji" />
-                    </FrameLayout>
-
-                    <ImageView
-                        android:id="@+id/ivChevronEmoji"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:tint="@color/purple_primary"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_chevron_right"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainerEmoji"
-                        app:layout_constraintBottom_toTopOf="@id/tvEmojiTitle"/>
-
-                    <TextView
-                        android:id="@+id/tvEmojiTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/emoji_cover"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintTop_toBottomOf="@id/iconContainerEmoji"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/ivChevronEmoji" />
-
-                    <TextView
-                        android:id="@+id/tvEmojiSubtitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/emoji_cover_subtitle"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
-                        app:layout_constraintTop_toBottomOf="@id/tvEmojiTitle"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintStart_toStartOf="@id/tvVideoTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/tvVideoTitle" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
