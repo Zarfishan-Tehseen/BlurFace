@@ -1,0 +1,231 @@
+package com.example.blurface.ui.video.blureditor
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.blurface.R
+import com.example.blurface.databinding.FragmentVideoBlurEditorBinding
+import com.example.blurface.domain.model.BlurSettings
+import com.example.blurface.domain.model.BlurShape
+import com.example.blurface.domain.model.BlurType
+import com.example.blurface.domain.model.Person
+import com.example.blurface.domain.repository.VideoRepositoryImpl
+import com.example.blurface.domain.usecase.ProcessAndClusterVideoUseCase
+import com.example.blurface.ui.viewmodel.FaceClusterViewModel
+import com.example.blurface.utils.VideoFaceEffectProcessor
+import kotlinx.coroutines.launch
+
+class VideoBlurEditorFragment : Fragment() {
+
+    private var _binding: FragmentVideoBlurEditorBinding? = null
+    private val binding get() = _binding!!
+
+    // Same graph-scoped ViewModel as AnalyzingVideoFragment / DetectedFacesFragment.
+    // We deliberately reuse it (rather than a fresh ViewModel) so the people
+    // list and shouldBlur flags set on DetectedFacesFragment are still here -
+    // this factory only actually runs if this screen is somehow opened first.
+    private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph) {
+        object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                val videoRepository = VideoRepositoryImpl(requireContext().applicationContext)
+                val useCase = ProcessAndClusterVideoUseCase(videoRepository)
+                return FaceClusterViewModel(useCase) as T
+            }
+        }
+    }
+
+    private lateinit var facesAdapter: SelectedFacesAdapter
+    private var selectedPeople: List<Person> = emptyList()
+
+    // Local, in-progress editor state. Only pushed into the shared ViewModel
+    // when the user taps the CTA - keeps intermediate slider drags from
+    // spamming ViewModel state.
+    private var blurType: BlurType = BlurType.GAUSSIAN
+    private var shape: BlurShape = BlurShape.AUTO_FACE
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentVideoBlurEditorBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        selectedPeople = viewModel.selectedPeopleForBlur()
+
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+
+        setupSelectedFacesList()
+        setupBlurTypeCards()
+        setupShapeCards()
+        setupSliders()
+        applyBlurSettingsToUi(viewModel.blurSettings.value)
+
+        binding.btnBlurFacesInVideo.setOnClickListener { onBlurFacesClicked() }
+
+        // Render an initial live preview so the strip reflects real settings from the
+        // start, not just the raw face crops.
+        schedulePreviewUpdate()
+    }
+
+    private fun setupSelectedFacesList() {
+        facesAdapter = SelectedFacesAdapter()
+        binding.rvSelectedFaces.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvSelectedFaces.adapter = facesAdapter
+        facesAdapter.submitList(selectedPeople)
+
+        binding.tvSelectedCount.text = resources.getQuantityStringSafe(selectedPeople.size)
+    }
+
+    private fun setupBlurTypeCards() {
+        val cards = mapOf<View, BlurType>(
+            binding.cardGaussian to BlurType.GAUSSIAN,
+            binding.cardMosaic to BlurType.MOSAIC,
+            binding.cardColor to BlurType.COLOR,
+            binding.cardEmoji to BlurType.EMOJI
+        )
+        cards.forEach { (card, type) ->
+            card.setOnClickListener {
+                blurType = type
+                updateBlurTypeSelection(cards)
+                schedulePreviewUpdate()
+            }
+        }
+        updateBlurTypeSelection(cards)
+    }
+
+    private fun updateBlurTypeSelection(cards: Map<View, BlurType>) {
+        cards.forEach { (card, type) -> card.isSelected = (type == blurType) }
+    }
+
+    private fun setupShapeCards() {
+        val cards = mapOf<View, BlurShape>(
+            binding.cardAutoFace to BlurShape.AUTO_FACE,
+            binding.cardCircle to BlurShape.CIRCLE,
+            binding.cardRectangle to BlurShape.RECTANGLE
+        )
+        cards.forEach { (card, s) ->
+            card.setOnClickListener {
+                shape = s
+                updateShapeSelection(cards)
+                schedulePreviewUpdate()
+            }
+        }
+        updateShapeSelection(cards)
+    }
+
+    private fun updateShapeSelection(cards: Map<View, BlurShape>) {
+        cards.forEach { (card, s) -> card.isSelected = (s == shape) }
+    }
+
+    private fun setupSliders() {
+        binding.sliderIntensity.addOnChangeListener { _, value, fromUser ->
+            binding.tvIntensityValue.text = "${value.toInt()}%"
+            if (fromUser) schedulePreviewUpdate()
+        }
+        binding.sliderFeather.addOnChangeListener { _, value, fromUser ->
+            binding.tvFeatherValue.text = "${value.toInt()}%"
+            if (fromUser) schedulePreviewUpdate()
+        }
+    }
+
+    private fun applyBlurSettingsToUi(settings: BlurSettings) {
+        blurType = settings.blurType
+        shape = settings.shape
+
+        binding.sliderIntensity.value = settings.intensity.toFloat()
+        binding.tvIntensityValue.text = "${settings.intensity}%"
+
+        binding.sliderFeather.value = settings.feather.toFloat()
+        binding.tvFeatherValue.text = "${settings.feather}%"
+
+        binding.switchBlurEntireVideo.isChecked = settings.blurEntireVideo
+
+        setupBlurTypeCards()
+        setupShapeCards()
+    }
+
+    /** Reads the current UI state into a BlurSettings snapshot (not yet pushed to the ViewModel). */
+    private fun currentSettingsFromUi(): BlurSettings = BlurSettings(
+        blurType = blurType,
+        shape = shape,
+        intensity = binding.sliderIntensity.value.toInt(),
+        feather = binding.sliderFeather.value.toInt(),
+        blurEntireVideo = binding.switchBlurEntireVideo.isChecked
+    )
+
+    // Trailing-edge throttle state: while a render is in flight, new calls to
+    // schedulePreviewUpdate() just overwrite pendingSettings instead of starting a
+    // second concurrent render. The moment the in-flight render finishes, it
+    // immediately renders whatever the latest pending settings are (if any) - so
+    // during a continuous slider drag the preview keeps updating as fast as actual
+    // rendering allows, and the truly final value is always rendered once you stop,
+    // rather than only updating after a fixed quiet period.
+    private var isRenderingPreview = false
+    private var pendingSettings: BlurSettings? = null
+
+    /**
+     * Recomputes the live preview for every selected face. Safe to call on every single
+     * slider tick - see the throttle notes on isRenderingPreview/pendingSettings above.
+     */
+    private fun schedulePreviewUpdate() {
+        val settings = currentSettingsFromUi()
+        if (isRenderingPreview) {
+            pendingSettings = settings
+            return
+        }
+        renderPreview(settings)
+    }
+
+    private fun renderPreview(settings: BlurSettings) {
+        isRenderingPreview = true
+        viewLifecycleOwner.lifecycleScope.launch {
+            val previews = selectedPeople.associate { person ->
+                person.id to VideoFaceEffectProcessor.applyPreview(
+                    context = requireContext(),
+                    faceCrop = person.representativeCrop(),
+                    settings = settings
+                )
+            }
+
+            if (_binding != null) facesAdapter.updatePreviews(previews)
+
+            isRenderingPreview = false
+            val next = pendingSettings
+            pendingSettings = null
+            if (next != null) renderPreview(next)
+        }
+    }
+
+    private fun onBlurFacesClicked() {
+        val settings = currentSettingsFromUi()
+        viewModel.updateBlurSettings(settings)
+
+        // TODO: navigate to the actual render/processing screen once it
+        // exists, e.g. findNavController().navigate(R.id.blurProcessingFragment)
+        // The use case would then run over selectedPeople + settings.
+    }
+
+    override fun onDestroyView() {
+        // viewLifecycleOwner.lifecycleScope cancels any in-flight renderPreview() coroutine
+        // automatically here; pendingSettings/isRenderingPreview just go stale harmlessly.
+        super.onDestroyView()
+        _binding = null
+    }
+}
+private fun android.content.res.Resources.getQuantityStringSafe(count: Int): String =
+    if (count == 1) "1 face selected" else "$count faces selected"

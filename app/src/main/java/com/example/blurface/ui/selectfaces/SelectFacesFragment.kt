@@ -46,9 +46,6 @@ class SelectFacesFragment : Fragment() {
 
         binding.btnBack.setOnClickListener { navigateHome() }
 
-        // Physical/gesture back button goes through NavController's default single-step
-        // pop otherwise, which would land on the Detecting Faces loading screen instead
-        // of Home - route it through the same logic as the on-screen back icon.
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navigateHome()
         }

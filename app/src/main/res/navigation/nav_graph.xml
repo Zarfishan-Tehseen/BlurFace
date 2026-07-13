@@ -44,8 +44,22 @@
         android:id="@+id/videoEditorFragment"
         android:name="com.example.blurface.ui.video.VideoAnalysisFragment"
         android:label="Video Editor" />
+    <fragment
+        android:id="@+id/analyzingVideoFragment"
+        android:name="com.example.blurface.ui.video.analyzingvideo.AnalyzingVideoFragment"
+        android:label="Analyzing Video">
+        <argument
+            android:name="videoUri"
+            app:argType="string" />
+    </fragment>
 
-    <!-- More fragments (edit, video edit, export) will be added here
-         as we build each screen -->
+    <fragment
+        android:id="@+id/detectedFacesFragment"
+        android:name="com.example.blurface.ui.video.detectedfaces.DetectedFacesFragment"
+        android:label="Detected Faces" />
+    <fragment
+        android:id="@+id/videoBlurEditorFragment"
+        android:name="com.example.blurface.ui.video.blureditor.VideoBlurEditorFragment"
+        android:label="Video Blur Editor" />
 
 </navigation>

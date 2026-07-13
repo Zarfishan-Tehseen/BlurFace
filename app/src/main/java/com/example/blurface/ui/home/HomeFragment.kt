@@ -17,11 +17,16 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
     private val pickImage = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
         uri?.let { navigateToDetectingFaces(it) }
+    }
+
+    private val pickVideo = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        uri?.let { navigateToAnalyzingVideo(it) }
     }
 
     override fun onCreateView(
@@ -43,18 +48,27 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardBlurBackground.setOnClickListener {
-            findNavController().navigate(R.id.videoEditorFragment)
+            // TODO: wire up once Blur Background flow exists
         }
 
-        // TODO: wire up Quick Action cards (cardBlurFaces, cardBlurBackground,
-        // cardPixelateFaces, cardEmojiCover) once their destination screens exist.
-        // TODO: wire up rvRecentEdits adapter once we have a history data source.
+        binding.cardBlurVideo.setOnClickListener {
+            pickVideo.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
+            )
+        }
     }
 
     private fun navigateToDetectingFaces(uri: Uri) {
         findNavController().navigate(
             R.id.detectingFacesFragment,
             bundleOf("imageUri" to uri.toString())
+        )
+    }
+
+    private fun navigateToAnalyzingVideo(uri: Uri) {
+        findNavController().navigate(
+            R.id.analyzingVideoFragment,
+            bundleOf("videoUri" to uri.toString())
         )
     }
 

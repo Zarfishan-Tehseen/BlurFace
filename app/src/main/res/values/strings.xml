@@ -66,4 +66,31 @@
     <string name="add_mode">Add</string>
     <string name="remove_mode">Remove</string>
     <string name="brush_size_label">Brush Size</string>
+
+
+    <string name="blur_editor_title_prefix">Video Blur </string>
+    <string name="blur_editor_title_suffix">Editor</string>
+    <string name="blur_type_label">Blur Type</string>
+    <string name="blur_type_gaussian">Gaussian</string>
+    <string name="blur_type_gaussian_desc">Smooth blur</string>
+    <string name="blur_type_mosaic">Mosaic</string>
+    <string name="blur_type_mosaic_desc">Pixelate faces</string>
+    <string name="blur_type_color">Color</string>
+    <string name="blur_type_color_desc">Solid color overlay</string>
+    <string name="blur_type_emoji">Emoji</string>
+    <string name="blur_type_emoji_desc">Select emojis</string>
+    <string name="feather_label">Feather</string>
+    <string name="shape_label">Shape</string>
+    <string name="shape_auto">Auto (Face)</string>
+    <string name="shape_auto_desc">Follow face shape</string>
+    <string name="shape_circle">Circle</string>
+    <string name="shape_circle_desc">Circular blur</string>
+    <string name="shape_rectangle">Rectangle</string>
+    <string name="shape_rectangle_desc">Rectangular blur</string>
+    <string name="additional_settings_label">Additional Settings</string>
+    <string name="blur_entire_video_title">Blur Entire Video</string>
+    <string name="blur_entire_video_desc">Apply blur to all frames (background + faces).</string>
+    <string name="blur_follow_info">Faces will be blurred throughout your video. The blur will follow the selected faces in every scene.</string>
+    <string name="blur_faces_cta">Blur Faces in Video  →</string>
+    <string name="privacy_footer">Your video is private and never leaves your device.</string>
 </resources>
