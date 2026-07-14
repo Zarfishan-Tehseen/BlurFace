@@ -79,6 +79,7 @@ class AnalyzingVideoFragment : Fragment() {
             return
         }
         val workspaceCacheDir = File(context.cacheDir, "blurshield_frame_cache").absolutePath
+        viewModel.videoPath = inputPath
         viewModel.runFacePipeline(inputPath, workspaceCacheDir, fps = 10)
     }
 

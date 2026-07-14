@@ -1,5 +1,7 @@
 package com.example.blurface.domain.model
 
+import android.graphics.Color
+
 /**
  * Everything the user configures on VideoBlurEditorFragment.
  * Kept as a plain immutable data class so it can be persisted in the
@@ -9,10 +11,11 @@ package com.example.blurface.domain.model
 data class BlurSettings(
     val blurType: BlurType = BlurType.GAUSSIAN,
     val shape: BlurShape = BlurShape.AUTO_FACE,
-    val intensity: Int = 60,
-    val feather: Int = 40,
+    val intensity: Int = 60,      // 0..100
+    val feather: Int = 40,        // 0..100
     val blurEntireVideo: Boolean = false,
-    val emoji: String = "😀"
+    val emoji: String = "😀",
+    val fillColor: Int = Color.BLACK
 )
 
 enum class BlurType { GAUSSIAN, MOSAIC, COLOR, EMOJI }

@@ -18,28 +18,12 @@ import com.example.blurface.domain.model.BlurType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * Renders a live preview of [BlurSettings] applied to a single face crop, for the
- * thumbnail strip on VideoBlurEditorFragment.
- *
- * Deliberately separate from com.example.blurface.utils.EffectProcessor (the photo
- * editor's processor): video works per-face-crop + a BlurShape mask (circle / auto-face
- * oval / rectangle) instead of full-frame bounding boxes + a manual brush mask, so the
- * two don't share plumbing even though the underlying blur/mosaic/color/emoji math is
- * conceptually the same.
- */
 @Suppress("DEPRECATION")
 object VideoFaceEffectProcessor {
-
-    /**
-     * @param faceCrop the person's representative face crop (e.g. Person.representativeCrop()).
-     * Returns a new Bitmap - never mutates [faceCrop].
-     */
     suspend fun applyPreview(
         context: Context,
         faceCrop: Bitmap,
-        settings: BlurSettings,
-        fillColor: Int = Color.BLACK
+        settings: BlurSettings
     ): Bitmap = withContext(Dispatchers.Default) {
         val pct = settings.intensity.coerceIn(0, 100).toFloat()
 
@@ -58,7 +42,12 @@ object VideoFaceEffectProcessor {
                 val alpha = (pct / 100f * 255f).toInt().coerceIn(0, 255)
                 Bitmap.createBitmap(faceCrop.width, faceCrop.height, Bitmap.Config.ARGB_8888).also {
                     Canvas(it).drawColor(
-                        Color.argb(alpha, Color.red(fillColor), Color.green(fillColor), Color.blue(fillColor))
+                        Color.argb(
+                            alpha,
+                            Color.red(settings.fillColor),
+                            Color.green(settings.fillColor),
+                            Color.blue(settings.fillColor)
+                        )
                     )
                 }
             }

@@ -61,5 +61,13 @@
         android:id="@+id/videoBlurEditorFragment"
         android:name="com.example.blurface.ui.video.blureditor.VideoBlurEditorFragment"
         android:label="Video Blur Editor" />
+    <fragment
+        android:id="@+id/exportProcessFragment"
+        android:name="com.example.blurface.ui.video.exportprocess.ExportProcessFragment"
+        android:label="Export and Process" />
+    <fragment
+        android:id="@+id/blurredVideoResultFragment"
+        android:name="com.example.blurface.ui.video.exportresult.BlurredVideoResultFragment"
+        android:label="Your Blurred Video" />
 
 </navigation>

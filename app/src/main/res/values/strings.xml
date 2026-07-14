@@ -93,4 +93,23 @@
     <string name="blur_follow_info">Faces will be blurred throughout your video. The blur will follow the selected faces in every scene.</string>
     <string name="blur_faces_cta">Blur Faces in Video  →</string>
     <string name="privacy_footer">Your video is private and never leaves your device.</string>
+
+
+    <string name="result_title_prefix">Your </string>
+    <string name="result_title_highlight">Blurred</string>
+    <string name="result_title_suffix"> Video</string>
+    <string name="result_subtitle">Preview your video and choose what you want to do next.</string>
+    <string name="export_completed_title">Export Completed!</string>
+    <string name="export_completed_desc">Your video has been successfully blurred and is ready to use.</string>
+    <string name="what_next_label">What would you like to do?</string>
+    <string name="action_save_gallery">Save to Gallery</string>
+    <string name="action_share_video">Share Video</string>
+    <string name="action_copy_link">Copy Link</string>
+    <string name="back_to_home">Back to Home</string>
+    <string name="cd_play_pause">Play or pause video</string>
+    <string name="cd_fullscreen">Toggle fullscreen</string>
+    <string name="toast_saved_gallery">Saved to Gallery</string>
+    <string name="toast_save_failed">Couldn\'t save video</string>
+    <string name="toast_link_copied">Video link copied</string>
+    <string name="toast_no_video">No exported video found</string>
 </resources>

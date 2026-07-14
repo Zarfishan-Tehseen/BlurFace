@@ -20,10 +20,9 @@ class FaceClusterViewModel(
     var fps: Int = 10
         private set
 
-    // --- Blur editor state -------------------------------------------------
-    // Lives here (not in VideoBlurEditorFragment) because this ViewModel is
-    // graph-scoped, same as before - so the settings survive rotation/back
-    // navigation and are available to whatever screen actually runs the blur.
+    var videoPath: String? = null
+    var exportedVideoPath: String? = null
+
     private val _blurSettings = MutableStateFlow(BlurSettings())
     val blurSettings: StateFlow<BlurSettings> = _blurSettings
 
@@ -31,7 +30,6 @@ class FaceClusterViewModel(
         _blurSettings.value = settings
     }
 
-    /** Faces the user checked on DetectedFacesFragment. */
     fun selectedPeopleForBlur(): List<Person> =
         (_uiState.value as? FaceUiState.Success)?.clusteredPeople?.filter { it.shouldBlur }
             ?: emptyList()
