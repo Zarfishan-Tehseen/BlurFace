@@ -98,7 +98,7 @@
     <string name="result_title_prefix">Your </string>
     <string name="result_title_highlight">Blurred</string>
     <string name="result_title_suffix"> Video</string>
-    <string name="result_subtitle">Preview your video and choose what you want to do next.</string>
+    <string name="result_subtitle">Review your video</string>
     <string name="export_completed_title">Export Completed!</string>
     <string name="export_completed_desc">Your video has been successfully blurred and is ready to use.</string>
     <string name="what_next_label">What would you like to do?</string>

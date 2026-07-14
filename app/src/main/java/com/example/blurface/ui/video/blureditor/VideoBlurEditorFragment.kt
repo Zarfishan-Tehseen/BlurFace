@@ -361,14 +361,10 @@ class VideoBlurEditorFragment : Fragment() {
         val settings = currentSettingsFromUi()
         viewModel.updateBlurSettings(settings)
 
-        // TODO: navigate to the actual render/processing screen once it
-        // exists, e.g. findNavController().navigate(R.id.blurProcessingFragment)
-        // The use case would then run over selectedPeople + settings.
+        findNavController().navigate(R.id.exportProcessFragment)
     }
 
     override fun onDestroyView() {
-        // viewLifecycleOwner.lifecycleScope cancels any in-flight renderPreview() coroutine
-        // automatically here; pendingSettings/isRenderingPreview just go stale harmlessly.
         super.onDestroyView()
         _binding = null
     }

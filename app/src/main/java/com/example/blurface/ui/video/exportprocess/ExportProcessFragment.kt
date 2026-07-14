@@ -59,7 +59,20 @@ class ExportProcessFragment : Fragment() {
         setUpFrameRateRow()
         setUpFormatRow()
 
-        binding.btnExport.setOnClickListener { exportViewModel.startExport() }
+        binding.btnExport.setOnClickListener {
+            val path = faceClusterViewModel.videoPath
+            if (path == null) {
+                Toast.makeText(requireContext(), "No source video found.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            exportViewModel.startExport(
+                context = requireContext(),
+                sourcePath = path,
+                people = faceClusterViewModel.selectedPeopleForBlur(),
+                blurSettings = faceClusterViewModel.blurSettings.value,
+                analysisFps = faceClusterViewModel.fps
+            )
+        }
 
         loadVideoDuration()
         observeViewModel()
@@ -180,12 +193,7 @@ class ExportProcessFragment : Fragment() {
 
                 if (!hasNavigatedToResult) {
                     hasNavigatedToResult = true
-                    // TODO: swap for the real encoder's output path once
-                    // ExportProcessViewModel.startExport() actually produces
-                    // a file (see its TODO) - using the source video as a
-                    // stand-in so BlurredVideoResultFragment has something
-                    // to preview/share/save today.
-                    faceClusterViewModel.exportedVideoPath = faceClusterViewModel.videoPath
+                    faceClusterViewModel.exportedVideoPath = exportViewModel.outputPath
                     findNavController().navigate(R.id.blurredVideoResultFragment)
                 }
             }
