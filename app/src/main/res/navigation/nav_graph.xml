@@ -70,4 +70,13 @@
         android:name="com.example.blurface.ui.video.exportresult.BlurredVideoResultFragment"
         android:label="Your Blurred Video" />
 
+    <fragment
+        android:id="@+id/backgroundBlurFragment"
+        android:name="com.example.blurface.ui.backgroundblur.BackgroundBlurFragment"
+        android:label="Background Blur">
+        <argument
+            android:name="imageUri"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

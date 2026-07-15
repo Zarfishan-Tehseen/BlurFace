@@ -23,6 +23,12 @@ class HomeFragment : Fragment() {
         uri?.let { navigateToDetectingFaces(it) }
     }
 
+    private val pickBackgroundImage = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        uri?.let { navigateToBackgroundBlur(it) }
+    }
+
     private val pickVideo = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -48,7 +54,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardBlurBackground.setOnClickListener {
-            // TODO: wire up once Blur Background flow exists
+            pickBackgroundImage.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
         }
 
         binding.cardBlurVideo.setOnClickListener {
@@ -69,6 +77,12 @@ class HomeFragment : Fragment() {
         findNavController().navigate(
             R.id.analyzingVideoFragment,
             bundleOf("videoUri" to uri.toString())
+        )
+    }
+    private fun navigateToBackgroundBlur(uri: Uri) {
+        findNavController().navigate(
+            R.id.backgroundBlurFragment,
+            bundleOf("imageUri" to uri.toString())
         )
     }
 
