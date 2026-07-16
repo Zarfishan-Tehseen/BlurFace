@@ -112,4 +112,7 @@
     <string name="toast_save_failed">Couldn\'t save video</string>
     <string name="toast_link_copied">Video link copied</string>
     <string name="toast_no_video">No exported video found</string>
+
+    <string name="cd_search">Search</string>
+    <string name="cd_filter_sort">Filter and sort</string>
 </resources>

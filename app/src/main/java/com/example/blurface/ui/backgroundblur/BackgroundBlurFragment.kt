@@ -22,9 +22,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.databinding.FragmentBackgroundBlurBinding
 import com.example.blurface.domain.model.BackgroundBlurType
 import com.example.blurface.domain.model.BackgroundFilter
+import com.example.blurface.domain.model.EditType
+import com.example.blurface.domain.model.RecentEdit
+import com.example.blurface.utils.MediaSizeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,10 +85,12 @@ class BackgroundBlurFragment : Fragment() {
                     viewModel.mask.value?.let { binding.ivPreview.setImageBitmap(it) }
                     true
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     viewModel.editedBitmap.value?.let { binding.ivPreview.setImageBitmap(it) }
                     true
                 }
+
                 else -> false
             }
         }
@@ -176,19 +182,23 @@ class BackgroundBlurFragment : Fragment() {
 
     private fun tint(bitmap: Bitmap, warm: Boolean): Bitmap {
         val matrix = if (warm) {
-            ColorMatrix(floatArrayOf(
-                1.15f, 0f, 0f, 0f, 8f,
-                0f, 1.03f, 0f, 0f, 0f,
-                0f, 0f, 0.85f, 0f, 0f,
-                0f, 0f, 0f, 1f, 0f
-            ))
+            ColorMatrix(
+                floatArrayOf(
+                    1.15f, 0f, 0f, 0f, 8f,
+                    0f, 1.03f, 0f, 0f, 0f,
+                    0f, 0f, 0.85f, 0f, 0f,
+                    0f, 0f, 0f, 1f, 0f
+                )
+            )
         } else {
-            ColorMatrix(floatArrayOf(
-                0.85f, 0f, 0f, 0f, 0f,
-                0f, 1f, 0f, 0f, 0f,
-                0f, 0f, 1.15f, 0f, 8f,
-                0f, 0f, 0f, 1f, 0f
-            ))
+            ColorMatrix(
+                floatArrayOf(
+                    0.85f, 0f, 0f, 0f, 0f,
+                    0f, 1f, 0f, 0f, 0f,
+                    0f, 0f, 1.15f, 0f, 8f,
+                    0f, 0f, 0f, 1f, 0f
+                )
+            )
         }
         val result = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         Canvas(result).drawBitmap(
@@ -204,13 +214,22 @@ class BackgroundBlurFragment : Fragment() {
             Toast.makeText(requireContext(), "Nothing to export yet", Toast.LENGTH_SHORT).show()
             return
         }
-        // Simplified direct-save for now (JPEG, compressed) rather than reusing the
-        // photo flow's format-picker bottom sheet, which is tightly coupled to
-        // PhotoEditViewModel. Say the word if you want that sheet made reusable
-        // via a shared export interface instead.
         viewLifecycleOwner.lifecycleScope.launch {
             val uri = withContext(Dispatchers.IO) {
                 runCatching { saveJpegToGallery(bitmap) }.getOrNull()
+            }
+            if (uri != null) {
+                RecentEditsStore(requireContext()).add(
+                    RecentEdit(
+                        id = uri.toString(),
+                        title = "Background Blur",
+                        editType = EditType.BLUR_BACKGROUND,
+                        mediaUri = uri.toString(),
+                        isVideo = false,
+                        timestampMillis = System.currentTimeMillis(),
+                        fileSizeBytes = MediaSizeUtils.getFileSizeBytes(requireContext(), uri)
+                    )
+                )
             }
             val message = if (uri != null) "Saved to gallery" else "Could not save image"
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -228,7 +247,8 @@ class BackgroundBlurFragment : Fragment() {
             put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/BlurFace")
             put(MediaStore.Images.Media.IS_PENDING, 1)
         }
-        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return null
+        val uri =
+            resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return null
 
         val wrote = resolver.openOutputStream(uri)?.use { out ->
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)

@@ -16,10 +16,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.navGraphViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.example.blurface.R
+import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.databinding.FragmentExportBottomSheetBinding
+import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.ExportFormat
+import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.ui.viewmodel.SaveState
+import com.example.blurface.utils.MediaSizeUtils
 import kotlinx.coroutines.launch
 
 class ExportBottomSheetFragment : BottomSheetDialogFragment() {
@@ -102,6 +106,7 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
             is SaveState.Success -> {
                 binding.btnSavePhoto.isEnabled = true
                 Toast.makeText(requireContext(), R.string.saved_to_gallery, Toast.LENGTH_SHORT).show()
+                recordRecentEdit(state.uri)
                 sharedViewModel.resetSaveState()
                 dismiss()
             }
@@ -112,6 +117,20 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
             }
             is SaveState.Idle -> binding.btnSavePhoto.isEnabled = true
         }
+    }
+    private fun recordRecentEdit(uri: android.net.Uri) {
+        val context = requireContext()
+        RecentEditsStore(context).add(
+            RecentEdit(
+                id = uri.toString(),
+                title = "Photo Edit",
+                editType = EditType.BLUR_FACES,
+                mediaUri = uri.toString(),
+                isVideo = false,
+                timestampMillis = System.currentTimeMillis(),
+                fileSizeBytes = MediaSizeUtils.getFileSizeBytes(context, uri)
+            )
+        )
     }
 
     override fun onDestroyView() {

@@ -10,9 +10,9 @@
         android:label="Home" />
 
     <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.example.blurface.ui.history.HistoryFragment"
-        android:label="History" />
+        android:id="@+id/recentsFragment"
+        android:name="com.example.blurface.ui.recents.RecentsFragment"
+        android:label="Recents" />
 
     <fragment
         android:id="@+id/settingsFragment"

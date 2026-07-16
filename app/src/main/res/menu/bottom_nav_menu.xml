@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_nav_home"
         android:title="Home" />
     <item
-        android:id="@+id/historyFragment"
+        android:id="@+id/recentsFragment"
         android:icon="@drawable/ic_nav_history"
-        android:title="History" />
+        android:title="Recents" />
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_nav_settings"

@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private val topLevelDestinations = setOf(
         R.id.homeFragment,
-        R.id.historyFragment,
+        R.id.recentsFragment,
         R.id.settingsFragment
     )
 

@@ -27,8 +27,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.blurface.R
+import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.databinding.FragmentBlurredVideoResultBinding
+import com.example.blurface.domain.model.EditType
+import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
+import com.example.blurface.utils.MediaSizeUtils
 import com.example.blurface.utils.VideoSaver
 import kotlinx.coroutines.launch
 import java.io.File
@@ -220,10 +224,26 @@ class BlurredVideoResultFragment : Fragment() {
 
             if (uri != null) {
                 Toast.makeText(requireContext(), "Saved to gallery.", Toast.LENGTH_SHORT).show()
+                recordRecentEdit(uri)
             } else {
                 Toast.makeText(requireContext(), "Couldn't save the video.", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun recordRecentEdit(uri: Uri) {
+        val context = requireContext()
+        RecentEditsStore(context).add(
+            RecentEdit(
+                id = uri.toString(),
+                title = "Video",
+                editType = EditType.BLUR_FACES,
+                mediaUri = uri.toString(),
+                isVideo = true,
+                timestampMillis = System.currentTimeMillis(),
+                fileSizeBytes = MediaSizeUtils.getFileSizeBytes(context, uri)
+            )
+        )
     }
 
     private fun onShareClicked() {
