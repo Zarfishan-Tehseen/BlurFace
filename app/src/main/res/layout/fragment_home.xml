@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="24dp">
+        android:paddingBottom="100dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +27,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
-                android:paddingTop="12dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="12dp">
 
@@ -56,32 +55,40 @@
                     android:id="@+id/btnCrown"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_icon_circle_white"
+                    android:background="@drawable/bg_icon_circle_purple_gradient"
                     android:elevation="2dp"
                     android:padding="10dp"
                     android:src="@drawable/ic_crown" />
 
             </LinearLayout>
-            <!-- ── Hero card ── -->
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_hero_gradient">
 
                 <ImageView
                     android:id="@+id/ivHeroDemo"
                     android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
                     android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
                     android:scaleType="centerCrop"
-                    tools:src="@color/purple_light" />
+                    android:src="@drawable/girl_pic" />
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="55dp"
+                    android:src="@drawable/blur_ef"/>
 
                 <ImageView
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="20dp"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_corner_brackets" />
 
@@ -133,7 +140,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/quick_actions"
                 android:textColor="@color/text_primary"
                 android:textSize="17sp"
@@ -199,9 +206,9 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/ic_chevron_right"
-                        app:layout_constraintTop_toTopOf="@id/tvBlurFacesTitle"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="@id/tvBlurFacesTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvBlurFacesTitle"
                         app:tint="@color/purple_primary" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -283,27 +290,28 @@
                     android:id="@+id/cardBlurVideo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_card_rounded"
-                    android:padding="16dp"
                     android:clickable="true"
-                    android:focusable="true">
+                    android:focusable="true"
+                    android:padding="16dp">
 
                     <FrameLayout
                         android:id="@+id/iconContainerVideo"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/bg_icon_circle_yellow"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_pixelate" />
+                            android:src="@drawable/ic_media"
+                            app:tint="@color/purple_dark"/>
                     </FrameLayout>
 
                     <ImageView
@@ -321,8 +329,8 @@
                         android:id="@+id/tvVideoTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_marginStart="5dp"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/blur_video"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
@@ -345,10 +353,11 @@
             </LinearLayout>
 
             <!-- ── Recent Edits ── -->
+            <!-- ── Recent Edits Header ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -373,16 +382,64 @@
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvRecentEdits"
+            <!-- Container managing both states -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recent_edit" />
+                android:layout_marginTop="12dp">
 
+                <!-- RecyclerView (Visible if list contains items) -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecentEdits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_recent_edit"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <!-- Empty State Layout (Visible when list is empty) -->
+                <LinearLayout
+                    android:id="@+id/layoutEmptyState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_empty_state_dashed"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="16dp"
+                    android:paddingHorizontal="24dp"
+                    android:visibility="visible"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_no_recents"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="No edits yet"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="@string/no_recent_edits"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:lineSpacingMultiplier="1.1" />
+
+                </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

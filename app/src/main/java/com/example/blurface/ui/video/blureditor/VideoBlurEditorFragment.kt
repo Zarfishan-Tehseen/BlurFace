@@ -13,6 +13,9 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -37,10 +40,6 @@ class VideoBlurEditorFragment : Fragment() {
     private var _binding: FragmentVideoBlurEditorBinding? = null
     private val binding get() = _binding!!
 
-    // Same graph-scoped ViewModel as AnalyzingVideoFragment / DetectedFacesFragment.
-    // We deliberately reuse it (rather than a fresh ViewModel) so the people
-    // list and shouldBlur flags set on DetectedFacesFragment are still here -
-    // this factory only actually runs if this screen is somehow opened first.
     private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -54,14 +53,8 @@ class VideoBlurEditorFragment : Fragment() {
 
     private lateinit var facesAdapter: SelectedFacesAdapter
     private var selectedPeople: List<Person> = emptyList()
-
-    // Local, in-progress editor state. Only pushed into the shared ViewModel
-    // when the user taps the CTA - keeps intermediate slider drags from
-    // spamming ViewModel state.
     private var blurType: BlurType = BlurType.GAUSSIAN
     private var shape: BlurShape = BlurShape.AUTO_FACE
-    // Set via the long-press pickers on the Emoji/Color cards; single-tapping those
-    // cards applies whichever of these was last picked (defaults below otherwise).
     private var selectedEmoji: String = "😀"
     private var selectedColor: Int = Color.BLACK
 
@@ -76,6 +69,11 @@ class VideoBlurEditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollContent) { v, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.updatePadding(top = statusBars.top)
+            insets
+        }
 
         selectedPeople = viewModel.selectedPeopleForBlur()
 

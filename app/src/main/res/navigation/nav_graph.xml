@@ -78,5 +78,9 @@
             android:name="imageUri"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/premiumFragment"
+        android:name="com.example.blurface.ui.premium.PremiumFragment"
+        android:label="Premium Fragment" />
 
 </navigation>

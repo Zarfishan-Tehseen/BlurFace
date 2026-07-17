@@ -22,6 +22,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -49,10 +52,6 @@ class BlurredVideoResultFragment : Fragment() {
 
     private var _binding: FragmentBlurredVideoResultBinding? = null
     private val binding get() = _binding!!
-
-    // Same graph-scoped instance used throughout the pipeline - by this point it's
-    // always already created (AnalyzingVideoFragment creates it first), so no factory
-    // is needed here, matching ExportProcessFragment's pattern.
     private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph)
 
     private var resultPath: String? = null
@@ -71,9 +70,7 @@ class BlurredVideoResultFragment : Fragment() {
         }
     }
 
-    // Pre-Android-10 devices need WRITE_EXTERNAL_STORAGE to insert into MediaStore.Video;
-    // API 29+ uses scoped storage and doesn't need it (see VideoSaver's doc comment).
-    private val writePermissionLauncher =
+   private val writePermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) saveToGallery() else {
                 Toast.makeText(requireContext(), "Storage permission is needed to save the video.", Toast.LENGTH_LONG).show()
@@ -91,6 +88,11 @@ class BlurredVideoResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollContent) { v, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.updatePadding(top = statusBars.top)
+            insets
+        }
 
         val path = viewModel.exportedVideoPath
         if (path == null || !File(path).exists()) {

@@ -14,6 +14,7 @@
     <string name="blur_video_subtitle">Detect and blur faces across your video</string>
     <string name="emoji_cover">Emoji Cover</string>
     <string name="emoji_cover_subtitle">Cover faces with emoji</string>
+    <string name="no_recent_edits">Your recent edited photos will appear here.\nStart editing to see your work in this section.</string>
 
     <string name="recent_edits">Recent Edits</string>
     <string name="see_all">See All</string>

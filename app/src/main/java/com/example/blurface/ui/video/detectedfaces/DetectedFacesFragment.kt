@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -27,9 +30,6 @@ class DetectedFacesFragment : Fragment() {
     private var _binding: FragmentDetectedFacesBinding? = null
     private val binding get() = _binding!!
 
-    // Same graph scope + same factory shape as AnalyzingVideoFragment, so this
-    // resolves to the SAME instance that already ran the pipeline - the factory
-    // here only actually runs if this screen is somehow reached first.
     private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph) {
         object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -55,6 +55,11 @@ class DetectedFacesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.btnBack) { v, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.updatePadding(top = statusBars.top)
+            insets
+        }
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
 

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:id="@+id/cardPlanContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="16dp"
+    tools:background="@drawable/bg_premium_card_unselected">
+
+    <!-- "Most Popular" Badge -->
+    <TextView
+        android:id="@+id/badgeMostPopular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/bg_badge_popular_purple"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:text="Most Popular"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ivPlanIcon"
+        tools:visibility="visible" />
+
+    <!-- Icon -->
+    <ImageView
+        android:id="@+id/ivPlanIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_icon_circle_white"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/badgeMostPopular"
+        tools:src="@drawable/ic_crown" />
+
+    <!-- Plan Details -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/ivPlanIcon"
+        app:layout_constraintEnd_toStartOf="@id/tvPlanPrice"
+        app:layout_constraintStart_toEndOf="@id/ivPlanIcon"
+        app:layout_constraintTop_toTopOf="@id/ivPlanIcon">
+
+        <TextView
+            android:id="@+id/tvPlanTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="Annual" />
+
+        <TextView
+            android:id="@+id/tvPlanSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            tools:text="Billed once a year" />
+    </LinearLayout>
+
+    <!-- Price -->
+    <TextView
+        android:id="@+id/tvPlanPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/ivPlanIcon"
+        app:layout_constraintEnd_toStartOf="@id/rbPlan"
+        app:layout_constraintTop_toTopOf="@id/ivPlanIcon"
+        tools:text="$19.99" />
+
+    <RadioButton
+        android:id="@+id/rbPlan"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/custom_radio_button"
+        android:button="@null"
+        android:clickable="false"
+        app:layout_constraintBottom_toBottomOf="@id/ivPlanIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivPlanIcon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

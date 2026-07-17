@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_scaffold"
     android:fillViewport="true"
+    android:id="@+id/scrollView"
     tools:context=".ui.backgroundblur.BackgroundBlurFragment">
 
     <LinearLayout

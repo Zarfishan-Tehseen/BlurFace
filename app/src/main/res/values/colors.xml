@@ -4,8 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <!-- Brand -->
     <color name="purple_primary">#6C4DF6</color>
-    <color name="purple_dark">#5B3DE0</color>
-    <color name="purple_light">#8F73F5</color>
+    <color name="purple_dark">#8B44F7</color>
+    <color name="purple_light">#AF7CFF</color>
 
     <!-- Neutrals -->
     <color name="bg_scaffold">#F6F5FB</color>
@@ -28,4 +28,8 @@
     <color name="accent_yellow">#F5B400</color>
 
     <color name="accent_teal">#26A69A</color>
+
+    <color name="premium_gradient_start">#7B2FF7</color>   <!-- violet -->
+    <color name="premium_gradient_center">#8A3FF0</color>  <!-- purple -->
+    <color name="premium_gradient_end">#4E7FFF</color>     <!-- blue -->
 </resources>

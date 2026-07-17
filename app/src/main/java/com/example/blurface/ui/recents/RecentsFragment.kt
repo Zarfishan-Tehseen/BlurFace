@@ -1,25 +1,21 @@
 package com.example.blurface.ui.recents
 
-import android.content.Intent
-import android.content.ContentValues
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.blurface.databinding.FragmentRecentsBinding
-import com.example.blurface.databinding.PopupRecentEditActionsBinding
 import com.example.blurface.databinding.PopupRecentsFilterBinding
 import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
@@ -47,6 +43,11 @@ class RecentsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.headerContainer) { v, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            v.updatePadding(top = statusBars.top)
+            insets
+        }
 
         adapter = RecentEditsAdapter(onMoreClicked = { edit, anchor -> showActionsPopup(edit, anchor) })
         binding.rvRecentEdits.adapter = adapter
@@ -98,79 +99,26 @@ class RecentsFragment : Fragment() {
     // ── Per-item actions popup ──
 
     private fun showActionsPopup(edit: RecentEdit, anchor: View) {
-        val popupBinding = PopupRecentEditActionsBinding.inflate(LayoutInflater.from(requireContext()))
-        val popup = PopupWindow(
-            popupBinding.root,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        ).apply { elevation = 12f }
-
-        popupBinding.rowDownload.setOnClickListener {
-            popup.dismiss()
-            downloadEdit(edit)
-        }
-        popupBinding.rowDelete.setOnClickListener {
-            popup.dismiss()
-            viewModel.delete(edit)
-            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
-        }
-        popupBinding.rowShare.setOnClickListener {
-            popup.dismiss()
-            shareEdit(edit)
-        }
-
-        popup.showAsDropDown(anchor, -120, 8)
+        RecentEditActionsHelper.showPopup(
+            context = requireContext(),
+            anchor = anchor,
+            onDownload = { downloadEdit(edit) },
+            onDelete = {
+                viewModel.delete(edit)
+                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            },
+            onShare = { RecentEditActionsHelper.share(requireContext(), edit) }
+        )
     }
 
     private fun downloadEdit(edit: RecentEdit) {
         viewLifecycleOwner.lifecycleScope.launch {
             val saved = withContext(Dispatchers.IO) {
-                runCatching { copyToDownloads(edit) }.getOrNull()
+                runCatching { RecentEditActionsHelper.copyToDownloads(requireContext(), edit) }.getOrNull()
             }
             val message = if (saved != null) "Saved to Downloads" else "Could not download"
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun copyToDownloads(edit: RecentEdit): Uri? {
-        val context = requireContext()
-        val resolver = context.contentResolver
-        val sourceUri = Uri.parse(edit.mediaUri)
-        val mimeType = if (edit.isVideo) "video/mp4" else "image/jpeg"
-        val extension = if (edit.isVideo) "mp4" else "jpg"
-        val filename = "BlurFace_${System.currentTimeMillis()}.$extension"
-
-        val (collectionUri, directory) = if (edit.isVideo) {
-            Pair(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, Environment.DIRECTORY_MOVIES)
-        } else {
-            Pair(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, Environment.DIRECTORY_PICTURES)
-        }
-
-        val values = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-            put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "$directory/BlurFace")
-            }
-        }
-
-        val destUri = resolver.insert(collectionUri, values) ?: return null
-
-        resolver.openInputStream(sourceUri)?.use { input ->
-            resolver.openOutputStream(destUri)?.use { output -> input.copyTo(output) }
-        } ?: return null
-
-        return destUri
-    }
-
-    private fun shareEdit(edit: RecentEdit) {
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = if (edit.isVideo) "video/mp4" else "image/jpeg"
-            putExtra(Intent.EXTRA_STREAM, Uri.parse(edit.mediaUri))
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-        startActivity(Intent.createChooser(shareIntent, "Share"))
     }
 
     // ── Sort / date filter popup ──
