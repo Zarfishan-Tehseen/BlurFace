@@ -25,6 +25,7 @@ sealed class DetectionState {
     object Idle : DetectionState()
     object Detecting : DetectionState()
     object Success : DetectionState()
+    object NoFacesFound : DetectionState()
     data class Error(val message: String) : DetectionState()
 }
 
@@ -71,6 +72,8 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val _editedBitmap = MutableStateFlow<Bitmap?>(null)
     val editedBitmap: StateFlow<Bitmap?> = _editedBitmap.asStateFlow()
+    private val _externalExportBitmap = MutableStateFlow<Bitmap?>(null)
+    val isExternalExport: Boolean get() = _externalExportBitmap.value != null
 
     init {
         viewModelScope.launch {
@@ -118,11 +121,20 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
             try {
                 val result = detectFacesUseCase(getApplication(), uri)
                 _faces.value = result
-                _detectionState.value = DetectionState.Success
+                _detectionState.value = if (result.isEmpty()) {
+                    DetectionState.NoFacesFound
+                } else {
+                    DetectionState.Success
+                }
             } catch (e: Exception) {
                 _detectionState.value = DetectionState.Error(e.message ?: "Face detection failed")
             }
         }
+    }
+
+    /** Re-runs detection on the same photo - backs the "Try Again" button. */
+    fun retryDetection() {
+        imageUri?.let { detectFaces(it) }
     }
 
     fun setSourceBitmap(bitmap: Bitmap) {
@@ -182,7 +194,7 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
     val saveState: StateFlow<SaveState> = _saveState.asStateFlow()
 
     fun saveExport(format: ExportFormat) {
-        val bitmap = _editedBitmap.value ?: run {
+        val bitmap = _externalExportBitmap.value ?: _editedBitmap.value ?: run {
             _saveState.value = SaveState.Error("Nothing to save yet")
             return
         }
@@ -202,8 +214,12 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
             }
         }
     }
+    fun setBitmapToExport(bitmap: Bitmap) {
+        _externalExportBitmap.value = bitmap
+    }
 
     fun resetSaveState() {
         _saveState.value = SaveState.Idle
+        _externalExportBitmap.value = null
     }
 }

@@ -84,7 +84,9 @@
                     android:layout_height="match_parent"
                     android:background="#33000000" />
 
+                <!-- Scanning indicator - hidden once detection resolves either way -->
                 <FrameLayout
+                    android:id="@+id/scanningIndicatorGroup"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_gravity="center">
@@ -107,61 +109,176 @@
                         android:contentDescription="@null" />
                 </FrameLayout>
 
+                <!-- No faces found - overlay shown when DetectionState.NoFacesFound -->
+                <LinearLayout
+                    android:id="@+id/groupNoFaceOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#99000000"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_no_face"
+                        android:contentDescription="@null"
+                        app:tint="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/no_face_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="@string/no_face_subtitle"
+                        android:textSize="12sp"
+                        android:textColor="#D9FFFFFF" />
+
+                    <Button
+                        android:id="@+id/btnTryAgain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_pill_button_translucent"
+                        android:drawableStart="@drawable/ic_refresh"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="18dp"
+                        android:paddingTop="9dp"
+                        android:paddingEnd="18dp"
+                        android:paddingBottom="9dp"
+                        android:text="@string/try_again"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
             </FrameLayout>
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tvPercentage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:gravity="center"
-            android:text="0%"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/purple_primary" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:max="100"
-            app:indicatorColor="@color/purple_primary"
-            app:trackColor="@color/accent_purple_bg"
-            app:trackCornerRadius="4dp"
-            app:trackThickness="6dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/please_wait"
-            android:textSize="12sp"
-            android:textColor="@color/text_secondary" />
-
+        <!-- Scanning progress - percentage, bar, "AI working" card. Hidden together
+             once detection resolves (Success navigates away; NoFacesFound swaps this
+             out for the two action cards below). -->
         <LinearLayout
+            android:id="@+id/groupScanningProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPercentage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:gravity="center"
+                android:text="0%"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/purple_primary" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:max="100"
+                app:indicatorColor="@color/purple_primary"
+                app:trackColor="@color/accent_purple_bg"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="6dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/please_wait"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_card_rounded"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_ai_icon_gradient">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_sparkle"
+                        android:contentDescription="@null" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="14dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ai_working_title"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/ai_working_subtitle"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- No-faces actions - shown only when DetectionState.NoFacesFound -->
+        <LinearLayout
+            android:id="@+id/actionSelectManually"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:background="@drawable/bg_card_rounded"
+            android:background="@drawable/bg_action_card_gradient"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp"
-            android:gravity="center_vertical">
+            android:visibility="gone"
+            tools:visibility="visible">
 
-            <FrameLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:background="@drawable/bg_ai_icon_gradient">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_sparkle"
-                    android:contentDescription="@null" />
-            </FrameLayout>
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_blur_faces"
+                android:contentDescription="@null"
+                app:tint="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -173,16 +290,62 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ai_working_title"
+                    android:text="@string/select_face_manually_title"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/select_face_manually_subtitle"
+                    android:textSize="12sp"
+                    android:textColor="#D9FFFFFF" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/actionChooseAnotherPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card_rounded"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_media"
+                android:contentDescription="@null"
+                app:tint="@color/purple_primary" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_another_photo_title"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="@string/ai_working_subtitle"
+                    android:text="@string/choose_another_photo_subtitle"
                     android:textSize="12sp"
                     android:textColor="@color/text_secondary" />
             </LinearLayout>

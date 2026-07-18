@@ -25,12 +25,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.blurface.R
 import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.databinding.FragmentBackgroundBlurBinding
 import com.example.blurface.domain.model.BackgroundBlurType
 import com.example.blurface.domain.model.BackgroundFilter
 import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
+import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.utils.MediaSizeUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,6 +45,7 @@ class BackgroundBlurFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: BackgroundBlurViewModel by viewModels()
+    private val sharedPhotoViewModel: PhotoEditViewModel by navGraphViewModels(R.id.nav_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,16 +80,6 @@ class BackgroundBlurFragment : Fragment() {
         }
         viewModel.loadImage(imageUri)
     }
-
-    /**
-     * DEBUG AID: press and hold the preview to see the raw segmentation mask ML Kit
-     * produced for this photo (white = "confident this is the subject", transparent/
-     * dark = "confident this is background"). Release to go back to the normal blurred
-     * result. This is the fastest way to tell "segmentation mask is bad for this photo"
-     * apart from "the compositing code is broken" - if the mask you see here is white
-     * across nearly the whole frame, that's the segmentation model misjudging most of
-     * the image as foreground, not a bug in BackgroundBlurProcessor's compositing.
-     */
     private fun setUpMaskPeekGesture() {
         binding.ivPreview.setOnTouchListener { _, event ->
             when (event.action) {
@@ -222,26 +216,13 @@ class BackgroundBlurFragment : Fragment() {
             Toast.makeText(requireContext(), "Nothing to export yet", Toast.LENGTH_SHORT).show()
             return
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            val uri = withContext(Dispatchers.IO) {
-                runCatching { saveJpegToGallery(bitmap) }.getOrNull()
-            }
-            if (uri != null) {
-                RecentEditsStore(requireContext()).add(
-                    RecentEdit(
-                        id = uri.toString(),
-                        title = "Background Blur",
-                        editType = EditType.BLUR_BACKGROUND,
-                        mediaUri = uri.toString(),
-                        isVideo = false,
-                        timestampMillis = System.currentTimeMillis(),
-                        fileSizeBytes = MediaSizeUtils.getFileSizeBytes(requireContext(), uri)
-                    )
-                )
-            }
-            val message = if (uri != null) "Saved to gallery" else "Could not save image"
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
+
+        // 1. Send the edited bitmap to the shared nav-scoped ViewModel
+        sharedPhotoViewModel.setBitmapToExport(bitmap)
+
+        // 2. Open up your export bottom sheet fragment interface
+        val bottomSheet = com.example.blurface.ui.export.ExportBottomSheetFragment()
+        bottomSheet.show(childFragmentManager, "ExportBottomSheet")
     }
 
     private fun saveJpegToGallery(bitmap: Bitmap): Uri? {

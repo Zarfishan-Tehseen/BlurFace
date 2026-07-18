@@ -55,7 +55,7 @@ class DetectedFacesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.btnBack) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.mainCL) { v, insets ->
             val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             v.updatePadding(top = statusBars.top)
             insets

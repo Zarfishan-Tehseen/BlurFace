@@ -94,65 +94,41 @@
                 android:contentDescription="@string/cd_selected_photo" />
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_card_rounded"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:id="@+id/chipRadial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/selector_effect_chip_bg"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_blur_faces"
-                        android:contentDescription="@null" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Radial"
-                        android:textSize="12sp"
-                        android:textColor="@color/effect_chip_text_color" />
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/chipGaussian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
                     android:background="@drawable/selector_effect_chip_bg"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
+                    android:paddingHorizontal="12dp"
                     android:paddingVertical="8dp">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_sliders"
-                        app:tint="@color/purple_dark"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_effect_gaussian"
                         android:contentDescription="@null" />
 
                     <TextView
@@ -164,83 +140,123 @@
                         android:textColor="@color/effect_chip_text_color" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
                 <LinearLayout
-                    android:id="@+id/btnReset"
+                    android:id="@+id/chipRadial"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/selector_effect_chip_bg"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="4dp">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_radial"
+                        android:tint="@color/effect_chip_text_color"
+                        android:contentDescription="@null" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/reset_label"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/purple_primary" />
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_reset"
-                        android:contentDescription="@null" />
+                        android:layout_marginTop="4dp"
+                        android:text="Radial"
+                        android:textSize="12sp"
+                        android:textColor="@color/effect_chip_text_color" />
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Middle: Thin Vertical Divider Line -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="45dp"
+                android:background="#E0E0E0" />
+
+            <!-- Center-Right Area: Slider Blocks (Fills remaining space) -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_weight="1"
+                android:layout_marginHorizontal="12dp"
+                android:orientation="vertical">
+
+                <!-- Label Values Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/intensity_label"
+                        android:textSize="13sp"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvIntensityValue"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:textSize="13sp"
+                        android:textColor="@color/black"
+                        tools:text="60%" />
+                </LinearLayout>
+
+                <!-- Material Slider Component -->
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderIntensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    android:value="60"
+                    app:labelBehavior="gone"
+                    app:thumbColor="@android:color/white"
+                    app:thumbElevation="2dp"
+                    app:thumbRadius="8dp"
+                    app:trackHeight="4dp"
+                    app:thumbHeight="8dp"
+                    app:thumbWidth="8dp"
+                    app:trackColorActive="@color/purple_primary"
+                    app:trackColorInactive="#D3D3D3" />
+            </LinearLayout>
+
+            <!-- Far Right: Vertical Reset Button Stack -->
+            <LinearLayout
+                android:id="@+id/btnReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="6dp"
+                android:layout_marginEnd="4dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_reset"
+                    app:tint="@color/purple_primary"
+                    android:contentDescription="@null" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/intensity_label"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
-
-                <TextView
-                    android:id="@+id/tvIntensityValue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    tools:text="60%" />
+                    android:layout_marginTop="2dp"
+                    android:text="@string/reset_label"
+                    android:textSize="12sp"
+                    android:textColor="@color/purple_primary" />
             </LinearLayout>
 
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sliderIntensity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:valueFrom="0"
-                android:valueTo="100"
-                app:thumbColor="@color/purple_primary"
-                app:trackColorActive="@color/purple_primary"
-                app:trackColorInactive="@color/accent_purple_bg"
-                app:labelBehavior="gone"
-                app:thumbHeight="12dp"
-                app:thumbWidth="12dp"
-                app:thumbRadius="6dp"
-                app:trackHeight="7dp"/>
-
         </LinearLayout>
-
         <!-- ── Background Filter ── -->
         <TextView
             android:layout_width="match_parent"
@@ -470,14 +486,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_info_banner"
             android:orientation="horizontal"
             android:padding="16dp"
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
                 android:src="@drawable/ic_lock"
                 app:tint="@color/purple_primary"
                 android:contentDescription="@null" />

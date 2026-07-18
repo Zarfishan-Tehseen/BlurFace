@@ -1,0 +1,26 @@
+<!-- res/drawable/seekbar_progress_brush.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. Inactive Background Track -->
+    <item android:id="@android:id/background">
+        <inset android:insetTop="6dp" android:insetBottom="6dp">
+            <shape android:shape="rectangle">
+                <corners android:radius="2dp" />
+                <solid android:color="@color/accent_purple_bg" />
+            </shape>
+        </inset>
+    </item>
+
+    <!-- 2. Active Progress Track (The Bulletproof Fix) -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <inset android:insetTop="6dp" android:insetBottom="6dp">
+                <shape android:shape="rectangle">
+                    <corners android:radius="2dp" />
+                    <solid android:color="@color/purple_primary" />
+                </shape>
+            </inset>
+        </clip>
+    </item>
+
+</layer-list>

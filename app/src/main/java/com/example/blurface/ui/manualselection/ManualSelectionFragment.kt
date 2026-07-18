@@ -22,13 +22,13 @@ import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.utils.BitmapUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import android.widget.SeekBar
 import kotlinx.coroutines.withContext
 
 class ManualSelectionFragment : Fragment() {
 
     private var _binding: FragmentManualSelectionBinding? = null
     private val binding get() = _binding!!
-
     private val sharedViewModel: PhotoEditViewModel by navGraphViewModels(R.id.nav_graph)
 
     private lateinit var chipAdapter: SelectedFaceChipAdapter
@@ -115,16 +115,22 @@ class ManualSelectionFragment : Fragment() {
     }
 
     private fun setUpBrushSizeSlider() {
-        binding.sliderBrushSize.value = 60f
-        binding.tvBrushSizeValue.text = "60%"
-        // Slider is a 10-100 "percent-ish" control; scale it into an actual bitmap-pixel
-        // radius so brush size feels consistent across different photo resolutions.
-        binding.brushMask.brushRadiusBitmapPx = 60f * 3f
+        val initialValue = 60
+        binding.sliderBrushSize.max = 90 // range becomes 10..100 via offset below
+        binding.sliderBrushSize.progress = initialValue - 10
+        binding.tvBrushSizeValue.text = "${initialValue}%"
+        binding.brushMask.brushRadiusBitmapPx = initialValue * 3f
 
-        binding.sliderBrushSize.addOnChangeListener { _, value, _ ->
-            binding.tvBrushSizeValue.text = "${value.toInt()}%"
-            binding.brushMask.brushRadiusBitmapPx = value * 3f
-        }
+        binding.sliderBrushSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val value = progress + 10
+                binding.tvBrushSizeValue.text = "${value}%"
+                binding.brushMask.brushRadiusBitmapPx = value * 3f
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
     }
 
     private fun setUpSelectedFacesStrip() {

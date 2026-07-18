@@ -108,6 +108,13 @@ class RecentEditsAdapter(
 
         fun bind(edit: RecentEdit) {
             currentJob?.cancel()
+            binding.tvTitle.text = edit.title
+            binding.tvEditType.text = edit.editType.label
+
+            val time = SimpleDateFormat("h:mm a", Locale.getDefault()).format(edit.timestampMillis)
+            val sizeMb = edit.fileSizeBytes / (1024.0 * 1024.0)
+            binding.tvMeta.text = String.format(Locale.US, "%s · %.1f MB", time, sizeMb)
+
             binding.ivThumbnail.setImageBitmap(null)
             val mediaUri = Uri.parse(edit.mediaUri)
 

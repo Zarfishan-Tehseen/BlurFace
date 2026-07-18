@@ -37,10 +37,14 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
     private val _sortOption = MutableStateFlow(SortOption.RECENTLY_UPDATED)
     val sortOption: StateFlow<SortOption> = _sortOption.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     val visibleEdits: StateFlow<List<RecentEdit>> =
-        combine(_allEdits, _typeFilter, _dateFilter, _sortOption) { all, type, date, sort ->
+        combine(_allEdits, _typeFilter, _dateFilter, _sortOption, _searchQuery) { all, type, date, sort, query ->
             all.filter { type == null || it.editType == type }
                 .filter { withinDateRange(it.timestampMillis, date) }
+                .filter { query.isBlank() || it.title.contains(query, ignoreCase = true) }
                 .let { list ->
                     when (sort) {
                         SortOption.RECENTLY_UPDATED -> list.sortedByDescending { it.timestampMillis }
@@ -68,6 +72,10 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
 
     fun setSortOption(option: SortOption) {
         _sortOption.value = option
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     fun delete(edit: RecentEdit) {

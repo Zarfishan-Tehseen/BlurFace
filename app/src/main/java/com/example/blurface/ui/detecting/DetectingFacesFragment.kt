@@ -51,6 +51,16 @@ class DetectingFacesFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
+        binding.btnTryAgain.setOnClickListener {
+            sharedViewModel.retryDetection()
+        }
+        binding.actionSelectManually.setOnClickListener {
+            // TODO: navigate to the manual face-selection screen once it exists.
+        }
+        binding.actionChooseAnotherPhoto.setOnClickListener {
+            // Re-uses whatever picker flow got the user here in the first place.
+            findNavController().navigateUp()
+        }
 
         val imageUriString = arguments?.getString("imageUri")
         val imageUri = imageUriString?.let { Uri.parse(it) }
@@ -62,13 +72,43 @@ class DetectingFacesFragment : Fragment() {
 
         binding.ivPreview.setImageURI(imageUri)
 
-        startClimbingProgress()
         observeDetectionState()
 
         sharedViewModel.detectFaces(imageUri)
     }
 
+    private fun observeDetectionState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                sharedViewModel.detectionState.collect { state -> render(state) }
+            }
+        }
+    }
+
+    private fun render(state: DetectionState) {
+        when (state) {
+            is DetectionState.Idle -> Unit
+            is DetectionState.Detecting -> onDetectingStarted()
+            is DetectionState.Success -> onDetectionFinished()
+            is DetectionState.NoFacesFound -> onNoFacesFound()
+            is DetectionState.Error -> onDetectionFailed(state.message)
+        }
+    }
+
+    /** Also the state Try Again returns to, so this has to reset everything it touches. */
+    private fun onDetectingStarted() {
+        binding.groupNoFaceOverlay.visibility = View.GONE
+        binding.actionSelectManually.visibility = View.GONE
+        binding.actionChooseAnotherPhoto.visibility = View.GONE
+
+        binding.scanningIndicatorGroup.visibility = View.VISIBLE
+        binding.groupScanningProgress.visibility = View.VISIBLE
+
+        startClimbingProgress()
+    }
+
     private fun startClimbingProgress() {
+        progressAnimator?.cancel()
         progressAnimator = ValueAnimator.ofInt(0, 90).apply {
             duration = 3000
             interpolator = LinearInterpolator()
@@ -81,20 +121,6 @@ class DetectingFacesFragment : Fragment() {
         }
     }
 
-    private fun observeDetectionState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                sharedViewModel.detectionState.collect { state ->
-                    when (state) {
-                        is DetectionState.Success -> onDetectionFinished()
-                        is DetectionState.Error -> onDetectionFailed(state.message)
-                        else -> Unit
-                    }
-                }
-            }
-        }
-    }
-
     private fun onDetectionFinished() {
         progressAnimator?.cancel()
         binding.tvPercentage.text = "100%"
@@ -103,9 +129,20 @@ class DetectingFacesFragment : Fragment() {
         findNavController().navigate(R.id.selectFacesFragment)
     }
 
+    private fun onNoFacesFound() {
+        progressAnimator?.cancel()
+        binding.scanningIndicatorGroup.visibility = View.GONE
+        binding.groupScanningProgress.visibility = View.GONE
+
+        binding.groupNoFaceOverlay.visibility = View.VISIBLE
+        binding.actionSelectManually.visibility = View.VISIBLE
+        binding.actionChooseAnotherPhoto.visibility = View.VISIBLE
+    }
+
     private fun onDetectionFailed(message: String) {
         progressAnimator?.cancel()
-        // TODO: show a proper error state instead of just going back
+        // Genuine failures (bad file, ML Kit exception) still just bounce back - only
+        // a *successful* detection that found zero faces gets the in-place UI above.
         findNavController().navigateUp()
     }
 

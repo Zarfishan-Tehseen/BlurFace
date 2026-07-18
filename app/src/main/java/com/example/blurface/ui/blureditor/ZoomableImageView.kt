@@ -29,7 +29,7 @@ class ZoomableImageView @JvmOverloads constructor(
     private val faceOutlinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = 5f              // Thickness of the box border line
-        color = Color.parseColor("#FFC400") // Clean Amber/Yellow indicator color
+        color = Color.parseColor("#6C4DF6")
     }
 
     private var minScale = 1f

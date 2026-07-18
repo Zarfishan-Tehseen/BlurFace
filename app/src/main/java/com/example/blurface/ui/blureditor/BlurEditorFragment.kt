@@ -54,7 +54,8 @@ class BlurEditorFragment : Fragment() {
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnExport.setOnClickListener {
             com.example.blurface.ui.export.ExportBottomSheetFragment()
-                .show(childFragmentManager, "export_sheet")        }
+                .show(childFragmentManager, "export_sheet")
+        }
 
         setUpEffectChips()
         setUpIntensitySlider()

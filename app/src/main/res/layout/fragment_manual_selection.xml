@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_scaffold"
     android:fillViewport="true"
-    android:id="@+id/scrollView"
     tools:context=".ui.manualselection.ManualSelectionFragment">
 
     <LinearLayout
@@ -19,45 +18,58 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="10dp"
                 android:background="@drawable/bg_icon_circle_light"
-                android:src="@drawable/ic_back"
                 android:clickable="true"
-                android:focusable="true"
                 android:contentDescription="@string/cd_back"
-                app:layout_constraintTop_toTopOf="parent"
+                android:focusable="true"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvManualSelection"
+                android:id="@+id/tvManual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/manual_selection_title"
+                android:text="@string/manual_title"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvSelection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:gravity="center"
+                android:text="@string/selection_title"
                 android:textColor="@color/purple_primary"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btnBack"/>
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/tvManual"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/manual_selection_subtitle"
-                android:textSize="13sp"
                 android:textColor="@color/text_secondary"
-                app:layout_constraintStart_toStartOf="@id/tvManualSelection"
-                app:layout_constraintTop_toBottomOf="@+id/tvManualSelection"/>
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/tvManual"
+                app:layout_constraintTop_toBottomOf="@+id/tvManual" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         <!-- ── Paintable image area (no pan/zoom - drag is reserved for painting) ── -->
@@ -76,9 +88,9 @@
                     android:id="@+id/ivPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/cd_selected_photo"
                     android:scaleType="matrix"
-                    tools:src="@color/divider"
-                    android:contentDescription="@string/cd_selected_photo" />
+                    tools:src="@color/divider" />
 
                 <com.example.blurface.ui.manualselection.FaceHighlightOverlayView
                     android:id="@+id/faceHighlight"
@@ -91,6 +103,7 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
+                    android:id="@+id/btnBrush"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
@@ -104,8 +117,9 @@
                     <ImageView
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        android:src="@drawable/ic_hand_white"
-                        android:contentDescription="@null" />
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_brush"
+                        app:tint="@color/white" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -124,180 +138,204 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_card_rounded"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/btnAddFace"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/selector_effect_chip_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="6dp">
 
-                <LinearLayout
-                    android:id="@+id/btnAddFace"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/selector_effect_chip_bg"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="8dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_add_face"
-                        android:contentDescription="@null" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/add_face"
-                        android:textSize="10sp"
-                        android:textColor="@color/effect_chip_text_color" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btnAddMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/selector_effect_chip_bg"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="8dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_brush_add"
-                        android:contentDescription="@null" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/add_mode"
-                        android:textSize="10sp"
-                        android:textColor="@color/effect_chip_text_color" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btnRemoveMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_effect_chip_bg"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp"
-                    android:paddingVertical="8dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_brush_remove"
-                        android:contentDescription="@null" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/remove_mode"
-                        android:textSize="10sp"
-                        android:textColor="@color/effect_chip_text_color" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/brush_size_label"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_primary" />
-
-                <TextView
-                    android:id="@+id/tvBrushSizeValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    tools:text="60%" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_add_face" />
             </LinearLayout>
 
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sliderBrushSize"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/btnAddMode"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:thumbHeight="12dp"
-                app:thumbRadius="6dp"
-                app:thumbWidth="12dp"
-                android:valueFrom="10"
-                android:valueTo="100"
-                app:labelBehavior="gone"
-                app:thumbColor="@color/purple_primary"
-                app:trackColorActive="@color/purple_primary"
-                app:trackColorInactive="@color/accent_purple_bg"
-                app:trackHeight="6dp"/>
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/selector_effect_chip_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="6dp">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_brush_add" />
+            </LinearLayout>
 
-        <!-- ── Selected faces strip (reused pattern from Blur Editor) ── -->
+            <LinearLayout
+                android:id="@+id/btnRemoveMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_effect_chip_bg"
+                android:clickable="true"
+                android:layout_marginStart="4dp"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="6dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_brush_remove" />
+            </LinearLayout>
+
+            <!-- Vertical divider -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="14dp"
+                android:background="@color/divider" />
+
+            <!-- Intensity label + slider -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brush_size_label"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tvBrushSizeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="60%"
+                        android:layout_marginEnd="16dp"/>
+                </LinearLayout>
+
+                <SeekBar
+                    android:id="@+id/sliderBrushSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="4dp"
+                    android:max="90"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/seekbar_progress_brush"
+                    android:progressTint="@null"
+                    android:progressBackgroundTint="@null"
+                    android:thumbTint="@null"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb_brush" />
+            </LinearLayout>
+
+            <!-- Reset button -->
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/btnReset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="4dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_reset"
+                    app:tint="@color/purple_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/reset"
+                    android:textColor="@color/purple_primary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>        <!-- ── Selected faces strip (reused pattern from Blur Editor) ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvSelectedCount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
                 tools:text="Selected Faces (4)" />
 
             <LinearLayout
                 android:id="@+id/btnClearAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:padding="4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/clear_all"
-                    android:textSize="13sp"
-                    android:textColor="@color/purple_primary" />
+                    android:textColor="@color/purple_primary"
+                    android:textSize="13sp" />
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginStart="4dp"
+                    android:contentDescription="@null"
                     android:src="@drawable/ic_trash"
-                    android:contentDescription="@null" />
+                    app:tint="@color/purple_primary"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -305,9 +343,9 @@
             android:id="@+id/rvSelectedFaces"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:clipToPadding="false"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_selected_face_chip" />
 
@@ -316,13 +354,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple_primary"
             android:paddingVertical="16dp"
             android:text="@string/continue_to_blur"
             android:textColor="@android:color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
 
-            android:backgroundTint="@color/purple_primary"
+            android:textStyle="bold"
             app:backgroundTint="@color/purple_primary"
             app:cornerRadius="24dp"
             app:icon="@drawable/ic_arrow_right"
@@ -335,23 +373,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/bg_card_rounded"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="14dp"
-            android:gravity="center_vertical">
+            android:padding="14dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_lock"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                android:src="@drawable/ic_lock" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/privacy_note"
-                android:textSize="11sp"
-                android:textColor="@color/text_secondary" />
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
         </LinearLayout>
 
     </LinearLayout>

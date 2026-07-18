@@ -1,9 +1,13 @@
 package com.example.blurface.ui.recents
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -57,9 +61,7 @@ class RecentsFragment : Fragment() {
 
         setUpFilterChips()
         binding.btnFilterSort.setOnClickListener { showFilterPopup(it) }
-        binding.btnSearch.setOnClickListener {
-            // TODO: wire up a search field/screen once needed
-        }
+        setUpSearch()
 
         observeViewModel()
     }
@@ -68,6 +70,36 @@ class RecentsFragment : Fragment() {
         super.onResume()
         // Picks up anything saved since the last time this screen was visible.
         viewModel.refresh()
+    }
+
+    private fun setUpSearch() {
+        binding.btnSearch.setOnClickListener { openSearch() }
+        binding.btnCloseSearch.setOnClickListener { closeSearch() }
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.setSearchQuery(s?.toString().orEmpty())
+            }
+        })
+    }
+
+    private fun openSearch() {
+        binding.titleRow.visibility = View.GONE
+        binding.searchBarContainer.visibility = View.VISIBLE
+        binding.etSearch.requestFocus()
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etSearch, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    private fun closeSearch() {
+        binding.etSearch.text?.clear()
+        viewModel.setSearchQuery("")
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+        binding.searchBarContainer.visibility = View.GONE
+        binding.titleRow.visibility = View.VISIBLE
     }
 
     private fun setUpFilterChips() {

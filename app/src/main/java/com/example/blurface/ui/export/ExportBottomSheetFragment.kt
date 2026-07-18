@@ -120,10 +120,12 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
     }
     private fun recordRecentEdit(uri: android.net.Uri) {
         val context = requireContext()
+
+        val isBackgroundBlur = sharedViewModel.isExternalExport
         RecentEditsStore(context).add(
             RecentEdit(
                 id = uri.toString(),
-                title = "Photo Edit",
+                title = if (isBackgroundBlur) "Background Blur" else "Photo Edit",
                 editType = EditType.BLUR_FACES,
                 mediaUri = uri.toString(),
                 isVideo = false,

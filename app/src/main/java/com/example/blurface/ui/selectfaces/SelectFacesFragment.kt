@@ -110,7 +110,6 @@ class SelectFacesFragment : Fragment() {
         if (faces.isEmpty()) return
 
         binding.faceOverlay.setFaces(faces, bitmap.width, bitmap.height)
-        binding.tvSubtitle.text = getString(R.string.found_faces_subtitle, faces.size)
         binding.tvDetectedCount.text = getString(R.string.detected_faces_count, faces.size)
 
         val allSelected = faces.all { it.isSelected }

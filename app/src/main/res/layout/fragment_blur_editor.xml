@@ -34,17 +34,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tvTitleBlack"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:text="@string/blur_editor_title"
+                android:text="@string/blur_editor_title_black"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/btnExport"
                 app:layout_constraintStart_toEndOf="@id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tvTitlePurple"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="4dp"
+                android:text="@string/blur_editor_title_purple"
+                android:textColor="@color/purple_primary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/btnExport"
+                app:layout_constraintStart_toEndOf="@id/tvTitleBlack"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -53,8 +65,8 @@
                 android:text="@string/blur_editor_subtitle"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
-                app:layout_constraintStart_toStartOf="@id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+                app:layout_constraintStart_toStartOf="@id/tvTitleBlack"
+                app:layout_constraintTop_toBottomOf="@id/tvTitleBlack" />
 
             <ImageView
                 android:id="@+id/btnExport"
@@ -116,7 +128,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_effect_gaussian" />
+                        android:src="@drawable/ic_effect_gaussian"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -145,7 +157,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_effect_mosaic" />
+                        android:src="@drawable/ic_effect_mosaic"
+                        android:tint="@color/effect_chip_text_color"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -174,7 +187,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_effect_color" />
+                        android:src="@drawable/ic_effect_color"
+                        android:tint="@color/effect_chip_text_color"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -202,7 +216,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_emoji" />
+                        android:src="@drawable/ic_effect_emoji"
+                        android:tint="@color/effect_chip_text_color"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -494,7 +509,8 @@
                     android:layout_height="14dp"
                     android:layout_marginStart="4dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_trash" />
+                    android:src="@drawable/ic_trash"
+                    app:tint="@color/purple_primary"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -26,6 +26,13 @@
     <string name="privacy_note">Your photo is private and never leaves your device.</string>
     <string name="cd_back">Back</string>
     <string name="cd_selected_photo">Selected photo</string>
+    <string name="no_face_title">No Face Detected</string>
+    <string name="no_face_subtitle">We couldn\'t automatically detect any faces in this photo.</string>
+    <string name="try_again">Try Again</string>
+    <string name="select_face_manually_title">Select Face Manually</string>
+    <string name="select_face_manually_subtitle">Blur faces by selecting them yourself</string>
+    <string name="choose_another_photo_title">Choose Another Photo</string>
+    <string name="choose_another_photo_subtitle">Select a different photo from your gallery</string>
 
     <string name="select_faces_title">Select Faces</string>
     <string name="found_faces_subtitle">We found %1$d faces in this photo.\nSelect the faces you want to blur.</string>
@@ -35,7 +42,8 @@
     <string name="manual_select">Manual Select</string>
     <string name="continue_to_blur">Continue to Blur</string>
 
-    <string name="blur_editor_title">Blur Editor</string>
+    <string name="blur_editor_title_black">Image Blur</string>
+    <string name="blur_editor_title_purple">Editor</string>
     <string name="blur_editor_subtitle">Apply blur settings</string>
     <string name="effect_gaussian">Gaussian</string>
     <string name="effect_mosaic">Mosaic</string>
@@ -60,13 +68,15 @@
     <string name="saved_to_gallery">Saved to gallery</string>
     <string name="storage_permission_needed">Storage permission needed to save</string>
 
-    <string name="manual_selection_title">Manual Selection</string>
+    <string name="manual_title">Manual</string>
+    <string name="selection_title">Selection</string>
     <string name="manual_selection_subtitle">Select and add faces.</string>
     <string name="drag_to_paint">Drag to paint</string>
     <string name="add_face">Add Face</string>
     <string name="add_mode">Add</string>
     <string name="remove_mode">Remove</string>
     <string name="brush_size_label">Brush Size</string>
+    <string name="reset">Reset</string>
 
 
     <string name="blur_editor_title_prefix">Video Blur </string>
