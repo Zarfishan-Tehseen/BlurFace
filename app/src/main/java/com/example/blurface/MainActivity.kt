@@ -2,6 +2,7 @@ package com.example.blurface
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,7 +40,11 @@ class MainActivity : AppCompatActivity() {
         }
         ViewCompat.setOnApplyWindowInsetsListener(binding.bottomNav) { view, windowInsets ->
             val systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.updatePadding(bottom = systemBars.bottom)
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            val baseMarginInPx = (16 * resources.displayMetrics.density).toInt()
+            params.bottomMargin = baseMarginInPx + systemBars.bottom
+            view.layoutParams = params
+
             windowInsets
         }
     }

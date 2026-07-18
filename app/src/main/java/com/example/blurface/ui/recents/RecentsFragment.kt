@@ -49,7 +49,10 @@ class RecentsFragment : Fragment() {
             insets
         }
 
-        adapter = RecentEditsAdapter(onMoreClicked = { edit, anchor -> showActionsPopup(edit, anchor) })
+        adapter = RecentEditsAdapter(
+            scope = viewLifecycleOwner.lifecycleScope,
+            onMoreClicked = { edit, anchor -> showActionsPopup(edit, anchor) }
+        )
         binding.rvRecentEdits.adapter = adapter
 
         setUpFilterChips()
@@ -114,7 +117,12 @@ class RecentsFragment : Fragment() {
     private fun downloadEdit(edit: RecentEdit) {
         viewLifecycleOwner.lifecycleScope.launch {
             val saved = withContext(Dispatchers.IO) {
-                runCatching { RecentEditActionsHelper.copyToDownloads(requireContext(), edit) }.getOrNull()
+                runCatching {
+                    RecentEditActionsHelper.copyToDownloads(
+                        requireContext(),
+                        edit
+                    )
+                }.getOrNull()
             }
             val message = if (saved != null) "Saved to Downloads" else "Could not download"
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

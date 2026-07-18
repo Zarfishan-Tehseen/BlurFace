@@ -49,6 +49,15 @@ class HomeFragment : Fragment() {
     ) { uri: Uri? ->
         uri?.let { navigateToAnalyzingVideo(it) }
     }
+    private val selectMediaLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            handleSelectedMedia(uri)
+        } else {
+            Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +78,11 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnSelectPhoto.setOnClickListener {
+            selectMediaLauncher.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+            )
+        }
+        binding.cardBlurFaces.setOnClickListener {
             pickImage.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
@@ -92,12 +106,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRecentEdits() {
-        // android:orientation on RecyclerView in XML is a no-op - LinearLayoutManager's
-        // orientation has to be set here, otherwise this defaults to vertical.
         binding.rvRecentEdits.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         recentAdapter = HomeRecentThumbnailAdapter(
+            scope = viewLifecycleOwner.lifecycleScope,
             onMoreClicked = { edit, anchor -> showActionsPopup(edit, anchor) }
         )
         binding.rvRecentEdits.adapter = recentAdapter
@@ -176,7 +189,27 @@ class HomeFragment : Fragment() {
             bundleOf("imageUri" to uri.toString())
         )
     }
+    private fun handleSelectedMedia(uri: Uri) {
+        val mimeType = requireContext().contentResolver.getType(uri)
 
+        when {
+            mimeType?.startsWith("image/") == true -> {
+                val args = bundleOf("imageUri" to uri.toString())
+                findNavController().navigate(R.id.detectingFacesFragment, args)
+            }
+            mimeType?.startsWith("video/") == true -> {
+                val args = bundleOf("videoUri" to uri.toString())
+                findNavController().navigate(R.id.analyzingVideoFragment, args)
+            }
+            else -> {
+                Toast.makeText(
+                    requireContext(),
+                    "Unsupported file type. Please select an image or video.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -4,7 +4,7 @@
 
     <string name="hero_title">Protect Privacy \nBlur Faces Instantly</string>
     <string name="hero_subtitle">AI detect faces and lets you blur with a tap</string>
-    <string name="select_photo">Select Photo</string>
+    <string name="select_photo">Import Image/Video</string>
     <string name="quick_actions">Quick Actions</string>
     <string name="blur_faces">Blur Faces</string>
     <string name="blur_faces_subtitle">Auto detect and blur faces</string>

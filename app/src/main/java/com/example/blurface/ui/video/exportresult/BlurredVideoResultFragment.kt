@@ -41,13 +41,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Locale
 
-/**
- * Final screen of the pipeline: previews the rendered, blurred video
- * (FaceClusterViewModel.exportedVideoPath, set by ExportProcessFragment once
- * VideoExportProcessor finishes) using the custom player UI (play/pause overlay +
- * seekbar, no system MediaController), and lets the user save, share, or copy a
- * reference to the exported file.
- */
 class BlurredVideoResultFragment : Fragment() {
 
     private var _binding: FragmentBlurredVideoResultBinding? = null
