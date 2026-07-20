@@ -106,8 +106,8 @@ class VideoBlurEditorFragment : Fragment() {
         val cards = mapOf<View, BlurType>(
             binding.cardGaussian to BlurType.GAUSSIAN,
             binding.cardMosaic to BlurType.MOSAIC,
-            binding.cardColor to BlurType.COLOR,
-            binding.cardEmoji to BlurType.EMOJI
+            binding.cardColor to BlurType.COLOR
+            //binding.cardEmoji to BlurType.EMOJI
         )
         cards.forEach { (card, type) ->
             card.setOnClickListener {
@@ -125,10 +125,10 @@ class VideoBlurEditorFragment : Fragment() {
             showColorPicker(binding.cardColor, cards)
             true
         }
-        binding.cardEmoji.setOnLongClickListener {
-            showEmojiPicker(binding.cardEmoji, cards)
-            true
-        }
+//        binding.cardEmoji.setOnLongClickListener {
+//            showEmojiPicker(binding.cardEmoji, cards)
+//            true
+//        }
 
         updateBlurTypeSelection(cards)
     }

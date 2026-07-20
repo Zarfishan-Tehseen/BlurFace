@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_scaffold"
     android:fillViewport="true"
-    android:id="@+id/scrollView"
     tools:context=".ui.video.exportprocess.ExportProcessFragment">
 
     <LinearLayout
@@ -15,98 +14,83 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:padding="10dp"
                 android:background="@drawable/bg_icon_circle_light"
-                android:src="@drawable/ic_back"
                 android:clickable="true"
-                android:focusable="true"
                 android:contentDescription="@string/cd_back"
+                android:focusable="true"
+                android:padding="10dp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tvtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Export &amp; "
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
                 app:layout_constraintStart_toEndOf="@id/btnBack"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Process"
+                android:textColor="@color/purple_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="@color/purple_primary"
                 app:layout_constraintStart_toEndOf="@id/tvtitle"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Set export options"
-                android:textSize="13sp"
                 android:textColor="@color/text_secondary"
-                app:layout_constraintTop_toBottomOf="@+id/tvtitle"
-                app:layout_constraintStart_toStartOf="@id/tvtitle"/>
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="@id/tvtitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvtitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:text="Export Settings"
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <!-- ── Export Settings card ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/bg_card_rounded"
             android:orientation="vertical"
             android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_sliders"
-                    android:contentDescription="@null"
-                    app:tint="@color/purple_dark"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Export Settings"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="14dp"
-                android:background="@color/divider" />
 
             <!-- Resolution -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="26dp"
@@ -123,9 +107,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="Resolution"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -137,9 +121,9 @@
                 <LinearLayout
                     android:id="@+id/card720p"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_export_card_selector"
                     android:clickable="true"
                     android:focusable="true"
@@ -151,25 +135,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="720p"
+                        android:textColor="@color/effect_chip_text_color"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/effect_chip_text_color" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="HD"
-                        android:textSize="11sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/card1080p"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginHorizontal="6dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_export_card_selector"
                     android:clickable="true"
                     android:focusable="true"
@@ -181,32 +165,32 @@
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_marginBottom="2dp"
-                        android:src="@drawable/ic_star"
-                        android:contentDescription="@null" />
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_star" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="1080p"
+                        android:textColor="@color/effect_chip_text_color"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/effect_chip_text_color" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Full HD"
-                        android:textSize="11sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/card4k"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="6dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_export_card_selector"
                     android:clickable="true"
                     android:focusable="true"
@@ -218,24 +202,24 @@
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_marginBottom="2dp"
-                        android:src="@drawable/ic_star"
-                        android:contentDescription="@null" />
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_star" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="4K"
+                        android:textColor="@color/effect_chip_text_color"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/effect_chip_text_color" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="Ultra HD"
-                        android:textSize="11sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -245,18 +229,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="26dp"
                     android:layout_height="20dp"
                     android:background="@drawable/bg_badge_square_purple"
                     android:gravity="center"
-                    android:text="30"
+                    android:text="FPS"
                     android:textColor="@color/purple_primary"
                     android:textSize="9sp"
                     android:textStyle="bold" />
@@ -264,24 +248,24 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Frame Rate"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Smoother playback"
-                        android:textSize="11sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <TextView
@@ -289,16 +273,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="30 fps"
+                    android:textColor="@color/purple_primary"
                     android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/purple_primary" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginStart="6dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right" />
             </LinearLayout>
 
             <!-- Format -->
@@ -307,11 +291,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="26dp"
@@ -326,75 +310,74 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="10dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Format"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Most compatible format"
-                        android:textSize="11sp"
-                        android:textColor="@color/text_secondary" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MP4"
+                    android:textColor="@color/purple_primary"
                     android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/purple_primary" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginStart="6dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Estimated size -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:background="@drawable/bg_info_banner"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:padding="14dp">
 
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/ic_hourglass"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                android:src="@drawable/ic_hourglass" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Estimated Size:"
-                android:textSize="13sp"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/tvEstimatedSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:textColor="@color/text_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
                 tools:text="~ 85 MB" />
         </LinearLayout>
 
@@ -402,8 +385,8 @@
         <FrameLayout
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_marginTop="28dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="28dp">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/exportProgressRing"
@@ -411,9 +394,9 @@
                 android:layout_height="180dp"
                 android:max="100"
                 app:indicatorColor="@color/purple_primary"
+                app:indicatorSize="180dp"
                 app:trackColor="@color/divider"
                 app:trackThickness="8dp"
-                app:indicatorSize="180dp"
                 tools:progress="65" />
 
             <LinearLayout
@@ -427,9 +410,9 @@
                     android:id="@+id/tvExportPercent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
                     android:textSize="30sp"
                     android:textStyle="bold"
-                    android:textColor="@color/text_primary"
                     tools:text="65%" />
 
                 <TextView
@@ -438,8 +421,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Exporting…"
-                    android:textSize="13sp"
-                    android:textColor="@color/text_secondary" />
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -450,8 +433,8 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Please don't close the app or lock your screen.\nWe'll notify you when it's done."
-            android:textSize="12sp"
-            android:textColor="@color/text_secondary" />
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnExport"
@@ -459,12 +442,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_button_filled_pill"
-            app:backgroundTint="@null"
             android:paddingVertical="16dp"
             android:text="Export Blurred Video"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:textStyle="bold"
+            app:backgroundTint="@null"
             app:icon="@drawable/ic_share"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
@@ -480,16 +463,16 @@
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@drawable/ic_lock"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                android:src="@drawable/ic_lock" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:text="@string/privacy_note"
-                android:textSize="11sp"
-                android:textColor="@color/text_secondary" />
+                android:textColor="@color/text_secondary"
+                android:textSize="11sp" />
         </LinearLayout>
 
     </LinearLayout>

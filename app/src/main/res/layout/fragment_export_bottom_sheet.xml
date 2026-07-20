@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/exportSheetRoot"
     android:background="@drawable/bg_bottom_sheet_top_rounded"
-    android:orientation="vertical"
-    android:paddingBottom="24dp">
+    android:paddingBottom="24dp"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
 
         <View
             android:id="@+id/drag_handle"
-            android:layout_width="40dp"
+            android:layout_width="60dp"
             android:layout_height="4dp"
             android:background="@drawable/bg_drag_handle"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/bg_ic_cross"
             android:src="@drawable/ic_cross"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="@string/save_export_title"
         android:textColor="@color/text_primary"
         android:textSize="18sp"

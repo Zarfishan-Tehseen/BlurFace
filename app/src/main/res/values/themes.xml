@@ -11,6 +11,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.BlurFace.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
@@ -27,11 +28,12 @@
     <!-- Each option card is a vertical LinearLayout; isSelected is toggled
          in code, which drives bg_option_card.xml's selector states. -->
     <style name="BlurEditor.OptionCard" parent="">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/bg_option_card</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:padding">12dp</item>
@@ -52,6 +54,26 @@
         <item name="android:layout_marginTop">2dp</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="TransparentBottomSheetDialogTheme" parent="Theme.Material3.DayNight.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/TransparentBottomSheetStyle</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorSecondary">@color/purple_primary</item>
+        <item name="colorSurface">@color/bg_scaffold</item>
+    </style>
+
+    <style name="TransparentBottomSheetStyle" parent="Widget.Material3.BottomSheet">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="paddingBottomSystemWindowInsets">false</item>
+        <item name="paddingLeftSystemWindowInsets">false</item>
+        <item name="paddingRightSystemWindowInsets">false</item>
+        <item name="paddingTopSystemWindowInsets">false</item>
     </style>
 
 </resources>

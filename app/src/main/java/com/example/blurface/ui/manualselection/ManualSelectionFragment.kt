@@ -164,22 +164,17 @@ class ManualSelectionFragment : Fragment() {
     }
 
     private fun setUpBrushSizeSlider() {
-        val initialValue = 60
-        binding.sliderBrushSize.max = 90
-        binding.sliderBrushSize.progress = initialValue - 10
-        binding.tvBrushSizeValue.text = "${initialValue}%"
-        binding.brushMask.brushRadiusBitmapPx = initialValue * 3f
+        binding.sliderBrushSize.value = 60f
+        binding.tvBrushSizeValue.text = "60%"
 
-        binding.sliderBrushSize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val value = progress + 10
-                binding.tvBrushSizeValue.text = "${value}%"
-                binding.brushMask.brushRadiusBitmapPx = value * 3f
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        binding.brushMask.brushRadiusBitmapPx = 60f * 3f
+
+        binding.sliderBrushSize.addOnChangeListener { _, value, _ ->
+            binding.tvBrushSizeValue.text = "${value.toInt()}%"
+            binding.brushMask.brushRadiusBitmapPx = value * 3f
+        }
     }
+
 
     private fun setUpSelectedFacesStrip() {
         chipAdapter = SelectedFaceChipAdapter(

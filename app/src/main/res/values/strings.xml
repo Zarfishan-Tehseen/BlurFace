@@ -19,7 +19,7 @@
     <string name="recent_edits">Recent Edits</string>
     <string name="see_all">See All</string>
 
-    <string name="detecting_subtitle">AI is scanning your photo to find and detect faces.</string>
+    <string name="detecting_subtitle">AI is Scanning</string>
     <string name="please_wait">Please wait a moment…</string>
     <string name="ai_working_title">AI is working</string>
     <string name="ai_working_subtitle">This may take a few seconds depending on the number of faces.</string>
@@ -87,7 +87,7 @@
     <string name="blur_type_mosaic">Mosaic</string>
     <string name="blur_type_mosaic_desc">Pixelate faces</string>
     <string name="blur_type_color">Color</string>
-    <string name="blur_type_color_desc">Solid color overlay</string>
+    <string name="blur_type_color_desc">Color overlay</string>
     <string name="blur_type_emoji">Emoji</string>
     <string name="blur_type_emoji_desc">Select emojis</string>
     <string name="feather_label">Feather</string>
@@ -101,7 +101,7 @@
     <string name="additional_settings_label">Additional Settings</string>
     <string name="blur_entire_video_title">Blur Entire Video</string>
     <string name="blur_entire_video_desc">Apply blur to all frames (background + faces).</string>
-    <string name="blur_follow_info">Faces will be blurred throughout your video. The blur will follow the selected faces in every scene.</string>
+    <string name="blur_follow_info">Faces will be blurred throughout your video.\n The blur will follow selected faces in every scene.</string>
     <string name="blur_faces_cta">Blur Faces in Video  →</string>
     <string name="privacy_footer">Your video is private and never leaves your device.</string>
 

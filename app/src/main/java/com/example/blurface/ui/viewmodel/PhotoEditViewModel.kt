@@ -235,4 +235,9 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
         _saveState.value = SaveState.Idle
         _externalExportBitmap.value = null
     }
+    fun resetAllEdits() {
+        _intensityPercent.value = 50f
+        _currentEffect.value = FaceEffect.BLUR
+        _editedBitmap.value = _sourceBitmap.value
+    }
 }

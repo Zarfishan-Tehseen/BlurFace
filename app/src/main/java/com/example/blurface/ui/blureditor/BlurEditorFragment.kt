@@ -97,7 +97,7 @@ class BlurEditorFragment : Fragment() {
             binding.tvIntensityValue.text = "${value.toInt()}%"
             if (fromUser) sharedViewModel.setIntensity(value)
         }
-        binding.btnReset.setOnClickListener { sharedViewModel.resetIntensity() }
+        binding.btnReset.setOnClickListener { sharedViewModel.resetAllEdits() }
     }
     private fun setUpColorPalette() {
         binding.colorBlack.setOnClickListener { sharedViewModel.setSelectedColor(Color.BLACK) }

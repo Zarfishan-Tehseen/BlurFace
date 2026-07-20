@@ -131,12 +131,19 @@
             android:orientation="horizontal"
             android:padding="14dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_people"
-                app:tint="@color/purple_primary"
-                android:contentDescription="@null" />
+            <FrameLayout
+                android:id="@+id/iconContainer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_icon_circle_purple">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_people" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -181,14 +188,14 @@
                 android:insetBottom="0dp"
                 android:text="Detect Again"
                 android:textAllCaps="false"
-                android:textColor="@color/purple_primary"
+                android:textColor="@color/text_secondary"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"
                 app:icon="@drawable/ic_refresh"
                 app:iconGravity="textStart"
-                app:iconTint="@color/purple_primary"
-                app:strokeColor="@color/purple_primary"
-                app:strokeWidth="1.5dp" />
+                app:iconTint="@color/text_secondary"
+                android:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/divider"                app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnContinue"
@@ -218,10 +225,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="11dp"
+                android:layout_height="11dp"
                 android:src="@drawable/ic_lock"
-                app:tint="@color/text_secondary"
+                app:tint="@color/purple_primary"
                 android:contentDescription="@null" />
 
             <TextView

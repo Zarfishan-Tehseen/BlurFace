@@ -150,135 +150,126 @@
                 android:layout_marginTop="24dp"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="6dp"
                     android:background="@drawable/bg_card_rounded"
-                    android:orientation="vertical"
                     android:padding="14dp">
+                    <ImageView
+                        android:id="@+id/ivfaces"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_blur_faces"
+                        app:tint="@color/purple_primary"
+                        android:contentDescription="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvFacesFoundValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_face_search"
-                            app:tint="@color/purple_primary"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:id="@+id/tvFacesFoundValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            tools:text="4" />
-                    </LinearLayout>
-
+                        android:layout_marginStart="6dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivfaces"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="20dp"
                         android:text="Faces Found"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                        android:textSize="10sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvFacesFoundValue"
+                        app:layout_constraintStart_toStartOf="@id/tvFacesFoundValue"/>
 
-                <LinearLayout
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="6dp"
                     android:layout_marginEnd="6dp"
                     android:background="@drawable/bg_card_rounded"
-                    android:orientation="vertical"
                     android:padding="14dp">
+                    <ImageView
+                        android:id="@+id/ivFrames"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_frames"
+                        app:tint="@color/purple_primary"
+                        android:contentDescription="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvFramesProcessedValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_frames"
-                            app:tint="@color/purple_primary"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:id="@+id/tvFramesProcessedValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            tools:text="1,284" />
-                    </LinearLayout>
-
+                        android:layout_marginStart="6dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:text="1284"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivFrames"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="22dp"
-                        android:text="Frames Processed"
+                        android:text="Processed"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                        android:textSize="10sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvFramesProcessedValue"
+                        app:layout_constraintStart_toStartOf="@id/tvFramesProcessedValue"/>
 
-                <LinearLayout
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginEnd="6dp"
                     android:background="@drawable/bg_card_rounded"
-                    android:orientation="vertical"
                     android:padding="14dp">
+                    <ImageView
+                        android:id="@+id/ivTracking"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_tracking"
+                        app:tint="@color/purple_primary"
+                        android:contentDescription="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvTracking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_focus_target"
-                            app:tint="@color/purple_primary"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:text="Tracking"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
+                        android:layout_marginStart="6dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="Tracking"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivTracking"/>
                     <TextView
                         android:id="@+id/tvTrackingStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="22dp"
                         android:text="In Progress"
-                        android:textColor="@color/purple_primary"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                        android:textColor="@color/text_secondary"
+                        android:textSize="10sp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTracking"
+                        app:layout_constraintStart_toStartOf="@id/tvTracking"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </LinearLayout>
 
             <!-- Tip card -->
@@ -334,11 +325,11 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:src="@drawable/ic_lock"
-                    app:tint="@color/text_secondary"
-                    android:contentDescription="@null" />
+                    android:contentDescription="@null"
+                    app:tint="@color/purple_primary"/>
 
                 <TextView
                     android:layout_width="wrap_content"

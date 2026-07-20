@@ -16,49 +16,55 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:background="@drawable/bg_icon_circle_light"
-            android:src="@drawable/ic_back"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="@string/cd_back" />
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:gravity="center">
-
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="@drawable/bg_icon_circle_light"
+                android:src="@drawable/ic_back"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/cd_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
             <TextView
+                android:id="@+id/tvDetecting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Detecting "
+                android:text="Detecting"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
+                android:id="@+id/tvFaces"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:text="Faces"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="@color/purple_primary" />
-        </LinearLayout>
+                android:textColor="@color/purple_primary"
+                app:layout_constraintStart_toEndOf="@id/tvDetecting"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detecting_subtitle"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                app:layout_constraintStart_toStartOf="@id/tvDetecting"
+                app:layout_constraintTop_toBottomOf="@id/tvDetecting"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/detecting_subtitle"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

@@ -113,16 +113,10 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/blur_type_label" />
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:clipToPadding="false"
-                android:scrollbars="none">
-
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -133,11 +127,13 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_blur_faces" />
+                            android:tint="@color/effect_chip_text_color"
+                            android:src="@drawable/ic_effect_gaussian" />
 
                         <TextView
                             android:id="@+id/tvGaussianTitle"
                             style="@style/BlurEditor.OptionTitle"
+                            android:tint="@color/effect_chip_text_color"
                             android:text="@string/blur_type_gaussian" />
 
                         <TextView
@@ -153,7 +149,8 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_pixelate" />
+                            android:src="@drawable/ic_effect_mosaic"
+                            android:tint="@color/effect_chip_text_color"/>
 
                         <TextView
                             android:id="@+id/tvMosaicTitle"
@@ -173,7 +170,8 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_color" />
+                            android:src="@drawable/ic_effect_color"
+                            android:tint="@color/effect_chip_text_color"/>
 
                         <TextView
                             android:id="@+id/tvColorTitle"
@@ -182,32 +180,29 @@
 
                         <TextView
                             style="@style/BlurEditor.OptionSubtitle"
-                            android:text="@string/blur_type_color_desc"
-                            android:maxLines="1"/>
+                            android:text="@string/blur_type_color_desc"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/cardEmoji"
-                        style="@style/BlurEditor.OptionCard">
+<!--                    <LinearLayout-->
+<!--                        android:id="@+id/cardEmoji"-->
+<!--                        style="@style/BlurEditor.OptionCard">-->
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_emoji" />
+<!--                        <ImageView-->
+<!--                            android:layout_width="24dp"-->
+<!--                            android:layout_height="24dp"-->
+<!--                            android:src="@drawable/ic_emoji" />-->
 
-                        <TextView
-                            android:id="@+id/tvEmojiTitle"
-                            style="@style/BlurEditor.OptionTitle"
-                            android:text="@string/blur_type_emoji" />
+<!--                        <TextView-->
+<!--                            android:id="@+id/tvEmojiTitle"-->
+<!--                            style="@style/BlurEditor.OptionTitle"-->
+<!--                            android:text="@string/blur_type_emoji" />-->
 
-                        <TextView
-                            style="@style/BlurEditor.OptionSubtitle"
-                            android:text="@string/blur_type_emoji_desc" />
-                    </LinearLayout>
+<!--                        <TextView-->
+<!--                            style="@style/BlurEditor.OptionSubtitle"-->
+<!--                            android:text="@string/blur_type_emoji_desc" />-->
+<!--                    </LinearLayout>-->
 
                 </LinearLayout>
-            </HorizontalScrollView>
-
             <!-- Intensity / Feather sliders -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -332,7 +327,8 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:src="@drawable/ic_focus_target" />
+                        android:tint="@color/effect_chip_text_color"
+                        android:src="@drawable/ic_blur_faces" />
 
                     <TextView
                         android:id="@+id/tvAutoFaceTitle"
@@ -352,7 +348,8 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:src="@drawable/ic_shape_circle" />
+                        android:tint="@color/effect_chip_text_color"
+                        android:src="@drawable/ic_effect_gaussian" />
 
                     <TextView
                         android:id="@+id/tvCircleTitle"
@@ -371,6 +368,7 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
+                        android:tint="@color/effect_chip_text_color"
                         android:src="@drawable/ic_shape_rectangle" />
 
                     <TextView
@@ -385,7 +383,6 @@
 
             </LinearLayout>
 
-            <!-- Additional settings -->
             <TextView
                 style="@style/BlurEditor.SectionLabel"
                 android:layout_marginTop="20dp"
@@ -401,10 +398,10 @@
                 android:padding="16dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="12dp"
-                    android:src="@drawable/ic_blur_faces" />
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_marginEnd="7dp"
+                    android:src="@drawable/ic_add_settings" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -436,17 +433,32 @@
                     android:checked="false"/>
 
             </LinearLayout>
-
-            <!-- Info banner -->
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_info_banner"
-                android:padding="14dp"
-                android:text="@string/blur_follow_info"
-                android:textColor="@color/text_primary"
-                android:textSize="13sp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="10dp"
+                android:background="@drawable/bg_info_banner">
+                <ImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:background="@drawable/bg_circle_gradient_purple"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_sparkle"
+                    app:tint="@color/white"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blur_follow_info"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
