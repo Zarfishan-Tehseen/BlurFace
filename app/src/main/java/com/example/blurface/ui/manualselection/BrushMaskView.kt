@@ -33,6 +33,7 @@ class BrushMaskView @JvmOverloads constructor(
 
     var brushRadiusBitmapPx = 60f
     var currentTool = BrushTool.PAINT
+    var isActive = false
 
     var isDrawing = false
         private set
@@ -85,7 +86,7 @@ class BrushMaskView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (!isInitialized) return false
+        if (!isInitialized || !isActive) return false
 
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             parent?.requestDisallowInterceptTouchEvent(true)

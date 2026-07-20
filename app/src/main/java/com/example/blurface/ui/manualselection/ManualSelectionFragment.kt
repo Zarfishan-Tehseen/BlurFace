@@ -45,36 +45,59 @@ class ManualSelectionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.scrollView) { v, insets ->
             val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             v.updatePadding(top = statusBars.top)
             insets
         }
 
+        // Standard Button Actions
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnContinue.setOnClickListener { findNavController().navigate(R.id.blurEditorFragment) }
         binding.btnClearAll.setOnClickListener { sharedViewModel.setAllSelected(false) }
-        binding.btnAddFace.setOnClickListener {
-            sharedViewModel.addBackNextFace()
-        }
+        binding.btnAddFace.setOnClickListener { sharedViewModel.addBackNextFace() }
 
+        // Mode and UI Component Initializers
         setUpBrushModeButtons()
         setUpBrushSizeSlider()
         setUpSelectedFacesStrip()
 
+        // Link the layers together so they can talk to each other
+        binding.faceHighlight.brushMaskView = binding.brushMask
+
+        // Setup Box interaction callbacks on our Upgraded Interactive View
+        binding.faceHighlight.onFaceTapped = { faceId ->
+            sharedViewModel.toggleFaceSelection(faceId)
+        }
+
+        binding.faceHighlight.onFaceBoundsChanged = { faceId, newBounds ->
+            sharedViewModel.updateFaceBounds(faceId, newBounds)
+        }
+
+        binding.faceHighlight.onMatrixChanged = { updatedMatrix ->
+            // Keeps the background image tracked with the zoom/pan matrix transformations
+            binding.ivPreview.imageMatrix = updatedMatrix
+        }
+
+        // ADDED LOGIC: Toggles the brush mode active state on/off when tapping the brush pill
+        binding.btnBrush.setOnClickListener {
+            val currentMode = sharedViewModel.isBrushModeActive.value
+            sharedViewModel.setBrushModeActive(!currentMode)
+        }
+
         val bitmap = sharedViewModel.sourceBitmap.value
         if (bitmap == null) {
-            // Shouldn't happen in the normal flow (Select Faces always sets it first)
             findNavController().navigateUp()
             return
         }
 
         binding.ivPreview.setImageBitmap(bitmap)
         binding.ivPreview.post {
-            setUpFitTransform(bitmap.width, bitmap.height)
+            binding.faceHighlight.initDefaultTransform(bitmap.width, bitmap.height)
             binding.brushMask.initLayers(bitmap.width, bitmap.height, sharedViewModel.brushMask.value)
             isLayoutReady = true
-            observeFaces(bitmap)
+            observeStateFlows(bitmap)
         }
 
         binding.brushMask.onMaskStrokeFinished = { maskCopy ->
@@ -82,26 +105,52 @@ class ManualSelectionFragment : Fragment() {
         }
     }
 
-    private fun setUpFitTransform(bitmapWidth: Int, bitmapHeight: Int) {
-        val viewWidth = binding.ivPreview.width.toFloat()
-        val viewHeight = binding.ivPreview.height.toFloat()
-        if (viewWidth == 0f || viewHeight == 0f) return
+    private fun observeStateFlows(bitmap: android.graphics.Bitmap) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-        val scale = minOf(viewWidth / bitmapWidth, viewHeight / bitmapHeight)
-        val dx = (viewWidth - bitmapWidth * scale) / 2f
-        val dy = (viewHeight - bitmapHeight * scale) / 2f
+                // Flow A: Collect face selections/modifications & update the box UI + thumbnails
+                launch {
+                    sharedViewModel.faces.collect { faces ->
+                        if (!isLayoutReady) return@collect
 
-        val matrix = Matrix().apply {
-            postScale(scale, scale)
-            postTranslate(dx, dy)
+                        binding.faceHighlight.setFaces(faces, bitmap.width, bitmap.height)
+
+                        val selected = faces.filter { it.isSelected }
+                        binding.tvSelectedCount.text = getString(R.string.selected_faces_count, selected.size)
+
+                        val hasRemovedFaces = faces.any { !it.isSelected }
+                        binding.btnAddFace.isEnabled = hasRemovedFaces
+                        binding.btnAddFace.alpha = if (hasRemovedFaces) 1f else 0.4f
+
+                        val items = withContext(Dispatchers.Default) {
+                            selected.map { face ->
+                                SelectedFaceChipAdapter.Item(
+                                    faceId = face.id,
+                                    thumbnail = com.example.blurface.utils.BitmapUtils.cropFace(bitmap, face.boundingBox)
+                                )
+                            }
+                        }
+                        chipAdapter.submitList(items)
+                    }
+                }
+
+                // Flow B: Listen for Brush Mode toggle changes to enable/disable drawings vs box moves
+                launch {
+                    sharedViewModel.isBrushModeActive.collect { isBrushActive ->
+                        binding.faceHighlight.isBrushModeEnabled = isBrushActive
+                        binding.brushMask.isActive = isBrushActive   // NEW
+
+                        // Updates the visual selected state of your brush toggle layout pill
+                        binding.btnBrush.isSelected = isBrushActive
+                    }
+                }
+            }
         }
-
-        binding.ivPreview.imageMatrix = matrix
-        binding.brushMask.updateTransform(matrix)
     }
 
     private fun setUpBrushModeButtons() {
-        binding.btnAddMode.isSelected = true // paint is the default tool
+        binding.btnAddMode.isSelected = true
         binding.btnAddMode.setOnClickListener {
             binding.brushMask.currentTool = BrushTool.PAINT
             binding.btnAddMode.isSelected = true
@@ -116,7 +165,7 @@ class ManualSelectionFragment : Fragment() {
 
     private fun setUpBrushSizeSlider() {
         val initialValue = 60
-        binding.sliderBrushSize.max = 90 // range becomes 10..100 via offset below
+        binding.sliderBrushSize.max = 90
         binding.sliderBrushSize.progress = initialValue - 10
         binding.tvBrushSizeValue.text = "${initialValue}%"
         binding.brushMask.brushRadiusBitmapPx = initialValue * 3f
@@ -127,7 +176,6 @@ class ManualSelectionFragment : Fragment() {
                 binding.tvBrushSizeValue.text = "${value}%"
                 binding.brushMask.brushRadiusBitmapPx = value * 3f
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
@@ -135,41 +183,9 @@ class ManualSelectionFragment : Fragment() {
 
     private fun setUpSelectedFacesStrip() {
         chipAdapter = SelectedFaceChipAdapter(
-            onRemove = { faceId -> sharedViewModel.toggleFaceSelection(faceId) }
+        onRemove = { faceId -> sharedViewModel.toggleFaceSelection(faceId) }
         )
         binding.rvSelectedFaces.adapter = chipAdapter
-    }
-
-    private fun observeFaces(bitmap: android.graphics.Bitmap) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                sharedViewModel.faces.collect { faces -> renderFaces(faces, bitmap) }
-            }
-        }
-    }
-
-    private suspend fun renderFaces(faces: List<DetectedFace>, bitmap: android.graphics.Bitmap) {
-        if (!isLayoutReady) return
-
-        binding.faceHighlight.setFaces(faces, bitmap.width, bitmap.height)
-
-        val selected = faces.filter { it.isSelected }
-        binding.tvSelectedCount.text = getString(R.string.selected_faces_count, selected.size)
-
-        // Nothing left to bring back once every detected face is already selected
-        val hasRemovedFaces = faces.any { !it.isSelected }
-        binding.btnAddFace.isEnabled = hasRemovedFaces
-        binding.btnAddFace.alpha = if (hasRemovedFaces) 1f else 0.4f
-
-        val items = withContext(Dispatchers.Default) {
-            selected.map { face ->
-                SelectedFaceChipAdapter.Item(
-                    faceId = face.id,
-                    thumbnail = BitmapUtils.cropFace(bitmap, face.boundingBox)
-                )
-            }
-        }
-        chipAdapter.submitList(items)
     }
 
     override fun onDestroyView() {

@@ -92,7 +92,7 @@
                     android:scaleType="matrix"
                     tools:src="@color/divider" />
 
-                <com.example.blurface.ui.manualselection.FaceHighlightOverlayView
+                <com.example.blurface.ui.manualselection.InteractiveOverlayView
                     android:id="@+id/faceHighlight"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

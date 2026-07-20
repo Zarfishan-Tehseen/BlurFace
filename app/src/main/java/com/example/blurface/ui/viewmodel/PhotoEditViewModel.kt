@@ -3,6 +3,7 @@ package com.example.blurface.ui.viewmodel
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.RectF
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -74,6 +75,9 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
     val editedBitmap: StateFlow<Bitmap?> = _editedBitmap.asStateFlow()
     private val _externalExportBitmap = MutableStateFlow<Bitmap?>(null)
     val isExternalExport: Boolean get() = _externalExportBitmap.value != null
+
+    private val _isBrushModeActive = MutableStateFlow(false)
+    val isBrushModeActive: StateFlow<Boolean> = _isBrushModeActive.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -216,6 +220,15 @@ class PhotoEditViewModel(application: Application) : AndroidViewModel(applicatio
     }
     fun setBitmapToExport(bitmap: Bitmap) {
         _externalExportBitmap.value = bitmap
+    }
+    fun setBrushModeActive(active: Boolean) {
+        _isBrushModeActive.value = active
+    }
+
+    fun updateFaceBounds(faceId: Int, newBounds: RectF) {
+        _faces.value = _faces.value.map {
+            if (it.id == faceId) it.copy(boundingBox = newBounds) else it
+        }
     }
 
     fun resetSaveState() {
