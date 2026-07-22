@@ -1,5 +1,6 @@
 package com.example.blurface.ui.video.analyzingvideo
 
+import android.animation.ValueAnimator
 import android.net.Uri
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
@@ -35,6 +36,7 @@ class AnalyzingVideoFragment : Fragment() {
 
     private var _binding: FragmentAnalyzingVideoBinding? = null
     private val binding get() = _binding!!
+    private var progressAnimator: ValueAnimator? = null
 
     private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph) {
         object : ViewModelProvider.Factory {
@@ -127,8 +129,7 @@ class AnalyzingVideoFragment : Fragment() {
 
     private fun renderLoading(state: FaceUiState.Loading) {
         binding.tvProgressPercent.text = "${state.progress}%"
-        binding.progressAnalyzing.setProgressCompat(state.progress, true)
-
+        binding.scanIndicator.setProgressCompat(state.progress, true)
         if (state.totalFrames > 0) {
             binding.tvFrameProgress.text =
                 "Analyzing frame ${format(state.currentFrame)} of ${format(state.totalFrames)}"

@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/result_title_prefix"
-                        android:layout_marginStart="2dp"
+                        android:layout_marginStart="12dp"
                         android:textColor="@color/text_primary"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -102,7 +102,7 @@
                 <FrameLayout
                     android:id="@+id/videoFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="303dp"
                     android:background="@android:color/black">
 
                     <VideoView

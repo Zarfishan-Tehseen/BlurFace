@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -63,10 +64,14 @@ class BlurredVideoResultFragment : Fragment() {
         }
     }
 
-   private val writePermissionLauncher =
+    private val writePermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) saveToGallery() else {
-                Toast.makeText(requireContext(), "Storage permission is needed to save the video.", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Storage permission is needed to save the video.",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -119,7 +124,11 @@ class BlurredVideoResultFragment : Fragment() {
         }
 
         binding.videoPlayer.setOnErrorListener { _, _, _ ->
-            Toast.makeText(requireContext(), "Couldn't play the exported video.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Couldn't play the exported video.",
+                Toast.LENGTH_SHORT
+            ).show()
             true
         }
 
@@ -127,11 +136,16 @@ class BlurredVideoResultFragment : Fragment() {
         // Tapping the video itself also toggles playback, same as most players.
         binding.videoFrame.setOnClickListener { togglePlayback() }
 
-        binding.seekVideoProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.seekVideoProgress.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (fromUser) binding.tvCurrentTime.text = formatMs(progress)
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar) { isUserSeeking = true }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                isUserSeeking = true
+            }
+
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 isUserSeeking = false
                 binding.videoPlayer.seekTo(seekBar.progress)
@@ -152,23 +166,52 @@ class BlurredVideoResultFragment : Fragment() {
             binding.btnPlayPause.visibility = View.GONE
         }
     }
+
     private fun showFullscreenPlayer(path: String) {
         val wasPlaying = binding.videoPlayer.isPlaying
         val resumePosition = binding.videoPlayer.currentPosition
         binding.videoPlayer.pause()
 
-        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        // 1. Use a standard non-fullscreen theme so status bar remains visible
+        val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
 
-        val fullscreenVideoView = android.widget.VideoView(requireContext())
-        dialog.setContentView(
-            fullscreenVideoView,
-            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        )
+        // 2. Create a FrameLayout container that centers its child
+        val container = android.widget.FrameLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            setBackgroundColor(android.graphics.Color.BLACK)
+        }
+
+        // 3. Create the VideoView centered vertically and horizontally
+        val fullscreenVideoView = android.widget.VideoView(requireContext()).apply {
+            layoutParams = android.widget.FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = android.view.Gravity.CENTER
+            }
+        }
+
+        container.addView(fullscreenVideoView)
+        dialog.setContentView(container)
+
+        // 4. Preserve status bar visibility & apply window insets to shift content downward
+        dialog.window?.let { window ->
+            // Keep status bar visible
+            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+            // Make window draw edge-to-edge under status bar, then pad down
+            androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
+
+            ViewCompat.setOnApplyWindowInsetsListener(container) { v, insets ->
+                val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+                v.updatePadding(top = statusBars.top)
+                insets
+            }
+        }
 
         fullscreenVideoView.setVideoPath(path)
         fullscreenVideoView.setOnPreparedListener { player ->
@@ -176,12 +219,23 @@ class BlurredVideoResultFragment : Fragment() {
             fullscreenVideoView.seekTo(resumePosition)
             fullscreenVideoView.start()
         }
-        // Tap to exit fullscreen, same as most players.
-        fullscreenVideoView.setOnClickListener { dialog.dismiss() }
+
+        var lastKnownPosition = resumePosition
+
+        fullscreenVideoView.setOnClickListener {
+            lastKnownPosition = fullscreenVideoView.currentPosition
+            dialog.dismiss()
+        }
 
         dialog.setOnDismissListener {
-            binding.videoPlayer.seekTo(fullscreenVideoView.currentPosition)
-            if (wasPlaying) togglePlayback() else binding.btnPlayPause.visibility = View.VISIBLE
+            fullscreenVideoView.stopPlayback()
+            binding.videoPlayer.seekTo(lastKnownPosition)
+            if (wasPlaying) {
+                binding.videoPlayer.start()
+                binding.btnPlayPause.visibility = View.GONE
+            } else {
+                binding.btnPlayPause.visibility = View.VISIBLE
+            }
         }
 
         dialog.show()
@@ -196,7 +250,10 @@ class BlurredVideoResultFragment : Fragment() {
 
     private fun onSaveClicked() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
-            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
             != PackageManager.PERMISSION_GRANTED
         ) {
             writePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -221,7 +278,8 @@ class BlurredVideoResultFragment : Fragment() {
                 Toast.makeText(requireContext(), "Saved to gallery.", Toast.LENGTH_SHORT).show()
                 recordRecentEdit(uri)
             } else {
-                Toast.makeText(requireContext(), "Couldn't save the video.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Couldn't save the video.", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -289,9 +347,14 @@ class BlurredVideoResultFragment : Fragment() {
      */
     private fun onCopyLinkClicked() {
         val path = resultPath ?: return
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard =
+            requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText("Exported video path", path))
-        Toast.makeText(requireContext(), "Local file path copied (not a shareable link).", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            requireContext(),
+            "Local file path copied (not a shareable link).",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onDestroyView() {

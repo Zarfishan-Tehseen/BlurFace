@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="Detected "
             android:textColor="@color/text_primary"
+            android:layout_marginStart="12dp"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -55,6 +56,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/text_secondary"
         android:textSize="13sp"
+        android:layout_marginStart="12dp"
         app:layout_constraintStart_toStartOf="@id/headerTitle"
         app:layout_constraintTop_toBottomOf="@id/headerTitle"
         tools:text="Select faces to blur." />

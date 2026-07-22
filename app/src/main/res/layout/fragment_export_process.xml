@@ -41,6 +41,7 @@
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:layout_marginStart="12dp"
                 app:layout_constraintStart_toEndOf="@id/btnBack"
                 app:layout_constraintTop_toTopOf="parent" />
 

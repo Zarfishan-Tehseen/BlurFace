@@ -84,15 +84,13 @@ class BackgroundBlurFragment : Fragment() {
         binding.ivPreview.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    viewModel.mask.value?.let { binding.ivPreview.setImageBitmap(it) }
+                    viewModel.sourceBitmap.value?.let { binding.ivPreview.setImageBitmap(it) }
                     true
                 }
-
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     viewModel.editedBitmap.value?.let { binding.ivPreview.setImageBitmap(it) }
                     true
                 }
-
                 else -> false
             }
         }
@@ -225,34 +223,6 @@ class BackgroundBlurFragment : Fragment() {
         bottomSheet.show(childFragmentManager, "ExportBottomSheet")
     }
 
-    private fun saveJpegToGallery(bitmap: Bitmap): Uri? {
-        val context = requireContext()
-        val resolver = context.contentResolver
-        val filename = "BlurFace_${System.currentTimeMillis()}.jpg"
-
-        val values = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/BlurFace")
-            put(MediaStore.Images.Media.IS_PENDING, 1)
-        }
-        val uri =
-            resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return null
-
-        val wrote = resolver.openOutputStream(uri)?.use { out ->
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
-        } ?: false
-
-        if (!wrote) {
-            resolver.delete(uri, null, null)
-            return null
-        }
-
-        values.clear()
-        values.put(MediaStore.Images.Media.IS_PENDING, 0)
-        resolver.update(uri, values, null, null)
-        return uri
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
