@@ -391,7 +391,10 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="-16dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
                 <!-- RecyclerView (Visible if list contains items) -->
                 <androidx.recyclerview.widget.RecyclerView
@@ -399,6 +402,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
+                    android:paddingHorizontal="16dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_recent_edit"
@@ -410,6 +414,7 @@
                     android:id="@+id/layoutEmptyState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
                     android:background="@drawable/bg_empty_state_dashed"
                     android:orientation="vertical"
                     android:gravity="center"

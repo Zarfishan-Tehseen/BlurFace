@@ -116,6 +116,11 @@ class BackgroundBlurViewModel(application: Application) : AndroidViewModel(appli
     fun resetIntensity() {
         _intensity.value = 60f
     }
+    fun resetAll() {
+        _intensity.value = 60f
+        _blurType.value = BackgroundBlurType.GAUSSIAN
+        _filter.value = BackgroundFilter.ORIGINAL
+    }
 
     fun setFilter(filter: BackgroundFilter) {
         _filter.value = filter

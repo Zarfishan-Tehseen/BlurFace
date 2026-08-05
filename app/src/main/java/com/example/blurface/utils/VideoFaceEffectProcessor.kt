@@ -78,7 +78,9 @@ object VideoFaceEffectProcessor {
     /**
      * Clips [effect] down to [shape] and composites it over [base], with a feathered
      * (blurred-mask) edge so the effect fades into the original crop instead of a hard
-     * cutout. RECTANGLE is full-bleed - no mask, no feather.
+     * cutout. All shapes - including RECTANGLE - go through the same mask+composite
+     * path, so COLOR/EMOJI intensity correctly blends against the real face underneath
+     * rather than showing through to whatever's behind the view.
      */
     private fun applyShapeMask(
         context: Context,
@@ -87,8 +89,6 @@ object VideoFaceEffectProcessor {
         shape: BlurShape,
         featherPercent: Int
     ): Bitmap {
-        if (shape == BlurShape.RECTANGLE) return effect
-
         val w = base.width
         val h = base.height
 
@@ -106,7 +106,11 @@ object VideoFaceEffectProcessor {
                 val rect = RectF(w * 0.06f, h * 0.02f, w * 0.94f, h * 0.98f)
                 maskCanvas.drawOval(rect, maskPaint)
             }
-            BlurShape.RECTANGLE -> Unit // unreachable - handled above
+            BlurShape.RECTANGLE -> {
+                // Full-bleed box covering the whole crop - feather (below) is what
+                // gives it a soft edge instead of a hard cutout.
+                maskCanvas.drawRect(0f, 0f, w.toFloat(), h.toFloat(), maskPaint)
+            }
         }
 
         if (featherPercent > 0) {

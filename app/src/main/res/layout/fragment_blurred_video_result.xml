@@ -326,11 +326,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBackToHome"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/bg_button_primary_gradient"
+            app:backgroundTint="@null"
             android:drawableStart="@drawable/ic_nav_home"
             android:drawablePadding="10dp"
             android:elevation="0dp"

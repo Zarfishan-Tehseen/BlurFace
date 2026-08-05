@@ -5,22 +5,23 @@
     android:layout_width="64dp"
     android:layout_height="wrap_content"
     android:layout_marginEnd="14dp"
-    android:gravity="center_horizontal"
+    android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical">
 
     <FrameLayout
-        android:layout_width="56dp"
-        android:layout_height="56dp">
+        android:layout_width="60dp"
+        android:layout_height="60dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivFaceThumb"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.BlurFace.Circle"
             app:strokeColor="@color/purple_primary"
             app:strokeWidth="2dp"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/avatars"
+            android:padding="2dp"/>
 
         <ImageView
             android:layout_width="24dp"
@@ -30,7 +31,6 @@
             android:src="@drawable/ic_check_circle" />
 
     </FrameLayout>
-
     <TextView
         android:id="@+id/tvFaceLabel"
         android:layout_width="wrap_content"

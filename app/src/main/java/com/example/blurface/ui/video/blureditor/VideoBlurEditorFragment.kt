@@ -3,10 +3,14 @@ package com.example.blurface.ui.video.blureditor
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.TypedValue
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
@@ -20,6 +24,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import android.graphics.drawable.LayerDrawable
+import androidx.core.graphics.blue
+import androidx.core.graphics.red
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,7 +76,7 @@ class VideoBlurEditorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollContent) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.headerContainer) { v, insets ->
             val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             v.updatePadding(top = statusBars.top)
             insets
@@ -117,18 +124,39 @@ class VideoBlurEditorFragment : Fragment() {
             }
         }
 
-        // Long-press shows a WhatsApp-reaction-style horizontal picker above the card.
-        // Picking an item there both sets the value AND switches blurType to that
-        // card's effect (matches "single press applies the effect, long press lets you
-        // change + apply the color/emoji").
-        binding.cardColor.setOnLongClickListener {
-            showColorPicker(binding.cardColor, cards)
-            true
-        }
-//        binding.cardEmoji.setOnLongClickListener {
-//            showEmojiPicker(binding.cardEmoji, cards)
-//            true
-//        }
+        // Long-press-and-drag shows a Facebook-reaction-style horizontal picker above
+        // the card: hold, drag your finger across the swatches, whichever one you're
+        // over pops up larger, and lifting your finger there commits that color AND
+        // switches blurType to COLOR. A plain tap (no long-press) falls through to the
+        // click listener registered above.
+        binding.cardColor.setOnTouchListener(
+            SwipeReactionPicker(
+                anchor = binding.cardColor,
+                items = COLOR_OPTIONS,
+                itemViewFactory = { color -> buildColorSwatch(color) },
+                isCurrent = { color -> color == selectedColor },
+                onSelected = { color ->
+                    selectedColor = color
+                    blurType = BlurType.COLOR
+                    updateBlurTypeSelection(cards)
+                    schedulePreviewUpdate()
+                }
+            )
+        )
+//        binding.cardEmoji.setOnTouchListener(
+//            SwipeReactionPicker(
+//                anchor = binding.cardEmoji,
+//                items = EMOJI_OPTIONS,
+//                itemViewFactory = { emoji -> buildEmojiOption(emoji) },
+//                isCurrent = { emoji -> emoji == selectedEmoji },
+//                onSelected = { emoji ->
+//                    selectedEmoji = emoji
+//                    blurType = BlurType.EMOJI
+//                    updateBlurTypeSelection(cards)
+//                    schedulePreviewUpdate()
+//                }
+//            )
+//        )
 
         updateBlurTypeSelection(cards)
     }
@@ -240,120 +268,239 @@ class VideoBlurEditorFragment : Fragment() {
         }
     }
 
-    // --- WhatsApp-reaction-style long-press pickers --------------------------------
+    // --- Facebook-reaction-style long-press-and-drag picker ------------------------
 
-    private fun showEmojiPicker(anchor: View, cards: Map<View, BlurType>) {
-        showReactionPopup(anchor) { dismiss ->
-            EMOJI_OPTIONS.map { emoji ->
-                TextView(requireContext()).apply {
-                    text = emoji
-                    textSize = 26f
-                    gravity = Gravity.CENTER
-                    layoutParams = LinearLayout.LayoutParams(dp(46), dp(46))
-                    isClickable = true
-                    setBackgroundResource(borderlessRippleRes())
-                    setOnClickListener {
-                        selectedEmoji = emoji
-                        blurType = BlurType.EMOJI
-                        updateBlurTypeSelection(cards)
-                        schedulePreviewUpdate()
-                        dismiss()
-                    }
-                }
+    private fun buildColorSwatch(color: Int): View = View(requireContext()).apply {
+        val size = dp(34)
+        layoutParams = LinearLayout.LayoutParams(size, size).apply {
+            marginStart = dp(6)
+            marginEnd = dp(6)
+        }
+
+        val isSelected = (color == selectedColor)
+
+        background = if (isSelected) {
+            // 1. Outer Ring (stroke circle)
+            val ring = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setStroke(dp(2), color) // Outer ring color matches selected color
+                setColor(Color.TRANSPARENT)
+            }
+
+            // 2. Inner Circle (solid color)
+            val innerCircle = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(color)
+            }
+
+            // Combine into a LayerDrawable with inset padding for the gap
+            LayerDrawable(arrayOf(ring, innerCircle)).apply {
+                // Index 1 (innerCircle) gets inset by 5dp to create the space/ring look
+                val inset = dp(5)
+                setLayerInset(1, inset, inset, inset, inset)
+            }
+        } else {
+            // Standard unselected swatch
+            GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                setColor(color)
+                setStroke(dp(1), ContextCompat.getColor(requireContext(), R.color.divider))
             }
         }
     }
 
-    private fun showColorPicker(anchor: View, cards: Map<View, BlurType>) {
-        showReactionPopup(anchor) { dismiss ->
-            COLOR_OPTIONS.map { color ->
-                View(requireContext()).apply {
-                    layoutParams = LinearLayout.LayoutParams(dp(34), dp(34)).apply {
-                        marginStart = dp(5)
-                        marginEnd = dp(5)
-                    }
-                    background = GradientDrawable().apply {
-                        shape = GradientDrawable.OVAL
-                        setColor(color)
-                        setStroke(dp(1), ContextCompat.getColor(requireContext(), R.color.divider))
-                    }
-                    isClickable = true
-                    setOnClickListener {
-                        selectedColor = color
-                        blurType = BlurType.COLOR
-                        updateBlurTypeSelection(cards)
-                        schedulePreviewUpdate()
-                        dismiss()
-                    }
-                }
-            }
-        }
+    private fun buildEmojiOption(emoji: String): View = TextView(requireContext()).apply {
+        text = emoji
+        textSize = 26f
+        gravity = Gravity.CENTER
+        layoutParams = LinearLayout.LayoutParams(dp(46), dp(46))
     }
 
     /**
-     * Builds a rounded, elevated horizontal strip of items (via [buildItems], which
-     * receives a dismiss callback each item's click listener should call) and shows it
-     * floating above [anchor] - the same interaction shape as WhatsApp's long-press
-     * message-reaction picker. Dismisses on outside tap.
+     * Facebook-like-button-style picker. Long-press [anchor] to reveal a horizontal
+     * strip of items above it; without lifting your finger, drag left/right and
+     * whichever item is under your finger scales up; lifting there commits [onSelected]
+     * for that item. A plain tap (no long-press, i.e. finger lifts before the timer
+     * fires) is *not* consumed - it's forwarded via [View.performClick] so the anchor's
+     * normal OnClickListener still runs for a simple tap.
+     *
+     * The popup itself is non-touchable: the touch sequence stays pinned to [anchor]
+     * for its entire lifetime (Android keeps delivering MOVE/UP to whichever view
+     * consumed DOWN), so we hit-test the finger's raw screen X against each item
+     * view's on-screen bounds to figure out what to highlight - the same trick behind
+     * WhatsApp/Facebook's reaction picker.
      */
-    private fun showReactionPopup(anchor: View, buildItems: (dismiss: () -> Unit) -> List<View>) {
-        val itemsContainer = LinearLayout(requireContext()).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
+    private inner class SwipeReactionPicker<T>(
+        private val anchor: View,
+        private val items: List<T>,
+        private val itemViewFactory: (T) -> View,
+        private val isCurrent: (T) -> Boolean = { false },
+        private val onSelected: (T) -> Unit
+    ) : View.OnTouchListener {
+
+        private val longPressHandler = Handler(Looper.getMainLooper())
+        private var longPressTriggered = false
+        private var lastRawX = 0f
+
+        private var popupWindow: PopupWindow? = null
+        private var itemViews: List<View> = emptyList()
+        private var highlightedIndex = -1
+
+        private val longPressRunnable = Runnable {
+            longPressTriggered = true
+            anchor.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            showPopup()
+            updateHighlight(lastRawX)
         }
-        val scrollHost = HorizontalScrollView(requireContext()).apply {
-            isHorizontalScrollBarEnabled = false
-            overScrollMode = View.OVER_SCROLL_NEVER
-            setBackgroundResource(R.drawable.bg_popup_picker)
-            setPadding(dp(10), dp(8), dp(10), dp(8))
-            elevation = dp(8).toFloat()
-            addView(
-                itemsContainer,
-                ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        override fun onTouch(v: View, event: MotionEvent): Boolean {
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastRawX = event.rawX
+                    longPressTriggered = false
+                    v.parent?.requestDisallowInterceptTouchEvent(true)
+                    longPressHandler.postDelayed(
+                        longPressRunnable,
+                        ViewConfiguration.getLongPressTimeout().toLong()
+                    )
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    lastRawX = event.rawX
+                    if (longPressTriggered) updateHighlight(lastRawX)
+                }
+                MotionEvent.ACTION_UP -> {
+                    longPressHandler.removeCallbacks(longPressRunnable)
+                    v.parent?.requestDisallowInterceptTouchEvent(false)
+                    if (longPressTriggered) {
+                        commitSelection()
+                    } else {
+                        v.performClick()
+                    }
+                }
+                MotionEvent.ACTION_CANCEL -> {
+                    longPressHandler.removeCallbacks(longPressRunnable)
+                    v.parent?.requestDisallowInterceptTouchEvent(false)
+                    dismissWithoutSelecting()
+                }
+            }
+            return true
+        }
+
+        private fun showPopup() {
+            val itemsContainer = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                clipChildren = false
+                clipToPadding = false
+                // The visible pill lives here, sized to its own content - so the row
+                // looks compact at rest instead of carrying the overflow buffer's height.
+                background = GradientDrawable().apply {
+                    setColor(Color.parseColor("#F6F5FB"))
+                    cornerRadius = dp(24).toFloat()
+                }
+                setPadding(dp(12), dp(10), dp(16), dp(10))
+            }
+            itemViews = items.map { item ->
+                itemViewFactory(item).also { view ->
+                    if (isCurrent(item)) {
+                        view.scaleX = 1.15f
+                        view.scaleY = 1.15f
+                    }
+                    itemsContainer.addView(view)
+                }
+            }
+
+            val scrollHost = HorizontalScrollView(requireContext()).apply {
+                isHorizontalScrollBarEnabled = false
+                overScrollMode = View.OVER_SCROLL_NEVER
+                clipChildren = false
+                clipToPadding = false
+                // Transparent - exists purely as scratch space above the pill so a
+                // swatch that scales up while popped-out has somewhere to draw without
+                // the PopupWindow's fixed-size surface clipping it. Because the
+                // background lives on itemsContainer (not here), this buffer doesn't
+                // make the row look inflated when nothing is highlighted - it comes
+                // out of the card like a real reaction picker instead of just being a
+                // permanently taller box.
+                setPadding(0, dp(36), 0, 0)
+                addView(
+                    itemsContainer,
+                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                )
+            }
+
+            val window = PopupWindow(
+                scrollHost,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                /* focusable = */ false
+            ).apply {
+                // Purely a visual overlay - all touch handling stays on the anchor for
+                // the whole gesture, so the popup must never intercept touches itself.
+                isTouchable = false
+                isOutsideTouchable = false
+            }
+            popupWindow = window
+
+            // WRAP_CONTENT views report 0x0 until laid out - measure explicitly so we
+            // can center the popup above the anchor before it's actually shown.
+            scrollHost.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
+
+            val anchorPos = IntArray(2)
+            anchor.getLocationInWindow(anchorPos)
+            val screenWidth = resources.displayMetrics.widthPixels
+            val x = anchorPos[0] + anchor.width / 2 - scrollHost.measuredWidth / 2
+            val y = anchorPos[1] - scrollHost.measuredHeight - dp(10)
+
+            window.showAtLocation(
+                anchor,
+                Gravity.NO_GRAVITY,
+                x.coerceIn(dp(8), (screenWidth - scrollHost.measuredWidth - dp(8)).coerceAtLeast(dp(8))),
+                y.coerceAtLeast(dp(8))
             )
         }
 
-        val popupWindow = PopupWindow(
-            scrollHost,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            /* focusable = */ true
-        ).apply {
-            isOutsideTouchable = true
+        private fun updateHighlight(rawX: Float) {
+            val loc = IntArray(2)
+            val idx = itemViews.indexOfFirst { view ->
+                view.getLocationOnScreen(loc)
+                rawX >= loc[0] && rawX <= loc[0] + view.width
+            }
+            if (idx == highlightedIndex) return
+            highlightedIndex = idx
+            itemViews.forEachIndexed { i, view ->
+                val scale = if (i == idx) 1.6f else 1f
+                val liftY = if (i == idx) -dp(16).toFloat() else 0f
+                view.animate()
+                    .scaleX(scale)
+                    .scaleY(scale)
+                    .translationY(liftY)
+                    .setDuration(130)
+                    .start()
+            }
         }
 
-        buildItems { popupWindow.dismiss() }.forEach { itemsContainer.addView(it) }
+        private fun commitSelection() {
+            val index = highlightedIndex
+            popupWindow?.dismiss()
+            popupWindow = null
+            itemViews = emptyList()
+            highlightedIndex = -1
+            if (index in items.indices) onSelected(items[index])
+        }
 
-        // WRAP_CONTENT views report 0x0 until laid out - measure explicitly so we can
-        // center the popup above the anchor before it's actually shown.
-        scrollHost.measure(
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        )
-
-        val anchorPos = IntArray(2)
-        anchor.getLocationInWindow(anchorPos)
-
-        val x = anchorPos[0] + anchor.width / 2 - scrollHost.measuredWidth / 2
-        val y = anchorPos[1] - scrollHost.measuredHeight - dp(10)
-
-        popupWindow.showAtLocation(
-            anchor,
-            Gravity.NO_GRAVITY,
-            x.coerceAtLeast(dp(8)),
-            y.coerceAtLeast(dp(8))
-        )
+        private fun dismissWithoutSelecting() {
+            popupWindow?.dismiss()
+            popupWindow = null
+            itemViews = emptyList()
+            highlightedIndex = -1
+        }
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
-
-    private fun borderlessRippleRes(): Int {
-        val outValue = TypedValue()
-        requireContext().theme.resolveAttribute(
-            android.R.attr.selectableItemBackgroundBorderless, outValue, true
-        )
-        return outValue.resourceId
-    }
 
     private fun onBlurFacesClicked() {
         val settings = currentSettingsFromUi()

@@ -96,6 +96,9 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.btnSavePhoto.setOnClickListener { requestSave() }
+        binding.btnClose.setOnClickListener {
+            dismiss()
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -224,7 +227,7 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
             RecentEdit(
                 id = uri.toString(),
                 title = if (isBackgroundBlur) "Background Blur" else "Photo Edit",
-                editType = EditType.BLUR_FACES,
+                editType = if (isBackgroundBlur) EditType.BLUR_BACKGROUND else EditType.BLUR_FACES,
                 mediaUri = uri.toString(),
                 isVideo = false,
                 timestampMillis = System.currentTimeMillis(),

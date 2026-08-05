@@ -6,13 +6,70 @@
     android:layout_height="match_parent"
     android:background="@color/bg_scaffold">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
+            android:background="@drawable/bg_icon_circle_light"
+            android:src="@drawable/ic_back"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/cd_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blur_editor_title_prefix"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blur_editor_title_suffix"
+            android:textColor="@color/purple_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/tvVideo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/blur_editor_subtitle"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tvVideo"
+            app:layout_constraintStart_toStartOf="@id/tvVideo"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomBar">
@@ -24,60 +81,9 @@
             android:paddingHorizontal="20dp"
             android:paddingTop="12dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="10dp"
-                    android:background="@drawable/bg_icon_circle_light"
-                    android:src="@drawable/ic_back"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:contentDescription="@string/cd_back"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <TextView
-                    android:id="@+id/tvVideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/blur_editor_title_prefix"
-                    android:textColor="@color/text_primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/btnBack"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/blur_editor_title_suffix"
-                    android:textColor="@color/purple_primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/tvVideo"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/blur_editor_subtitle"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
-                    app:layout_constraintTop_toBottomOf="@id/tvVideo"
-                    app:layout_constraintStart_toStartOf="@id/tvVideo"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_card_white"
                 android:elevation="1dp"
                 android:orientation="vertical"
@@ -113,96 +119,96 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/blur_type_label" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:id="@+id/cardGaussian"
+                    style="@style/BlurEditor.OptionCard"
+                    android:layout_marginEnd="10dp">
 
-                    <LinearLayout
-                        android:id="@+id/cardGaussian"
-                        style="@style/BlurEditor.OptionCard"
-                        android:layout_marginEnd="10dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/effect_chip_text_color"
+                        android:src="@drawable/ic_effect_gaussian" />
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:tint="@color/effect_chip_text_color"
-                            android:src="@drawable/ic_effect_gaussian" />
+                    <TextView
+                        android:id="@+id/tvGaussianTitle"
+                        style="@style/BlurEditor.OptionTitle"
+                        android:tint="@color/effect_chip_text_color"
+                        android:text="@string/blur_type_gaussian" />
 
-                        <TextView
-                            android:id="@+id/tvGaussianTitle"
-                            style="@style/BlurEditor.OptionTitle"
-                            android:tint="@color/effect_chip_text_color"
-                            android:text="@string/blur_type_gaussian" />
-
-                        <TextView
-                            style="@style/BlurEditor.OptionSubtitle"
-                            android:text="@string/blur_type_gaussian_desc" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/cardMosaic"
-                        style="@style/BlurEditor.OptionCard"
-                        android:layout_marginEnd="10dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_effect_mosaic"
-                            android:tint="@color/effect_chip_text_color"/>
-
-                        <TextView
-                            android:id="@+id/tvMosaicTitle"
-                            style="@style/BlurEditor.OptionTitle"
-                            android:text="@string/blur_type_mosaic" />
-
-                        <TextView
-                            style="@style/BlurEditor.OptionSubtitle"
-                            android:text="@string/blur_type_mosaic_desc" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/cardColor"
-                        style="@style/BlurEditor.OptionCard"
-                        android:layout_marginEnd="10dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_effect_color"
-                            android:tint="@color/effect_chip_text_color"/>
-
-                        <TextView
-                            android:id="@+id/tvColorTitle"
-                            style="@style/BlurEditor.OptionTitle"
-                            android:text="@string/blur_type_color" />
-
-                        <TextView
-                            style="@style/BlurEditor.OptionSubtitle"
-                            android:text="@string/blur_type_color_desc"/>
-                    </LinearLayout>
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/cardEmoji"-->
-<!--                        style="@style/BlurEditor.OptionCard">-->
-
-<!--                        <ImageView-->
-<!--                            android:layout_width="24dp"-->
-<!--                            android:layout_height="24dp"-->
-<!--                            android:src="@drawable/ic_emoji" />-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tvEmojiTitle"-->
-<!--                            style="@style/BlurEditor.OptionTitle"-->
-<!--                            android:text="@string/blur_type_emoji" />-->
-
-<!--                        <TextView-->
-<!--                            style="@style/BlurEditor.OptionSubtitle"-->
-<!--                            android:text="@string/blur_type_emoji_desc" />-->
-<!--                    </LinearLayout>-->
-
+                    <TextView
+                        style="@style/BlurEditor.OptionSubtitle"
+                        android:text="@string/blur_type_gaussian_desc" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cardMosaic"
+                    style="@style/BlurEditor.OptionCard"
+                    android:layout_marginEnd="10dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_effect_mosaic"
+                        app:tint="@color/effect_chip_text_color"/>
+
+                    <TextView
+                        android:id="@+id/tvMosaicTitle"
+                        style="@style/BlurEditor.OptionTitle"
+                        android:text="@string/blur_type_mosaic" />
+
+                    <TextView
+                        style="@style/BlurEditor.OptionSubtitle"
+                        android:text="@string/blur_type_mosaic_desc" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cardColor"
+                    style="@style/BlurEditor.OptionCard"
+                    android:layout_marginEnd="10dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_effect_color"
+                        app:tint="@color/effect_chip_text_color"/>
+
+                    <TextView
+                        android:id="@+id/tvColorTitle"
+                        style="@style/BlurEditor.OptionTitle"
+                        android:text="@string/blur_type_color" />
+
+                    <TextView
+                        style="@style/BlurEditor.OptionSubtitle"
+                        android:text="@string/blur_type_color_desc"/>
+                </LinearLayout>
+
+                <!--                    <LinearLayout-->
+                <!--                        android:id="@+id/cardEmoji"-->
+                <!--                        style="@style/BlurEditor.OptionCard">-->
+
+                <!--                        <ImageView-->
+                <!--                            android:layout_width="24dp"-->
+                <!--                            android:layout_height="24dp"-->
+                <!--                            android:src="@drawable/ic_emoji" />-->
+
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/tvEmojiTitle"-->
+                <!--                            style="@style/BlurEditor.OptionTitle"-->
+                <!--                            android:text="@string/blur_type_emoji" />-->
+
+                <!--                        <TextView-->
+                <!--                            style="@style/BlurEditor.OptionSubtitle"-->
+                <!--                            android:text="@string/blur_type_emoji_desc" />-->
+                <!--                    </LinearLayout>-->
+
+            </LinearLayout>
             <!-- Intensity / Feather sliders -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -327,7 +333,7 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:tint="@color/effect_chip_text_color"
+                        app:tint="@color/effect_chip_text_color"
                         android:src="@drawable/ic_blur_faces" />
 
                     <TextView
@@ -348,7 +354,7 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:tint="@color/effect_chip_text_color"
+                        app:tint="@color/effect_chip_text_color"
                         android:src="@drawable/ic_effect_gaussian" />
 
                     <TextView
@@ -368,7 +374,7 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:tint="@color/effect_chip_text_color"
+                        app:tint="@color/effect_chip_text_color"
                         android:src="@drawable/ic_shape_rectangle" />
 
                     <TextView
@@ -478,11 +484,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBlurFacesInVideo"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/bg_button_primary_gradient"
+            app:backgroundTint="@null"
             android:elevation="0dp"
             android:stateListAnimator="@null"
             android:text="@string/blur_faces_cta"

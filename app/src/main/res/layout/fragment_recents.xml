@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_scaffold">
+    android:background="@color/bg_scaffold"
+    tools:context=".ui.recents.RecentsFragment">
 
     <LinearLayout
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp"
         android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:paddingVertical="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Title Row -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/titleRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp">
 
             <TextView
                 android:id="@+id/tvRecent"
@@ -59,13 +62,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Search Bar -->
         <LinearLayout
             android:id="@+id/searchBarContainer"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/bg_icon_circle_light"
             android:gravity="center_vertical"
-            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:paddingHorizontal="14dp"
             android:visibility="gone"
@@ -105,72 +110,109 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <!-- Filter Chips & Floating Sort Button Section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="18dp">
 
-            <TextView
-                android:id="@+id/filterAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/selector_filter_pill_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="9dp"
-                android:text="All"
-                android:textColor="@color/filter_pill_text_color"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/filterBlurFaces"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/selector_filter_pill_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="9dp"
-                android:text="Blur Faces"
-                android:textColor="@color/filter_pill_text_color"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/filterBlurBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/selector_filter_pill_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="9dp"
-                android:text="Blur Background"
-                android:textColor="@color/filter_pill_text_color"
-                android:textSize="13sp" />
-
-            <View
+            <HorizontalScrollView
+                android:id="@+id/hsvFilters"
                 android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="68dp"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/filterChipRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/filterAll"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/selector_filter_pill_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="9dp"
+                        android:text="All"
+                        android:textColor="@color/filter_pill_text_color"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/filterBlurFaces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/selector_filter_pill_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="9dp"
+                        android:text="Blur Faces"
+                        android:textColor="@color/filter_pill_text_color"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/filterBlurBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/selector_filter_pill_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="9dp"
+                        android:text="Blur Background"
+                        android:textColor="@color/filter_pill_text_color"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/filterVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/selector_filter_pill_bg"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingHorizontal="18dp"
+                        android:paddingVertical="9dp"
+                        android:text="Video"
+                        android:textColor="@color/filter_pill_text_color"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <ImageView
                 android:id="@+id/btnFilterSort"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_icon_circle_light"
                 android:clickable="true"
                 android:contentDescription="@string/cd_filter_sort"
                 android:focusable="true"
                 android:padding="10dp"
                 android:src="@drawable/ic_sliders"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/text_primary" />
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
@@ -192,10 +234,10 @@
         android:id="@+id/emptyState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerContainer"
@@ -204,8 +246,8 @@
         <ImageView
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/ic_no_recents"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/ic_no_recents" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import java.util.Calendar
 
+enum class RecentsTypeFilter {
+    ALL, BLUR_FACES, BLUR_BACKGROUND, VIDEO
+}
 enum class DateFilter(val label: String) {
     TODAY("Today"), THIS_WEEK("This Week"), THIS_MONTH("This Month")
 }
@@ -28,8 +31,14 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
 
     private val _allEdits = MutableStateFlow<List<RecentEdit>>(emptyList())
 
-    private val _typeFilter = MutableStateFlow<EditType?>(null) // null = All
-    val typeFilter: StateFlow<EditType?> = _typeFilter.asStateFlow()
+    private val _typeFilter = MutableStateFlow(RecentsTypeFilter.ALL)
+    val typeFilter: StateFlow<RecentsTypeFilter> = _typeFilter.asStateFlow()
+
+    val recentEditsForHome: StateFlow<List<RecentEdit>> = _allEdits
+        .combine(_allEdits) { all, _ ->
+            all.sortedByDescending { it.timestampMillis }.take(8)
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val _dateFilter = MutableStateFlow(DateFilter.THIS_WEEK)
     val dateFilter: StateFlow<DateFilter> = _dateFilter.asStateFlow()
@@ -42,7 +51,7 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
 
     val visibleEdits: StateFlow<List<RecentEdit>> =
         combine(_allEdits, _typeFilter, _dateFilter, _sortOption, _searchQuery) { all, type, date, sort, query ->
-            all.filter { type == null || it.editType == type }
+            all.filter { matchesTypeFilter(it.editType, type) }
                 .filter { withinDateRange(it.timestampMillis, date) }
                 .filter { query.isBlank() || it.title.contains(query, ignoreCase = true) }
                 .let { list ->
@@ -62,7 +71,7 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
         _allEdits.value = store.getAll()
     }
 
-    fun setTypeFilter(type: EditType?) {
+    fun setTypeFilter(type: RecentsTypeFilter) {
         _typeFilter.value = type
     }
 
@@ -87,6 +96,14 @@ class RecentsViewModel(application: Application) : AndroidViewModel(application)
         store.delete(edit.id)
         refresh()
     }
+
+    private fun matchesTypeFilter(editType: EditType, filter: RecentsTypeFilter): Boolean =
+        when (filter) {
+            RecentsTypeFilter.ALL -> true
+            RecentsTypeFilter.BLUR_FACES -> editType == EditType.BLUR_FACES
+            RecentsTypeFilter.BLUR_BACKGROUND -> editType == EditType.BLUR_BACKGROUND
+            RecentsTypeFilter.VIDEO -> editType == EditType.VIDEO
+        }
 
     private fun withinDateRange(timestampMillis: Long, filter: DateFilter): Boolean {
         val cal = Calendar.getInstance()

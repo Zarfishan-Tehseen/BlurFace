@@ -122,7 +122,7 @@ class BrushMaskView @JvmOverloads constructor(
                 if (isDrawing) {
                     isDrawing = false
                     maskBitmap?.let { bmp ->
-                        onMaskStrokeFinished?.invoke(bmp.copy(bmp.config, true))
+                        onMaskStrokeFinished?.invoke(bmp.copy(bmp.config ?: Bitmap.Config.ARGB_8888, true))
                     }
                 }
                 return true

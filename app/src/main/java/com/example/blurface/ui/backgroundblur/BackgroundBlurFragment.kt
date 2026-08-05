@@ -99,7 +99,7 @@ class BackgroundBlurFragment : Fragment() {
     private fun setUpBlurTypeChips() {
         binding.chipRadial.setOnClickListener { viewModel.setBlurType(BackgroundBlurType.RADIAL) }
         binding.chipGaussian.setOnClickListener { viewModel.setBlurType(BackgroundBlurType.GAUSSIAN) }
-        binding.btnReset.setOnClickListener { viewModel.resetIntensity() }
+        binding.btnReset.setOnClickListener { viewModel.resetAll() }
     }
 
     private fun updateBlurTypeSelection(selected: BackgroundBlurType) {

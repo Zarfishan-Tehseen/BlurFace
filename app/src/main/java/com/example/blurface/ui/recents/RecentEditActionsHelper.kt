@@ -28,18 +28,31 @@ object RecentEditActionsHelper {
         onShare: () -> Unit
     ) {
         val popupBinding = PopupRecentEditActionsBinding.inflate(LayoutInflater.from(context))
+
+        popupBinding.root.measure(
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val popupWidth = popupBinding.root.measuredWidth
+
         val popup = PopupWindow(
             popupBinding.root,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            popupWidth,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             true
-        ).apply { elevation = 12f }
+        ).apply {
+            elevation = 12f
+            setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        }
 
         popupBinding.rowDownload.setOnClickListener { popup.dismiss(); onDownload() }
         popupBinding.rowDelete.setOnClickListener { popup.dismiss(); onDelete() }
         popupBinding.rowShare.setOnClickListener { popup.dismiss(); onShare() }
 
-        popup.showAsDropDown(anchor, -120, 8)
+        val marginPx = (8 * context.resources.displayMetrics.density).toInt()
+        val xOffset = -(popupWidth - anchor.width + marginPx)
+
+        popup.showAsDropDown(anchor, xOffset, 8)
     }
 
     /** Does file I/O - call this from a background dispatcher. */

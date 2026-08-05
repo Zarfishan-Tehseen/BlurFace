@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="Resolution"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -152,7 +152,7 @@
                 <LinearLayout
                     android:id="@+id/card1080p"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="6dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_export_card_selector"
@@ -161,14 +161,6 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginBottom="2dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_star" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,12 +191,6 @@
                     android:orientation="vertical"
                     android:paddingVertical="12dp">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginBottom="2dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_star" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -257,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Frame Rate"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -319,7 +305,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Format"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 

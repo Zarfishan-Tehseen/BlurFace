@@ -241,6 +241,7 @@
             android:textStyle="bold"
             app:backgroundTint="@null"
             app:icon="@drawable/ic_download"
+            app:iconTint="@color/white"
             app:iconGravity="textStart"
             app:iconPadding="10dp" />
 

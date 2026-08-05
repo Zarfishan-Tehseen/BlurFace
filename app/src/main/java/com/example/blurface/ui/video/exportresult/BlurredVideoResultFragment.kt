@@ -200,9 +200,6 @@ class BlurredVideoResultFragment : Fragment() {
 
         // 4. Preserve status bar visibility & apply window insets to shift content downward
         dialog.window?.let { window ->
-            // Keep status bar visible
-            window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
             // Make window draw edge-to-edge under status bar, then pad down
             androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -290,7 +287,7 @@ class BlurredVideoResultFragment : Fragment() {
             RecentEdit(
                 id = uri.toString(),
                 title = "Video",
-                editType = EditType.BLUR_FACES,
+                editType = EditType.VIDEO,
                 mediaUri = uri.toString(),
                 isVideo = true,
                 timestampMillis = System.currentTimeMillis(),

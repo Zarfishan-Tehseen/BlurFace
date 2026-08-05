@@ -90,7 +90,11 @@ class AnalyzingVideoFragment : Fragment() {
         }
         val workspaceCacheDir = File(context.cacheDir, "blurshield_frame_cache").absolutePath
         viewModel.videoPath = inputPath
-        viewModel.runFacePipeline(inputPath, workspaceCacheDir, fps = 10)
+
+        val sourceFps = com.example.blurface.utils.VideoMetadataUtils.getSourceFps(inputPath)
+        val analysisFps = com.example.blurface.utils.VideoMetadataUtils.deriveAnalysisFps(sourceFps, divisor = 5)
+
+        viewModel.runFacePipeline(inputPath, workspaceCacheDir, fps = analysisFps)
     }
 
     private fun loadThumbnail(videoUri: Uri) {

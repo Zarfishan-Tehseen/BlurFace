@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -21,7 +22,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.blurface.databinding.FragmentRecentsBinding
 import com.example.blurface.databinding.PopupRecentsFilterBinding
-import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,8 +32,7 @@ class RecentsFragment : Fragment() {
     private var _binding: FragmentRecentsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RecentsViewModel by viewModels()
-
+    private val viewModel: RecentsViewModel by activityViewModels()
     private lateinit var adapter: RecentEditsAdapter
 
     override fun onCreateView(
@@ -103,15 +102,17 @@ class RecentsFragment : Fragment() {
     }
 
     private fun setUpFilterChips() {
-        binding.filterAll.setOnClickListener { viewModel.setTypeFilter(null) }
-        binding.filterBlurFaces.setOnClickListener { viewModel.setTypeFilter(EditType.BLUR_FACES) }
-        binding.filterBlurBackground.setOnClickListener { viewModel.setTypeFilter(EditType.BLUR_BACKGROUND) }
+        binding.filterAll.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.ALL) }
+        binding.filterBlurFaces.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_FACES) }
+        binding.filterBlurBackground.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_BACKGROUND) }
+        binding.filterVideo.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.VIDEO) }
     }
 
-    private fun updateFilterChipSelection(selected: EditType?) {
-        binding.filterAll.isSelected = selected == null
-        binding.filterBlurFaces.isSelected = selected == EditType.BLUR_FACES
-        binding.filterBlurBackground.isSelected = selected == EditType.BLUR_BACKGROUND
+    private fun updateFilterChipSelection(selected: RecentsTypeFilter) {
+        binding.filterAll.isSelected = selected == RecentsTypeFilter.ALL
+        binding.filterBlurFaces.isSelected = selected == RecentsTypeFilter.BLUR_FACES
+        binding.filterBlurBackground.isSelected = selected == RecentsTypeFilter.BLUR_BACKGROUND
+        binding.filterVideo.isSelected = selected == RecentsTypeFilter.VIDEO
     }
 
     private fun observeViewModel() {
@@ -165,12 +166,6 @@ class RecentsFragment : Fragment() {
 
     private fun showFilterPopup(anchor: View) {
         val popupBinding = PopupRecentsFilterBinding.inflate(LayoutInflater.from(requireContext()))
-        val popup = PopupWindow(
-            popupBinding.root,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        ).apply { elevation = 12f }
 
         fun refreshSelections() {
             val sort = viewModel.sortOption.value
@@ -204,7 +199,25 @@ class RecentsFragment : Fragment() {
             viewModel.setDateFilter(DateFilter.THIS_MONTH); refreshSelections()
         }
 
-        popup.showAsDropDown(anchor, -180, 8)
+        popupBinding.root.measure(
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        val popupWidth = popupBinding.root.measuredWidth
+        val popup = PopupWindow(
+            popupBinding.root,
+            popupWidth,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        ).apply {
+            elevation = 12f
+            setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        }
+
+        val marginPx = (8 * resources.displayMetrics.density).toInt()
+        val xOffset = -(popupWidth - anchor.width + marginPx)
+
+        popup.showAsDropDown(anchor, xOffset, 8)
     }
 
     override fun onDestroyView() {

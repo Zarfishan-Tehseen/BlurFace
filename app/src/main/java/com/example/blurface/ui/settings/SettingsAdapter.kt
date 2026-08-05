@@ -72,14 +72,14 @@ class SettingsAdapter(
             }
 
             // 4. Click Listener
-            // Replace with your standard or custom bounce click helper if available
             binding.root.setOnClickListener {
                 onItemClicked(item)
             }
 
             // 5. Divider Renderer
             if (item.isLastInGroup) {
-                binding.settingDivider.visibility = View.GONE
+                binding.settingDivider.visibility = View.INVISIBLE
+
             } else {
                 binding.settingDivider.visibility = View.VISIBLE
             }

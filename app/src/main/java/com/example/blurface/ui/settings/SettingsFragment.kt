@@ -1,12 +1,16 @@
 package com.example.blurface.ui.settings
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -18,6 +22,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blurface.R
+import com.example.blurface.databinding.DialogConfirmActionBinding
+import com.example.blurface.databinding.DialogSingleChoiceBinding
 import com.example.blurface.databinding.FragmentSettingsBinding
 import kotlinx.coroutines.launch
 
@@ -66,14 +72,12 @@ class SettingsFragment : Fragment() {
             findNavController().navigate(R.id.premiumFragment)
         }
 
-        // 3. Collect UI State Flow (see step 2 below)
         setupLifecycleObservers()
     }
     private fun setupLifecycleObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.items.collect { settingsList ->
-                    // This sends the fresh category item list to your ListAdapter
                     adapter.submitList(settingsList)
                 }
             }
@@ -90,7 +94,6 @@ class SettingsFragment : Fragment() {
         when (item.id) {
             "premium_banner" -> handlePremiumBannerClicked()
 
-            // Pickers
             "export_quality" -> showSingleChoiceDialog(
                 title = "Export Quality",
                 options = ExportQuality.entries.map { it.label },
@@ -109,7 +112,6 @@ class SettingsFragment : Fragment() {
                 currentIndex = LANGUAGES.indexOf(item.subtitle).coerceAtLeast(0)
             ) { index -> viewModel.setLanguage(LANGUAGES[index]) }
 
-            // Navigations
             "privacy_policy" -> openUrl("https://example.com/privacy")
             "data_security" -> openUrl("https://example.com/security")
             "clear_cache" -> confirmClearCache()
@@ -129,25 +131,80 @@ class SettingsFragment : Fragment() {
         currentIndex: Int,
         onSelected: (Int) -> Unit
     ) {
-        var selected = currentIndex
-        AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setSingleChoiceItems(options.toTypedArray(), currentIndex) { _, which -> selected = which }
-            .setPositiveButton("OK") { dialog, _ ->
-                onSelected(selected)
-                dialog.dismiss()
+        val dialogBinding = DialogSingleChoiceBinding.inflate(layoutInflater)
+        val dialog = Dialog(requireContext()).apply {
+            setContentView(dialogBinding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.85).toInt(),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        dialogBinding.tvDialogTitle.text = title
+
+        // Dynamically populate options into the RadioGroup
+        options.forEachIndexed { index, optionText ->
+            val radioButton = RadioButton(requireContext()).apply {
+                id = View.generateViewId()
+                text = optionText
+                textSize = 16f
+                setTextColor(Color.BLACK)
+                setPadding(24, 16, 16, 16)
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+
+            dialogBinding.radioGroupOptions.addView(radioButton)
+
+            if (index == currentIndex) {
+                dialogBinding.radioGroupOptions.check(radioButton.id)
+            }
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnOk.setOnClickListener {
+            val checkedId = dialogBinding.radioGroupOptions.checkedRadioButtonId
+            if (checkedId != -1) {
+                val checkedView = dialogBinding.radioGroupOptions.findViewById<View>(checkedId)
+                val selectedIndex = dialogBinding.radioGroupOptions.indexOfChild(checkedView)
+                onSelected(selectedIndex)
+            }
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun confirmClearCache() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Clear Cache")
-            .setMessage("This removes temporary files created while editing. Your saved photos and videos are not affected.")
-            .setPositiveButton("Clear") { _, _ -> viewModel.clearCache() }
-            .setNegativeButton("Cancel", null)
-            .show()
+        val dialogBinding = DialogConfirmActionBinding.inflate(layoutInflater)
+        val dialog = Dialog(requireContext()).apply {
+            setContentView(dialogBinding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.85).toInt(),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        dialogBinding.tvDialogTitle.text = "Clear Cache"
+        dialogBinding.tvDialogMessage.text =
+            "This removes temporary files created while editing. Your saved photos and videos are not affected."
+
+        dialogBinding.btnConfirm.text = "Clear"
+        dialogBinding.btnConfirm.setTextColor(Color.parseColor("#FF5252")) // Optional highlight for destructive action
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirm.setOnClickListener {
+            viewModel.clearCache()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun openUrl(url: String) {

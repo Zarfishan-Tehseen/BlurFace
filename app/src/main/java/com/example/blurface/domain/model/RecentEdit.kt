@@ -2,7 +2,8 @@ package com.example.blurface.domain.model
 
 enum class EditType(val label: String) {
     BLUR_FACES("Blur Faces"),
-    BLUR_BACKGROUND("Blur Background")
+    BLUR_BACKGROUND("Blur Background"),
+    VIDEO("Video")
 }
 
 data class RecentEdit(

@@ -17,10 +17,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blurface.R
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.databinding.FragmentHomeBinding
 import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.recents.RecentEditActionsHelper
+import com.example.blurface.ui.recents.RecentsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,6 +34,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var recentAdapter: HomeRecentThumbnailAdapter
+    private val viewModel: RecentsViewModel by activityViewModels()
     private val pickImage = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -101,8 +106,28 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.premiumFragment)
         }
         setUpRecentEdits()
+        observeViewModel()
     }
 
+    private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.recentEditsForHome.collect { edits ->
+                    recentAdapter.submitList(edits)
+
+                    if (edits.isEmpty()) {
+                        binding.rvRecentEdits.visibility = View.GONE
+                        binding.layoutEmptyState.visibility = View.VISIBLE
+                        binding.btnSeeAll.visibility = View.GONE
+                    } else {
+                        binding.rvRecentEdits.visibility = View.VISIBLE
+                        binding.layoutEmptyState.visibility = View.GONE
+                        binding.btnSeeAll.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+    }
     private fun setUpRecentEdits() {
         binding.rvRecentEdits.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -114,30 +139,22 @@ class HomeFragment : Fragment() {
         binding.rvRecentEdits.adapter = recentAdapter
 
         binding.btnSeeAll.setOnClickListener {
-            findNavController().navigate(R.id.recentsFragment)
+            // Replace R.id.recentsFragment with your bottom_nav_menu.xml item ID for Recents
+            requireActivity()
+                .findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNav)
+                ?.selectedItemId = R.id.recentsFragment
         }
     }
 
     override fun onResume() {
         super.onResume()
-        loadRecentEdits()
+        viewModel.refresh()
     }
 
-    private fun loadRecentEdits() {
-        val edits = RecentEditsStore(requireContext()).getAll().take(8)
-        recentAdapter.submitList(edits)
-
-        if (edits.isEmpty()) {
-            binding.rvRecentEdits.visibility = View.GONE
-            binding.layoutEmptyState.visibility = View.VISIBLE
-            binding.btnSeeAll.visibility = View.GONE
-        } else {
-            binding.rvRecentEdits.visibility = View.VISIBLE
-            binding.layoutEmptyState.visibility = View.GONE
-            binding.btnSeeAll.visibility = View.VISIBLE
-        }
+    private fun deleteEdit(edit: RecentEdit) {
+        viewModel.delete(edit)
+        Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
     }
-
     private fun showActionsPopup(edit: RecentEdit, anchor: View) {
         RecentEditActionsHelper.showPopup(
             context = requireContext(),
@@ -157,16 +174,6 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun deleteEdit(edit: RecentEdit) {
-        runCatching {
-            requireContext().contentResolver.delete(Uri.parse(edit.mediaUri), null, null)
-        }
-        RecentEditsStore(requireContext()).delete(edit.id)
-        loadRecentEdits()
-        Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
-    }
-
     private fun navigateToDetectingFaces(uri: Uri) {
         findNavController().navigate(
             R.id.detectingFacesFragment,

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -61,7 +62,10 @@ class DetectedFacesFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.setOnClickListener { navigateHome() }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            navigateHome()
+        }
 
         adapter = PersonSelectionAdapter(
             fps = viewModel.fps,
@@ -76,20 +80,11 @@ class DetectedFacesFragment : Fragment() {
             adapter.notifyDataSetChanged()
             updateSelectAllState()
         }
-
-        // Pops back to AnalyzingVideoFragment, whose onViewCreated re-runs the
-        // pipeline with the same videoUri arg since the fragment instance
-        // (and its arguments) are preserved on the back stack.
         binding.btnDetectAgain.setOnClickListener { findNavController().navigateUp() }
 
         binding.btnContinue.setOnClickListener {
-            // currentPeople.filter { it.shouldBlur } lives in the shared
-            // FaceClusterViewModel already (same Person instances, mutable
-            // shouldBlur flag) - VideoBlurEditorFragment reads it back out
-            // via viewModel.selectedPeopleForBlur().
             findNavController().navigate(R.id.videoBlurEditorFragment)
         }
-
         observeState()
     }
 
@@ -113,6 +108,10 @@ class DetectedFacesFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun navigateHome() {
+        findNavController().navigate(R.id.homeFragment)
     }
 
     private fun isAllSelected(): Boolean =
