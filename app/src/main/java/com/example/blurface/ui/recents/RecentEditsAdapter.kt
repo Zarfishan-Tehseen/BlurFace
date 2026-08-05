@@ -28,6 +28,7 @@ sealed class RecentsListItem {
 
 class RecentEditsAdapter(
     private val scope: CoroutineScope,
+    private val onItemClicked: (RecentEdit) -> Unit,
     private val onMoreClicked: (RecentEdit, View) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -78,7 +79,7 @@ class RecentEditsAdapter(
         return if (viewType == TYPE_HEADER) {
             HeaderViewHolder(ItemRecentEditHeaderBinding.inflate(inflater, parent, false))
         } else {
-            RowViewHolder(ItemRecentEditRowBinding.inflate(inflater, parent, false), scope, onMoreClicked)
+            RowViewHolder(ItemRecentEditRowBinding.inflate(inflater, parent, false), scope, onItemClicked, onMoreClicked)
         }
     }
 
@@ -101,6 +102,7 @@ class RecentEditsAdapter(
     class RowViewHolder(
         private val binding: ItemRecentEditRowBinding,
         private val scope: CoroutineScope,
+        private val onItemClicked: (RecentEdit) -> Unit,
         private val onMoreClicked: (RecentEdit, View) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -130,6 +132,7 @@ class RecentEditsAdapter(
             } else {
                 runCatching { binding.ivThumbnail.setImageURI(mediaUri) }
             }
+            binding.root.setOnClickListener { onItemClicked(edit) }
             binding.btnMore.setOnClickListener { onMoreClicked(edit, it) }
         }
 

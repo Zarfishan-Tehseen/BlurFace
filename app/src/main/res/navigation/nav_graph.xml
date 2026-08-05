@@ -83,4 +83,32 @@
         android:name="com.example.blurface.ui.premium.PremiumFragment"
         android:label="Premium Fragment" />
 
+    <fragment
+        android:id="@+id/mediaPreviewFragment"
+        android:name="com.example.blurface.ui.recents.MediaPreviewFragment"
+        android:label="Media Preview">
+        <argument
+            android:name="mediaUri"
+            app:argType="string" />
+        <argument
+            android:name="isVideo"
+            app:argType="boolean" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Media Preview" />
+        <argument
+            android:name="editType"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="timestampMillis"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="fileSizeBytes"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
 </navigation>
