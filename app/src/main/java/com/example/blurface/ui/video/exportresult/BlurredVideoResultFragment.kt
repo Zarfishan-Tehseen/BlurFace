@@ -16,18 +16,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.WindowManager
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.blurface.R
@@ -48,6 +54,7 @@ class BlurredVideoResultFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FaceClusterViewModel by navGraphViewModels(R.id.nav_graph)
 
+    private var exoPlayer: ExoPlayer? = null
     private var resultPath: String? = null
     private var isSaving = false
 
@@ -56,9 +63,12 @@ class BlurredVideoResultFragment : Fragment() {
     private val progressTick = object : Runnable {
         override fun run() {
             if (_binding == null) return
-            if (!isUserSeeking && binding.videoPlayer.isPlaying) {
-                binding.seekVideoProgress.progress = binding.videoPlayer.currentPosition
-                binding.tvCurrentTime.text = formatMs(binding.videoPlayer.currentPosition)
+            exoPlayer?.let { player ->
+                if (!isUserSeeking && player.isPlaying) {
+                    val currentPos = player.currentPosition.toInt()
+                    binding.seekVideoProgress.progress = currentPos
+                    binding.tvCurrentTime.text = formatMs(currentPos)
+                }
             }
             progressHandler.postDelayed(this, 500)
         }
@@ -103,7 +113,22 @@ class BlurredVideoResultFragment : Fragment() {
         setUpPlayer(path)
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.actionSaveGallery.setOnClickListener { onSaveClicked() }
+        binding.actionSaveGallery.setOnClickListener {
+            val savedUri = viewModel.exportedVideoUri
+            if (savedUri != null) {
+                Toast.makeText(requireContext(), "Video is already saved to your Gallery & Recents", Toast.LENGTH_SHORT).show()
+                val bundle = Bundle().apply {
+                    putString("mediaUri", savedUri)
+                    putBoolean("isVideo", true)
+                    putString("title", "Blurred Video")
+                    putString("editType", "Video")
+                    putLong("timestampMillis", System.currentTimeMillis())
+                }
+                findNavController().navigate(R.id.mediaPreviewFragment, bundle)
+            } else {
+                onSaveClicked()
+            }
+        }
         binding.actionShare.setOnClickListener { onShareClicked() }
         binding.actionCopyLink.setOnClickListener { onCopyLinkClicked() }
         binding.btnBackToHome.setOnClickListener {
@@ -112,28 +137,34 @@ class BlurredVideoResultFragment : Fragment() {
     }
 
     private fun setUpPlayer(path: String) {
-        binding.videoPlayer.setVideoPath(path)
-
-        binding.videoPlayer.setOnPreparedListener { player ->
-            player.isLooping = true
-            binding.seekVideoProgress.max = player.duration
-            binding.tvTotalTime.text = formatMs(player.duration)
-            binding.tvCurrentTime.text = formatMs(0)
-            // Starts paused, showing the centered play button - matches the layout's
-            // overlay-play-button design rather than autoplaying immediately.
+        exoPlayer = ExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(MediaItem.fromUri(Uri.fromFile(File(path))))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
         }
 
-        binding.videoPlayer.setOnErrorListener { _, _, _ ->
-            Toast.makeText(
-                requireContext(),
-                "Couldn't play the exported video.",
-                Toast.LENGTH_SHORT
-            ).show()
-            true
-        }
+        binding.videoPlayer.player = exoPlayer
+
+        exoPlayer?.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_READY) {
+                    val duration = exoPlayer?.duration?.toInt() ?: 0
+                    binding.seekVideoProgress.max = duration
+                    binding.tvTotalTime.text = formatMs(duration)
+                    binding.tvCurrentTime.text = formatMs(0)
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                Toast.makeText(
+                    requireContext(),
+                    "Couldn't play the exported video.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
 
         binding.btnPlayPause.setOnClickListener { togglePlayback() }
-        // Tapping the video itself also toggles playback, same as most players.
         binding.videoFrame.setOnClickListener { togglePlayback() }
 
         binding.seekVideoProgress.setOnSeekBarChangeListener(object :
@@ -145,10 +176,9 @@ class BlurredVideoResultFragment : Fragment() {
             override fun onStartTrackingTouch(seekBar: SeekBar) {
                 isUserSeeking = true
             }
-
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 isUserSeeking = false
-                binding.videoPlayer.seekTo(seekBar.progress)
+                exoPlayer?.seekTo(seekBar.progress.toLong())
             }
         })
 
@@ -158,25 +188,26 @@ class BlurredVideoResultFragment : Fragment() {
     }
 
     private fun togglePlayback() {
-        if (binding.videoPlayer.isPlaying) {
-            binding.videoPlayer.pause()
-            binding.btnPlayPause.visibility = View.VISIBLE
-        } else {
-            binding.videoPlayer.start()
-            binding.btnPlayPause.visibility = View.GONE
+        exoPlayer?.let { player ->
+            if (player.isPlaying) {
+                player.pause()
+                binding.btnPlayPause.visibility = View.VISIBLE
+            } else {
+                player.play()
+                binding.btnPlayPause.visibility = View.GONE
+            }
         }
     }
 
+    @OptIn(UnstableApi::class)
     private fun showFullscreenPlayer(path: String) {
-        val wasPlaying = binding.videoPlayer.isPlaying
-        val resumePosition = binding.videoPlayer.currentPosition
-        binding.videoPlayer.pause()
+        val wasPlaying = exoPlayer?.isPlaying == true
+        val resumePosition = exoPlayer?.currentPosition ?: 0L
+        exoPlayer?.pause()
 
-        // 1. Use a standard non-fullscreen theme so status bar remains visible
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        // 2. Create a FrameLayout container that centers its child
         val container = android.widget.FrameLayout(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -185,22 +216,19 @@ class BlurredVideoResultFragment : Fragment() {
             setBackgroundColor(android.graphics.Color.BLACK)
         }
 
-        // 3. Create the VideoView centered vertically and horizontally
-        val fullscreenVideoView = android.widget.VideoView(requireContext()).apply {
+        val fullscreenPlayerView = PlayerView(requireContext()).apply {
             layoutParams = android.widget.FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = android.view.Gravity.CENTER
-            }
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            useController = false
+            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
         }
 
-        container.addView(fullscreenVideoView)
+        container.addView(fullscreenPlayerView)
         dialog.setContentView(container)
 
-        // 4. Preserve status bar visibility & apply window insets to shift content downward
         dialog.window?.let { window ->
-            // Make window draw edge-to-edge under status bar, then pad down
             androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
 
             ViewCompat.setOnApplyWindowInsetsListener(container) { v, insets ->
@@ -210,25 +238,28 @@ class BlurredVideoResultFragment : Fragment() {
             }
         }
 
-        fullscreenVideoView.setVideoPath(path)
-        fullscreenVideoView.setOnPreparedListener { player ->
-            player.isLooping = true
-            fullscreenVideoView.seekTo(resumePosition)
-            fullscreenVideoView.start()
+        val dialogPlayer = ExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(MediaItem.fromUri(Uri.fromFile(File(path))))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
+            seekTo(resumePosition)
+            play()
         }
+
+        fullscreenPlayerView.player = dialogPlayer
 
         var lastKnownPosition = resumePosition
 
-        fullscreenVideoView.setOnClickListener {
-            lastKnownPosition = fullscreenVideoView.currentPosition
+        fullscreenPlayerView.setOnClickListener {
+            lastKnownPosition = dialogPlayer.currentPosition
             dialog.dismiss()
         }
 
         dialog.setOnDismissListener {
-            fullscreenVideoView.stopPlayback()
-            binding.videoPlayer.seekTo(lastKnownPosition)
+            dialogPlayer.release()
+            exoPlayer?.seekTo(lastKnownPosition)
             if (wasPlaying) {
-                binding.videoPlayer.start()
+                exoPlayer?.play()
                 binding.btnPlayPause.visibility = View.GONE
             } else {
                 binding.btnPlayPause.visibility = View.VISIBLE
@@ -300,20 +331,6 @@ class BlurredVideoResultFragment : Fragment() {
         val path = resultPath ?: return
         val file = File(path)
 
-        // Requires a FileProvider declared in AndroidManifest.xml, e.g.:
-        //
-        // <provider
-        //     android:name="androidx.core.content.FileProvider"
-        //     android:authorities="${applicationId}.fileprovider"
-        //     android:exported="false"
-        //     android:grantUriPermissions="true">
-        //     <meta-data
-        //         android:name="android.support.FILE_PROVIDER_PATHS"
-        //         android:resource="@xml/file_paths" />
-        // </provider>
-        //
-        // with res/xml/file_paths.xml exposing your cache dir, e.g.:
-        // <paths><cache-path name="exports" path="." /></paths>
         val authority = "${requireContext().packageName}.fileprovider"
         val contentUri: Uri = try {
             FileProvider.getUriForFile(requireContext(), authority, file)
@@ -334,14 +351,6 @@ class BlurredVideoResultFragment : Fragment() {
         startActivity(Intent.createChooser(shareIntent, "Share video"))
     }
 
-    /**
-     * "Copy link" has no server-hosted URL to copy in this app today - there's no
-     * upload/backend step anywhere in the pipeline. This copies the local file path
-     * instead, which is only useful for on-device debugging, not for sending to
-     * someone else. If you want a real shareable link, that needs a cloud upload step
-     * (e.g. to your own storage bucket) that returns a public/signed URL - happy to
-     * help wire that up if you want to add it.
-     */
     private fun onCopyLinkClicked() {
         val path = resultPath ?: return
         val clipboard =
@@ -356,7 +365,9 @@ class BlurredVideoResultFragment : Fragment() {
 
     override fun onDestroyView() {
         progressHandler.removeCallbacks(progressTick)
-        binding.videoPlayer.stopPlayback()
+        binding.videoPlayer.player = null
+        exoPlayer?.release()
+        exoPlayer = null
         super.onDestroyView()
         _binding = null
     }

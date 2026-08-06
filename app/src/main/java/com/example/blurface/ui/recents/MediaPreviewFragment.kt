@@ -14,6 +14,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.navigation.fragment.findNavController
 import com.example.blurface.databinding.FragmentMediaPreviewBinding
 import com.example.blurface.domain.model.EditType
@@ -36,14 +40,17 @@ class MediaPreviewFragment : Fragment() {
     private var timestampMillis: Long = 0L
     private var fileSizeBytes: Long = 0L
 
+    private var exoPlayer: ExoPlayer? = null
     private val progressHandler = Handler(Looper.getMainLooper())
     private var isUserSeeking = false
     private val progressTick = object : Runnable {
         override fun run() {
             if (_binding == null) return
-            if (!isUserSeeking && binding.videoPlayer.isPlaying) {
-                binding.seekVideoProgress.progress = binding.videoPlayer.currentPosition
-                binding.tvCurrentTime.text = formatMs(binding.videoPlayer.currentPosition)
+            val player = exoPlayer
+            if (!isUserSeeking && player != null && player.isPlaying) {
+                val currentPos = player.currentPosition.toInt()
+                binding.seekVideoProgress.progress = currentPos
+                binding.tvCurrentTime.text = formatMs(currentPos)
             }
             progressHandler.postDelayed(this, 500)
         }
@@ -119,21 +126,30 @@ class MediaPreviewFragment : Fragment() {
     }
 
     private fun setupVideoPlayer(uri: Uri) {
-        binding.videoPlayer.setVideoURI(uri)
-
-        binding.videoPlayer.setOnPreparedListener { player ->
-            player.isLooping = true
-            binding.seekVideoProgress.max = player.duration
-            binding.tvTotalTime.text = formatMs(player.duration)
-            binding.tvCurrentTime.text = formatMs(0)
-            binding.ivPlayPauseOverlay.visibility = View.VISIBLE
-            binding.btnPlayPause.setImageResource(com.example.blurface.R.drawable.ic_play)
+        val player = ExoPlayer.Builder(requireContext()).build().apply {
+            setMediaItem(MediaItem.fromUri(uri))
+            repeatMode = Player.REPEAT_MODE_ALL
+            prepare()
         }
+        exoPlayer = player
+        binding.videoPlayer.player = player
 
-        binding.videoPlayer.setOnErrorListener { _, _, _ ->
-            Toast.makeText(requireContext(), "Could not play video", Toast.LENGTH_SHORT).show()
-            true
-        }
+        player.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_READY) {
+                    val duration = player.duration.toInt().coerceAtLeast(0)
+                    binding.seekVideoProgress.max = duration
+                    binding.tvTotalTime.text = formatMs(duration)
+                    binding.tvCurrentTime.text = formatMs(0)
+                    binding.ivPlayPauseOverlay.visibility = View.VISIBLE
+                    binding.btnPlayPause.setImageResource(com.example.blurface.R.drawable.ic_play)
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                Toast.makeText(requireContext(), "Could not play video", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         binding.ivPlayPauseOverlay.setOnClickListener { togglePlayback() }
         binding.btnPlayPause.setOnClickListener { togglePlayback() }
@@ -150,7 +166,7 @@ class MediaPreviewFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 isUserSeeking = false
-                binding.videoPlayer.seekTo(seekBar.progress)
+                exoPlayer?.seekTo(seekBar.progress.toLong())
             }
         })
 
@@ -158,14 +174,14 @@ class MediaPreviewFragment : Fragment() {
     }
 
     private fun togglePlayback() {
-        if (!isVideo) return
-        if (binding.videoPlayer.isPlaying) {
-            binding.videoPlayer.pause()
+        val player = exoPlayer ?: return
+        if (player.isPlaying) {
+            player.pause()
             binding.ivPlayPauseOverlay.setImageResource(com.example.blurface.R.drawable.ic_play)
             binding.btnPlayPause.setImageResource(com.example.blurface.R.drawable.ic_play)
             binding.ivPlayPauseOverlay.visibility = View.VISIBLE
         } else {
-            binding.videoPlayer.start()
+            player.play()
             binding.ivPlayPauseOverlay.setImageResource(com.example.blurface.R.drawable.ic_pause)
             binding.btnPlayPause.setImageResource(com.example.blurface.R.drawable.ic_pause)
             binding.ivPlayPauseOverlay.visibility = View.GONE
@@ -213,7 +229,8 @@ class MediaPreviewFragment : Fragment() {
 
     override fun onDestroyView() {
         progressHandler.removeCallbacks(progressTick)
-        if (isVideo) binding.videoPlayer.stopPlayback()
+        exoPlayer?.release()
+        exoPlayer = null
         super.onDestroyView()
         _binding = null
     }

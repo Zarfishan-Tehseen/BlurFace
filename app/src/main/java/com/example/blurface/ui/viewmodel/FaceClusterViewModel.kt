@@ -22,6 +22,7 @@ class FaceClusterViewModel(
 
     var videoPath: String? = null
     var exportedVideoPath: String? = null
+    var exportedVideoUri: String? = null
 
     private val _blurSettings = MutableStateFlow(BlurSettings())
     val blurSettings: StateFlow<BlurSettings> = _blurSettings

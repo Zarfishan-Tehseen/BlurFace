@@ -3,10 +3,15 @@ package com.example.blurface.ui.video.exportprocess
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.blurface.data.history.RecentEditsStore
 import com.example.blurface.domain.model.BlurSettings
+import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.Person
+import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.domain.model.VideoResolution
+import com.example.blurface.utils.MediaSizeUtils
 import com.example.blurface.utils.VideoExportProcessor
+import com.example.blurface.utils.VideoSaver
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +44,9 @@ class ExportProcessViewModel : ViewModel() {
     // Set once export finishes successfully. Read by ExportProcessFragment to hand
     // off the real rendered file to BlurredVideoResultFragment.
     var outputPath: String? = null
+        private set
+
+    var savedGalleryUri: String? = null
         private set
 
     private var exportJob: Job? = null
@@ -101,6 +109,22 @@ class ExportProcessViewModel : ViewModel() {
 
             _exportState.value = if (result.success && result.outputPath != null) {
                 outputPath = result.outputPath
+                val appContext = context.applicationContext
+                val galleryUri = VideoSaver.saveToGallery(appContext, result.outputPath)
+                if (galleryUri != null) {
+                    savedGalleryUri = galleryUri.toString()
+                    RecentEditsStore(appContext).add(
+                        RecentEdit(
+                            id = galleryUri.toString(),
+                            title = "Video",
+                            editType = EditType.VIDEO,
+                            mediaUri = galleryUri.toString(),
+                            isVideo = true,
+                            timestampMillis = System.currentTimeMillis(),
+                            fileSizeBytes = MediaSizeUtils.getFileSizeBytes(appContext, galleryUri)
+                        )
+                    )
+                }
                 ExportState.Done
             } else {
                 ExportState.Error(result.error ?: "Export failed")

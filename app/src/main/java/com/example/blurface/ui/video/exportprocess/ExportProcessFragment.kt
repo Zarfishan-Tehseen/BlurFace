@@ -202,6 +202,7 @@ class ExportProcessFragment : Fragment() {
                 if (!hasNavigatedToResult) {
                     hasNavigatedToResult = true
                     faceClusterViewModel.exportedVideoPath = exportViewModel.outputPath
+                    faceClusterViewModel.exportedVideoUri = exportViewModel.savedGalleryUri
                     findNavController().navigate(R.id.blurredVideoResultFragment)
                 }
             }

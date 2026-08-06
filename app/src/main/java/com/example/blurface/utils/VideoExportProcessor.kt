@@ -113,9 +113,37 @@ object VideoExportProcessor {
 
             muxer = MediaMuxer(outputPath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
 
+            val probeFrame = runCatching {
+                retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST)
+            }.getOrNull()
+            val srcW = probeFrame?.width
+                ?: retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)?.toIntOrNull()
+                ?: resolution.width
+            val srcH = probeFrame?.height
+                ?: retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)?.toIntOrNull()
+                ?: resolution.height
+            probeFrame?.recycle()
+
+            val maxTargetDim = maxOf(resolution.width, resolution.height)
+            val (calcW, calcH) = if (srcW >= srcH) {
+                val h = (maxTargetDim.toDouble() * srcH / srcW).roundToInt()
+                maxTargetDim to h
+            } else {
+                val w = (maxTargetDim.toDouble() * srcW / srcH).roundToInt()
+                w to maxTargetDim
+            }
+
+            fun align16(dim: Int): Int {
+                val rem = dim % 16
+                return if (rem == 0) dim else dim + (16 - rem)
+            }
+
+            val exportWidth = align16(calcW)
+            val exportHeight = align16(calcH)
+
             val bitRate = (resolution.approxBitrateMbps * 1_000_000).toInt()
             val videoFormat = MediaFormat.createVideoFormat(
-                MediaFormat.MIMETYPE_VIDEO_AVC, resolution.width, resolution.height
+                MediaFormat.MIMETYPE_VIDEO_AVC, exportWidth, exportHeight
             ).apply {
                 setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar)
                 setInteger(MediaFormat.KEY_BIT_RATE, bitRate)
@@ -126,6 +154,18 @@ object VideoExportProcessor {
             codec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC).apply {
                 configure(videoFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
                 start()
+            }
+
+            val inputFormat = runCatching { codec.inputFormat }.getOrNull()
+            val encoderStride = if (inputFormat != null && inputFormat.containsKey("stride")) {
+                maxOf(exportWidth, inputFormat.getInteger("stride"))
+            } else {
+                exportWidth
+            }
+            val encoderSliceHeight = if (inputFormat != null && inputFormat.containsKey("slice-height")) {
+                maxOf(exportHeight, inputFormat.getInteger("slice-height"))
+            } else {
+                exportHeight
             }
 
             val bufferInfo = MediaCodec.BufferInfo()
@@ -172,19 +212,21 @@ object VideoExportProcessor {
 
                 val nearestAnalysisFrameId =
                     ((outputTimeUs / 1000.0) / analysisIntervalMs).roundToInt()
-                val boxes = frameFaceMap[nearestAnalysisFrameId] ?: emptyList()
+                val boxes = frameFaceMap[nearestAnalysisFrameId]
+                    ?: frameFaceMap.filterKeys { it <= nearestAnalysisFrameId }.maxByOrNull { it.key }?.value
+                    ?: emptyList()
 
                 val composited = compositeFrame(context, sourceFrame, boxes, blurSettings)
                 if (composited !== sourceFrame) sourceFrame.recycle()
 
-                val scaled = if (composited.width == resolution.width && composited.height == resolution.height) {
+                val scaled = if (composited.width == exportWidth && composited.height == exportHeight) {
                     composited
                 } else {
-                    Bitmap.createScaledBitmap(composited, resolution.width, resolution.height, true)
+                    Bitmap.createScaledBitmap(composited, exportWidth, exportHeight, true)
                         .also { if (it !== composited) composited.recycle() }
                 }
 
-                val nv12 = bitmapToNV12(scaled)
+                val nv12 = bitmapToNV12(scaled, encoderStride, encoderSliceHeight)
                 scaled.recycle()
 
                 val inIndex = codec.dequeueInputBuffer(10_000)
@@ -286,35 +328,45 @@ object VideoExportProcessor {
         return result
     }
 
-    /** Converts an ARGB_8888 bitmap to NV12 (Y plane, then interleaved U,V) bytes. */
-    private fun bitmapToNV12(bitmap: Bitmap): ByteArray {
+    /** Converts an ARGB_8888 bitmap to NV12 (Y plane, then interleaved U,V) bytes using encoder stride. */
+    private fun bitmapToNV12(bitmap: Bitmap, stride: Int, sliceHeight: Int): ByteArray {
         val width = bitmap.width
         val height = bitmap.height
         val argb = IntArray(width * height)
         bitmap.getPixels(argb, 0, width, 0, 0, width, height)
 
-        val yuv = ByteArray(width * height * 3 / 2)
-        var yIndex = 0
-        var uvIndex = width * height
-        var index = 0
+        val actualStride = maxOf(width, stride)
+        val actualSliceHeight = maxOf(height, sliceHeight)
 
+        val yuvSize = actualStride * actualSliceHeight * 3 / 2
+        val yuv = ByteArray(yuvSize)
+        // Fill UV plane with 128 (neutral chroma / zero saturation) so any unwritten
+        // or padded pixels render as pure black instead of bright green.
+        yuv.fill(128.toByte(), actualStride * actualSliceHeight, yuv.size)
+
+        var pixelIdx = 0
         for (j in 0 until height) {
+            val yRowStart = j * actualStride
+            val uvRowStart = actualStride * actualSliceHeight + (j / 2) * actualStride
+
             for (i in 0 until width) {
-                val p = argb[index]
+                val p = argb[pixelIdx++]
                 val r = (p shr 16) and 0xFF
                 val g = (p shr 8) and 0xFF
                 val b = p and 0xFF
 
                 val y = ((66 * r + 129 * g + 25 * b + 128) shr 8) + 16
-                yuv[yIndex++] = y.coerceIn(0, 255).toByte()
+                yuv[yRowStart + i] = y.coerceIn(0, 255).toByte()
 
                 if (j % 2 == 0 && i % 2 == 0) {
                     val u = ((-38 * r - 74 * g + 112 * b + 128) shr 8) + 128
                     val v = ((112 * r - 94 * g - 18 * b + 128) shr 8) + 128
-                    yuv[uvIndex++] = u.coerceIn(0, 255).toByte()
-                    yuv[uvIndex++] = v.coerceIn(0, 255).toByte()
+                    val uvIdx = uvRowStart + i
+                    if (uvIdx + 1 < yuv.size) {
+                        yuv[uvIdx] = u.coerceIn(0, 255).toByte()
+                        yuv[uvIdx + 1] = v.coerceIn(0, 255).toByte()
+                    }
                 }
-                index++
             }
         }
         return yuv
