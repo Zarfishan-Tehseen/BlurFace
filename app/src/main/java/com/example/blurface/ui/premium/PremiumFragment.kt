@@ -21,8 +21,7 @@ class PremiumFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var plansAdapter: PremiumPlansAdapter
-    private var selectedPlanId = "annual" // Keep track of the currently active plan selection
-
+    private var selectedPlanId = "annual"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

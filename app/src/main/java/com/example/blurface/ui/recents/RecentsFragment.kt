@@ -153,12 +153,38 @@ class RecentsFragment : Fragment() {
             context = requireContext(),
             anchor = anchor,
             onDownload = { downloadEdit(edit) },
-            onDelete = {
-                viewModel.delete(edit)
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
-            },
+            onDelete = { showDeleteConfirmationDialog(edit) },
             onShare = { RecentEditActionsHelper.share(requireContext(), edit) }
         )
+    }
+
+    private fun showDeleteConfirmationDialog(edit: RecentEdit) {
+        val dialogBinding = com.example.blurface.databinding.DialogConfirmActionBinding.inflate(layoutInflater)
+        val dialog = android.app.Dialog(requireContext()).apply {
+            setContentView(dialogBinding.root)
+            window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+            window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.85).toInt(),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        // Retain icon and buttons layout structure while updating content text
+        dialogBinding.tvDialogTitle.text = "Delete Recent Edit?"
+        dialogBinding.tvDialogMessage.text = "Are you sure you want to delete this file? This action cannot be undone."
+        dialogBinding.btnConfirm.text = "Delete"
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirm.setOnClickListener {
+            viewModel.delete(edit)
+            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun downloadEdit(edit: RecentEdit) {

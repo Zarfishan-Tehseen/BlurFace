@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -25,6 +27,7 @@ import com.example.blurface.R
 import com.example.blurface.databinding.DialogConfirmActionBinding
 import com.example.blurface.databinding.DialogSingleChoiceBinding
 import com.example.blurface.databinding.FragmentSettingsBinding
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
@@ -68,7 +71,7 @@ class SettingsFragment : Fragment() {
         binding.rvSettings.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSettings.adapter = adapter
 
-        binding.btnBuyNow.setOnClickListener {
+        binding.btnBuyNow.addPressEffect {
             findNavController().navigate(R.id.premiumFragment)
         }
 
@@ -96,28 +99,31 @@ class SettingsFragment : Fragment() {
 
             "export_quality" -> showSingleChoiceDialog(
                 title = "Export Quality",
+                iconRes = R.drawable.ic_hd,
                 options = ExportQuality.entries.map { it.label },
                 currentIndex = ExportQuality.entries.indexOfFirst { it.label == item.subtitle }
             ) { index -> viewModel.setExportQuality(ExportQuality.entries[index]) }
 
             "app_theme" -> showSingleChoiceDialog(
                 title = "App Theme",
+                iconRes = R.drawable.ic_sliders, // or your theme icon
                 options = AppTheme.entries.map { it.label },
                 currentIndex = AppTheme.entries.indexOfFirst { it.label == item.subtitle }
             ) { index -> viewModel.setAppTheme(AppTheme.entries[index]) }
 
             "language" -> showSingleChoiceDialog(
                 title = "Language",
+                iconRes = R.drawable.ic_language,
                 options = LANGUAGES,
                 currentIndex = LANGUAGES.indexOf(item.subtitle).coerceAtLeast(0)
             ) { index -> viewModel.setLanguage(LANGUAGES[index]) }
 
-            "privacy_policy" -> openUrl("https://example.com/privacy")
+            "privacy_policy" -> openPrivacyPolicy()
             "data_security" -> openUrl("https://example.com/security")
             "clear_cache" -> confirmClearCache()
-            "help_faq" -> openUrl("https://example.com/help")
-            "contact_us" -> openUrl("mailto:support@example.com")
-            "rate_us" -> openPlayStoreListing()
+            "help_faq" -> openEmail("Help & FAQs")
+            "contact_us" -> openEmail("FaceBlur Support")
+            "rate_us" -> rateApp()
         }
     }
 
@@ -127,6 +133,7 @@ class SettingsFragment : Fragment() {
 
     private fun showSingleChoiceDialog(
         title: String,
+        iconRes: Int,
         options: List<String>,
         currentIndex: Int,
         onSelected: (Int) -> Unit
@@ -136,28 +143,44 @@ class SettingsFragment : Fragment() {
             setContentView(dialogBinding.root)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window?.setLayout(
-                (resources.displayMetrics.widthPixels * 0.85).toInt(),
+                (resources.displayMetrics.widthPixels * 0.88).toInt(),
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
         }
 
         dialogBinding.tvDialogTitle.text = title
+        dialogBinding.ivDialogIcon.setImageResource(iconRes) // Set icon dynamically
 
-        // Dynamically populate options into the RadioGroup
+        var selectedIndex = currentIndex
+
         options.forEachIndexed { index, optionText ->
-            val radioButton = RadioButton(requireContext()).apply {
-                id = View.generateViewId()
-                text = optionText
-                textSize = 16f
-                setTextColor(Color.BLACK)
-                setPadding(24, 16, 16, 16)
+            val itemView = layoutInflater.inflate(R.layout.item_dialog_radio_option, dialogBinding.radioGroupOptions, false)
+            val container = itemView.findViewById<View>(R.id.containerOption)
+            val radioButton = itemView.findViewById<RadioButton>(R.id.radioButton)
+            val tvTitle = itemView.findViewById<TextView>(R.id.tvOptionTitle)
+
+            tvTitle.text = optionText
+
+            val isSelected = index == selectedIndex
+            radioButton.isChecked = isSelected
+            container.setBackgroundResource(
+                if (isSelected) R.drawable.bg_option_card_selected else R.drawable.bg_option_card_unselected
+            )
+
+            container.setOnClickListener {
+                selectedIndex = index
+                for (i in 0 until dialogBinding.radioGroupOptions.childCount) {
+                    val child = dialogBinding.radioGroupOptions.getChildAt(i)
+                    val rb = child.findViewById<RadioButton>(R.id.radioButton)
+                    val isCurrent = i == selectedIndex
+                    rb.isChecked = isCurrent
+                    child.setBackgroundResource(
+                        if (isCurrent) R.drawable.bg_option_card_selected else R.drawable.bg_option_card_unselected
+                    )
+                }
             }
 
-            dialogBinding.radioGroupOptions.addView(radioButton)
-
-            if (index == currentIndex) {
-                dialogBinding.radioGroupOptions.check(radioButton.id)
-            }
+            dialogBinding.radioGroupOptions.addView(itemView)
         }
 
         dialogBinding.btnCancel.setOnClickListener {
@@ -165,10 +188,7 @@ class SettingsFragment : Fragment() {
         }
 
         dialogBinding.btnOk.setOnClickListener {
-            val checkedId = dialogBinding.radioGroupOptions.checkedRadioButtonId
-            if (checkedId != -1) {
-                val checkedView = dialogBinding.radioGroupOptions.findViewById<View>(checkedId)
-                val selectedIndex = dialogBinding.radioGroupOptions.indexOfChild(checkedView)
+            if (selectedIndex != -1) {
                 onSelected(selectedIndex)
             }
             dialog.dismiss()
@@ -192,9 +212,6 @@ class SettingsFragment : Fragment() {
         dialogBinding.tvDialogMessage.text =
             "This removes temporary files created while editing. Your saved photos and videos are not affected."
 
-        dialogBinding.btnConfirm.text = "Clear"
-        dialogBinding.btnConfirm.setTextColor(Color.parseColor("#FF5252")) // Optional highlight for destructive action
-
         dialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
@@ -205,6 +222,38 @@ class SettingsFragment : Fragment() {
         }
 
         dialog.show()
+    }
+    private fun openEmail(subject: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("hello@webscare.com"))
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+        }
+
+        try {
+            startActivity(Intent.createChooser(intent, "Choose Email App"))
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "No email application found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openPrivacyPolicy() {
+        try {
+            val privacyUrl = "https://your-privacy-policy-url.com" // Replace with your final live domain URL
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyUrl))
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Cannot open browser link", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun rateApp() {
+        val packageName = requireContext().packageName
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+        } catch (e: Exception) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+        }
     }
 
     private fun openUrl(url: String) {
@@ -230,6 +279,6 @@ class SettingsFragment : Fragment() {
     }
 
     companion object {
-        private val LANGUAGES = listOf("English", "Spanish", "French", "German", "Hindi", "Urdu")
+        private val LANGUAGES = listOf("English", "Spanish", "French", "Urdu")
     }
 }

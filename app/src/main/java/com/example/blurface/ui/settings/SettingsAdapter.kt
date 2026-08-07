@@ -4,12 +4,13 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.blurface.utils.toPx
-import com.example.blurface.utils.setRoundedCorners
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.databinding.ItemSettingsRowBinding
+import com.example.blurface.utils.setRoundedCorners
+import com.example.blurface.utils.toPx
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect // Adjust import package to match project
 
 class SettingsAdapter(
     private val onItemClicked: (SettingsItem) -> Unit,
@@ -38,7 +39,7 @@ class SettingsAdapter(
             binding.tvSettingTitle.text = item.title
             binding.ivSettingIcon.setImageResource(item.icon)
 
-            // Subtitle / Trailing Text handling (like Cache size label)
+            // Subtitle / Trailing Text handling
             val subtitleText = item.subtitle ?: item.trailingText
             if (!subtitleText.isNullOrEmpty()) {
                 binding.tvSettingSubtitle.visibility = View.VISIBLE
@@ -71,23 +72,21 @@ class SettingsAdapter(
                 binding.ivChevron.visibility = View.VISIBLE
             }
 
-            // 4. Click Listener
-            binding.root.setOnClickListener {
+            // 4. Custom Press Effect (Replaces setOnClickListener)
+            binding.cardRowContainer.addPressEffect {
                 onItemClicked(item)
             }
 
             // 5. Divider Renderer
             if (item.isLastInGroup) {
                 binding.settingDivider.visibility = View.INVISIBLE
-
             } else {
                 binding.settingDivider.visibility = View.VISIBLE
             }
 
             // 6. Dynamic Card Background Rounding
-            // Ensure you import/implement `setRoundedCorners` and `toPx` extensions in your BlurFace project
             val radius = 16.toPx
-            val cardBgColor = Color.WHITE // Adjust according to light/dark themes if necessary
+            val cardBgColor = Color.WHITE
 
             val isFirstInGroup = item.categoryHeader != null || bindingAdapterPosition == 0
 

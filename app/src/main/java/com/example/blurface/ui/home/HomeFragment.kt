@@ -25,6 +25,7 @@ import com.example.blurface.databinding.FragmentHomeBinding
 import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.recents.RecentEditActionsHelper
 import com.example.blurface.ui.recents.RecentsViewModel
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,29 +81,29 @@ class HomeFragment : Fragment() {
             insets
         }
 
-        binding.btnSelectPhoto.setOnClickListener {
+        binding.btnSelectPhoto.addPressEffect {
             selectMediaLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
             )
         }
-        binding.cardBlurFaces.setOnClickListener {
+        binding.cardBlurFaces.addPressEffect {
             pickImage.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
 
-        binding.cardBlurBackground.setOnClickListener {
+        binding.cardBlurBackground.addPressEffect {
             pickBackgroundImage.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
 
-        binding.cardBlurVideo.setOnClickListener {
+        binding.cardBlurVideo.addPressEffect {
             pickVideo.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
             )
         }
-        binding.btnCrown.setOnClickListener {
+        binding.btnCrown.addPressEffect {
             findNavController().navigate(R.id.premiumFragment)
         }
         setUpRecentEdits()
@@ -138,7 +139,7 @@ class HomeFragment : Fragment() {
         )
         binding.rvRecentEdits.adapter = recentAdapter
 
-        binding.btnSeeAll.setOnClickListener {
+        binding.btnSeeAll.addPressEffect {
             // Replace R.id.recentsFragment with your bottom_nav_menu.xml item ID for Recents
             requireActivity()
                 .findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNav)
@@ -152,8 +153,31 @@ class HomeFragment : Fragment() {
     }
 
     private fun deleteEdit(edit: RecentEdit) {
-        viewModel.delete(edit)
-        Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+        val dialogBinding = com.example.blurface.databinding.DialogConfirmActionBinding.inflate(layoutInflater)
+        val dialog = android.app.Dialog(requireContext()).apply {
+            setContentView(dialogBinding.root)
+            window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+            window?.setLayout(
+                (resources.displayMetrics.widthPixels * 0.85).toInt(),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        dialogBinding.tvDialogTitle.text = "Delete Recent Edit?"
+        dialogBinding.tvDialogMessage.text = "Are you sure you want to delete this file? This action cannot be undone."
+        dialogBinding.btnConfirm.text = "Delete"
+
+        dialogBinding.btnCancel.addPressEffect {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirm.addPressEffect {
+            viewModel.delete(edit)
+            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
     private fun showActionsPopup(edit: RecentEdit, anchor: View) {
         RecentEditActionsHelper.showPopup(

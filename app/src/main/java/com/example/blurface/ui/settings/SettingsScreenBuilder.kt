@@ -33,14 +33,14 @@ object SettingsScreenBuilder {
                 subtitle = state.exportQuality.label
             )
         )
-        add(
-            SettingsItem(
-                id = "app_theme",
-                icon = R.drawable.ic_theme,
-                title = "App Theme",
-                subtitle = state.appTheme.label
-            )
-        )
+//        add(
+//            SettingsItem(
+//                id = "app_theme",
+//                icon = R.drawable.ic_theme,
+//                title = "App Theme",
+//                subtitle = state.appTheme.label
+//            )
+//        )
         add(
             SettingsItem(
                 id = "language",
@@ -55,7 +55,7 @@ object SettingsScreenBuilder {
         add(
             SettingsItem(
                 id = "privacy_policy",
-                icon = R.drawable.ic_shield,
+                icon = R.drawable.ic_shield_check,
                 title = "Privacy Policy",
                 categoryHeader = "PRIVACY & SECURITY"
             )
@@ -63,7 +63,7 @@ object SettingsScreenBuilder {
         add(
             SettingsItem(
                 id = "data_security",
-                icon = R.drawable.ic_lock,
+                icon = R.drawable.ic_lock_huge,
                 title = "Data Security"
             )
         )
@@ -89,14 +89,14 @@ object SettingsScreenBuilder {
         add(
             SettingsItem(
                 id = "contact_us",
-                icon = R.drawable.ic_mail,
+                icon = R.drawable.ic_mail_huge,
                 title = "Contact Us"
             )
         )
         add(
             SettingsItem(
                 id = "rate_us",
-                icon = R.drawable.ic_star_outline,
+                icon = R.drawable.ic_star,
                 title = "Rate Us",
                 isLastInGroup = true
             )

@@ -95,6 +95,32 @@
                         android:contentDescription="@null" />
                 </androidx.cardview.widget.CardView>
 
+                <!-- Black scrim, 0.5 alpha, over the thumbnail -->
+                <View
+                    android:id="@+id/viewScrim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_scrim"
+                    android:alpha="0.5" />
+
+                <!-- Shimmer sweep, loops continuously while analyzing -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmerAnalyzing"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:shimmer_duration="1200"
+                    app:shimmer_base_alpha="0.0"
+                    app:shimmer_highlight_alpha="0.35"
+                    app:shimmer_repeat_mode="restart"
+                    app:shimmer_repeat_count="-1">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white" />
+
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
                 <FrameLayout
                     android:layout_width="90dp"
                     android:layout_height="90dp"
@@ -120,7 +146,6 @@
                         android:contentDescription="@null" />
                 </FrameLayout>
             </FrameLayout>
-
             <!-- Progress -->
             <TextView
                 android:id="@+id/tvProgressPercent"
@@ -159,6 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

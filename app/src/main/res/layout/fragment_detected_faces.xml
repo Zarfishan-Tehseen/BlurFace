@@ -93,22 +93,32 @@
             android:contentDescription="@string/select_all" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFaces"
+    <com.webscare.urducanvas.common.views.SpringNestedScrollView
+        android:id="@+id/scrollFaces"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="14dp"
         android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="12dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rowSelectAll"
-        tools:listitem="@layout/item_detected_video_face" />
+        app:layout_constraintTop_toBottomOf="@id/rowSelectAll">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFaces"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_detected_video_face" />
+
+    </com.webscare.urducanvas.common.views.SpringNestedScrollView>
 
     <LinearLayout
         android:id="@+id/bottomBar"
@@ -197,7 +207,8 @@
                 app:iconGravity="textStart"
                 app:iconTint="@color/text_secondary"
                 android:backgroundTint="@android:color/transparent"
-                app:strokeColor="@color/divider"                app:strokeWidth="1.5dp" />
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1.5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnContinue"

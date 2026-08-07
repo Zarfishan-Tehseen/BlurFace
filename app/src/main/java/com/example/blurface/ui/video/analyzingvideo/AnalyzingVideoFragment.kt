@@ -67,6 +67,7 @@ class AnalyzingVideoFragment : Fragment() {
         }
 
         binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.shimmerAnalyzing.startShimmer()
 
         val videoUriString = arguments?.getString("videoUri")
         val videoUri = videoUriString?.let { Uri.parse(it) }
@@ -119,8 +120,12 @@ class AnalyzingVideoFragment : Fragment() {
                 viewModel.uiState.collect { state ->
                     when (state) {
                         is FaceUiState.Loading -> renderLoading(state)
-                        is FaceUiState.Success -> findNavController().navigate(R.id.detectedFacesFragment)
+                        is FaceUiState.Success -> {
+                            binding.shimmerAnalyzing.stopShimmer()
+                            findNavController().navigate(R.id.detectedFacesFragment)
+                        }
                         is FaceUiState.Error -> {
+                            binding.shimmerAnalyzing.stopShimmer()
                             Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                             findNavController().navigateUp()
                         }
@@ -130,10 +135,9 @@ class AnalyzingVideoFragment : Fragment() {
             }
         }
     }
-
     private fun renderLoading(state: FaceUiState.Loading) {
         binding.tvProgressPercent.text = "${state.progress}%"
-        binding.scanIndicator.setProgressCompat(state.progress, true)
+        binding.progressAnalyzing.setProgressCompat(state.progress, true)
         if (state.totalFrames > 0) {
             binding.tvFrameProgress.text =
                 "Analyzing frame ${format(state.currentFrame)} of ${format(state.totalFrames)}"
@@ -146,6 +150,7 @@ class AnalyzingVideoFragment : Fragment() {
     private fun format(n: Int): String = NumberFormat.getIntegerInstance().format(n)
 
     override fun onDestroyView() {
+        binding.shimmerAnalyzing.stopShimmer()
         super.onDestroyView()
         _binding = null
     }

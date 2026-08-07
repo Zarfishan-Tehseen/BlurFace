@@ -34,6 +34,7 @@ object RecentEditActionsHelper {
             View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         )
         val popupWidth = popupBinding.root.measuredWidth
+        val popupHeight = popupBinding.root.measuredHeight
 
         val popup = PopupWindow(
             popupBinding.root,
@@ -52,7 +53,10 @@ object RecentEditActionsHelper {
         val marginPx = (8 * context.resources.displayMetrics.density).toInt()
         val xOffset = -(popupWidth - anchor.width + marginPx)
 
-        popup.showAsDropDown(anchor, xOffset, 8)
+        // Calculate yOffset to position the popup above the 3 dots anchor
+        val yOffset = -(popupHeight + anchor.height + marginPx)
+
+        popup.showAsDropDown(anchor, xOffset, yOffset)
     }
 
     /** Does file I/O - call this from a background dispatcher. */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://tools.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -21,22 +21,25 @@
         android:visibility="gone"
         tools:text="PREFERENCES" />
 
-    <!-- 2. Rounded Group Card Container -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardRowContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="5dp">
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
 
         <FrameLayout
             android:id="@+id/iconContainer"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/bg_icon_circle_purple"
+            app:layout_constraintBottom_toTopOf="@id/settingDivider"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/ivSettingIcon"
@@ -46,36 +49,36 @@
                 android:contentDescription="@null"
                 android:src="@drawable/ic_blur_faces" />
         </FrameLayout>
-
         <LinearLayout
+            android:id="@+id/settingTextColumn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/iconContainer"
             app:layout_constraintEnd_toStartOf="@id/actionBarrier"
             app:layout_constraintStart_toEndOf="@id/iconContainer"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="@id/iconContainer">
 
             <TextView
                 android:id="@+id/tvSettingTitle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="normal"
                 tools:text="Auto Face Detection" />
 
             <TextView
                 android:id="@+id/tvSettingSubtitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 android:visibility="gone"
-                tools:text="Unlock all pro video face blurring features"
+                tools:text="High"
                 tools:visibility="visible" />
         </LinearLayout>
 
@@ -92,10 +95,11 @@
             android:id="@+id/switchSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iconContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iconContainer"
             tools:visibility="visible" />
 
         <!-- Action Option B: Navigation Chevron Arrow -->
@@ -103,22 +107,23 @@
             android:id="@+id/ivChevron"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ic_chevron_right"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/iconContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iconContainer" />
+
+        <!-- Bottom Divider aligned with text and touching the exact bottom -->
         <View
             android:id="@+id/settingDivider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="#E0E0E0"
+            android:layout_marginBottom="0dp"
+            android:background="@color/divider"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iconContainer"
-            app:layout_constraintStart_toStartOf="@id/iconContainer" />
-
+            app:layout_constraintStart_toStartOf="@id/settingTextColumn" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

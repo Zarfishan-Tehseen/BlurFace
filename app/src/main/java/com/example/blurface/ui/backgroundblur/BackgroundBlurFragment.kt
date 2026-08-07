@@ -156,6 +156,24 @@ class BackgroundBlurFragment : Fragment() {
                         renderFilterThumbnails(bitmap)
                     }
                 }
+                launch {
+                    viewModel.segmentationState.collect { state ->
+                        updateShimmerVisibility(state)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateShimmerVisibility(state: SegmentationState) {
+        when (state) {
+            is SegmentationState.Segmenting, is SegmentationState.Idle -> {
+                binding.shimmerPreview.visibility = View.VISIBLE
+                binding.shimmerPreview.startShimmer()
+            }
+            is SegmentationState.Success, is SegmentationState.Error -> {
+                binding.shimmerPreview.stopShimmer()
+                binding.shimmerPreview.visibility = View.GONE
             }
         }
     }
