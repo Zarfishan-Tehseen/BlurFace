@@ -23,6 +23,7 @@ import com.example.blurface.utils.BitmapUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import android.widget.SeekBar
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.withContext
 
 class ManualSelectionFragment : Fragment() {
@@ -53,10 +54,10 @@ class ManualSelectionFragment : Fragment() {
         }
 
         // Standard Button Actions
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.btnContinue.setOnClickListener { findNavController().navigate(R.id.blurEditorFragment) }
-        binding.btnClearAll.setOnClickListener { sharedViewModel.setAllSelected(false) }
-        binding.btnAddFace.setOnClickListener { sharedViewModel.addBackNextFace() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
+        binding.btnContinue.addPressEffect { findNavController().navigate(R.id.blurEditorFragment) }
+        binding.btnClearAll.addPressEffect { sharedViewModel.setAllSelected(false) }
+        binding.btnAddFace.addPressEffect { sharedViewModel.addBackNextFace() }
 
         // Mode and UI Component Initializers
         setUpBrushModeButtons()
@@ -81,7 +82,7 @@ class ManualSelectionFragment : Fragment() {
         }
 
         // ADDED LOGIC: Toggles the brush mode active state on/off when tapping the brush pill
-        binding.btnBrush.setOnClickListener {
+        binding.btnBrush.addPressEffect {
             val currentMode = sharedViewModel.isBrushModeActive.value
             sharedViewModel.setBrushModeActive(!currentMode)
         }
@@ -151,12 +152,12 @@ class ManualSelectionFragment : Fragment() {
 
     private fun setUpBrushModeButtons() {
         binding.btnAddMode.isSelected = true
-        binding.btnAddMode.setOnClickListener {
+        binding.btnAddMode.addPressEffect {
             binding.brushMask.currentTool = BrushTool.PAINT
             binding.btnAddMode.isSelected = true
             binding.btnRemoveMode.isSelected = false
         }
-        binding.btnRemoveMode.setOnClickListener {
+        binding.btnRemoveMode.addPressEffect {
             binding.brushMask.currentTool = BrushTool.ERASE
             binding.btnAddMode.isSelected = false
             binding.btnRemoveMode.isSelected = true

@@ -72,7 +72,7 @@ class SettingsAdapter(
                 binding.ivChevron.visibility = View.VISIBLE
             }
 
-            // 4. Custom Press Effect (Replaces setOnClickListener)
+            // 4. Custom Press Effect (Replaces addPressEffect)
             binding.cardRowContainer.addPressEffect {
                 onItemClicked(item)
             }

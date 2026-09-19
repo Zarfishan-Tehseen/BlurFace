@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.databinding.ItemDetectedFaceBinding
 import com.example.blurface.domain.model.DetectedFace
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 
 class DetectedFaceAdapter(
     private val onFaceClicked: (DetectedFace) -> Unit,
@@ -37,8 +38,8 @@ class DetectedFaceAdapter(
             binding.cbSelected.isChecked = face.isSelected
             item.thumbnail?.let { binding.ivFaceThumb.setImageBitmap(it) }
 
-            binding.root.setOnClickListener { onFaceClicked(face) }
-            binding.cbSelected.setOnClickListener { onCheckboxClicked(face) }
+            binding.root.addPressEffect { onFaceClicked(face) }
+            binding.cbSelected.addPressEffect { onCheckboxClicked(face) }
         }
     }
 

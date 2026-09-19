@@ -14,6 +14,7 @@ import android.widget.PopupWindow
 import androidx.core.content.FileProvider
 import com.example.blurface.databinding.PopupRecentEditActionsBinding
 import com.example.blurface.domain.model.RecentEdit
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -46,9 +47,9 @@ object RecentEditActionsHelper {
             setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
         }
 
-        popupBinding.rowDownload.setOnClickListener { popup.dismiss(); onDownload() }
-        popupBinding.rowDelete.setOnClickListener { popup.dismiss(); onDelete() }
-        popupBinding.rowShare.setOnClickListener { popup.dismiss(); onShare() }
+        popupBinding.rowDownload.addPressEffect { popup.dismiss(); onDownload() }
+        popupBinding.rowDelete.addPressEffect { popup.dismiss(); onDelete() }
+        popupBinding.rowShare.addPressEffect { popup.dismiss(); onShare() }
 
         val marginPx = (8 * context.resources.displayMetrics.density).toInt()
         val xOffset = -(popupWidth - anchor.width + marginPx)

@@ -45,7 +45,7 @@
                     android:id="@+id/tvVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Analyzing "
+                    android:text="@string/analyzing_video_title"
                     android:textColor="@color/text_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -56,7 +56,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Video"
+                    android:text="@string/filter_video"
                     android:textColor="@color/purple_primary"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="AI tracking faces."
+                    android:text="@string/analyzing_video_subtitle"
                     android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@id/tvVideo"
@@ -219,7 +219,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Faces Found"
+                        android:text="@string/faces_found"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         app:layout_constraintTop_toBottomOf="@id/tvFacesFoundValue"
@@ -258,7 +258,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Processed"
+                        android:text="@string/processed"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         app:layout_constraintTop_toBottomOf="@id/tvFramesProcessedValue"
@@ -298,7 +298,7 @@
                         android:id="@+id/tvTrackingStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="In Progress"
+                        android:text="@string/in_progress"
                         android:textColor="@color/text_secondary"
                         android:textSize="10sp"
                         app:layout_constraintTop_toBottomOf="@id/tvTracking"
@@ -338,7 +338,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tracking faces across frames"
+                        android:text="@string/tracking_faces_title"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -347,7 +347,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="This may take a few moments depending on video length and faces."
+                        android:text="@string/tracking_faces_desc"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -372,7 +372,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="Your video is private and never leaves your device."
+                    android:text="@string/video_privacy_note"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
             </LinearLayout>

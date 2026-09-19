@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.databinding.ItemSelectedFaceChipBinding
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 
 class SelectedFaceChipAdapter(
     private val onRemove: (faceId: Int) -> Unit
@@ -29,7 +30,7 @@ class SelectedFaceChipAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Item) {
             binding.ivFaceChip.setImageBitmap(item.thumbnail)
-            binding.btnRemove.setOnClickListener { onRemove(item.faceId) }
+            binding.btnRemove.addPressEffect { onRemove(item.faceId) }
         }
     }
 

@@ -26,8 +26,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     // Rebuilt automatically any time state changes - screen just observes `items`,
     // never touches SettingsScreenBuilder directly.
     val items: StateFlow<List<SettingsItem>> = _state
-        .map { SettingsScreenBuilder.build(it) }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, SettingsScreenBuilder.build(_state.value))
+        .map { SettingsScreenBuilder.build(getApplication(), it) }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, SettingsScreenBuilder.build(getApplication(), _state.value))
 
     init {
         refreshCacheSize()
@@ -45,8 +45,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun setAppTheme(theme: AppTheme) = update { it.copy(appTheme = theme) }
         .also { prefs.edit().putString(KEY_APP_THEME, theme.name).apply() }
 
-    fun setLanguage(language: String) = update { it.copy(language = language) }
-        .also { prefs.edit().putString(KEY_LANGUAGE, language).apply() }
+    fun setLanguage(language: AppLanguage) = update { it.copy(language = language) }
+        .also { prefs.edit().putString(KEY_LANGUAGE, language.tag).apply() }
 
     fun clearCache() {
         viewModelScope.launch {
@@ -85,7 +85,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             ?.let { runCatching { ExportQuality.valueOf(it) }.getOrNull() } ?: ExportQuality.HIGH,
         appTheme = prefs.getString(KEY_APP_THEME, null)
             ?.let { runCatching { AppTheme.valueOf(it) }.getOrNull() } ?: AppTheme.DARK,
-        language = prefs.getString(KEY_LANGUAGE, null) ?: "English"
+        language = prefs.getString(KEY_LANGUAGE, null)?.let { AppLanguage.fromTag(it) } ?: AppLanguage.ENGLISH
     )
 
     companion object {

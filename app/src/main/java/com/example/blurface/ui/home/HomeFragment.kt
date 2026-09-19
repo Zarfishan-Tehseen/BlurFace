@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blurface.R
+import android.media.MediaMetadataRetriever
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
@@ -51,7 +52,7 @@ class HomeFragment : Fragment() {
     private val pickVideo = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
-        uri?.let { navigateToAnalyzingVideo(it) }
+        uri?.let { checkVideoDurationAndNavigate(it) }
     }
     private val selectMediaLauncher = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -59,7 +60,7 @@ class HomeFragment : Fragment() {
         if (uri != null) {
             handleSelectedMedia(uri)
         } else {
-            Toast.makeText(requireContext(), "No media selected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_media_selected), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -75,7 +76,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollContent) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.headerContainer) { v, insets ->
             val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             v.updatePadding(top = statusBars.top)
             insets
@@ -173,7 +174,7 @@ class HomeFragment : Fragment() {
 
         dialogBinding.btnConfirm.addPressEffect {
             viewModel.delete(edit)
-            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.status_deleted), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -194,7 +195,7 @@ class HomeFragment : Fragment() {
             val saved = withContext(Dispatchers.IO) {
                 runCatching { RecentEditActionsHelper.copyToDownloads(requireContext(), edit) }.getOrNull()
             }
-            val message = if (saved != null) "Saved to Downloads" else "Could not download"
+            val message = if (saved != null) getString(R.string.saved_to_downloads) else getString(R.string.could_not_download)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
@@ -227,16 +228,38 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.detectingFacesFragment, args)
             }
             mimeType?.startsWith("video/") == true -> {
-                val args = bundleOf("videoUri" to uri.toString())
-                findNavController().navigate(R.id.analyzingVideoFragment, args)
+                checkVideoDurationAndNavigate(uri)
             }
             else -> {
                 Toast.makeText(
                     requireContext(),
-                    "Unsupported file type. Please select an image or video.",
+                    "Select Video less than 30 secs",
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+    }
+    private fun checkVideoDurationAndNavigate(uri: Uri) {
+        val durationMs = try {
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(requireContext(), uri)
+            val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            retriever.release()
+            time?.toLongOrNull() ?: 0L
+        } catch (e: Exception) {
+            0L
+        }
+
+        val maxDurationMs = 30_000L // 30 seconds
+
+        if (durationMs > maxDurationMs) {
+            Toast.makeText(
+                requireContext(),
+                "Selected video exceeds 30 seconds limit",
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            navigateToAnalyzingVideo(uri)
         }
     }
     override fun onDestroyView() {

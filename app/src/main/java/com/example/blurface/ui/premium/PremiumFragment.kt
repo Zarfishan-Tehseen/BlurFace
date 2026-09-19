@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blurface.R
 import com.example.blurface.databinding.FragmentPremiumBinding
 import com.example.blurface.domain.model.PremiumPlan
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 
 class PremiumFragment : Fragment() {
 
@@ -83,15 +84,15 @@ class PremiumFragment : Fragment() {
         }
 
         // 3. Setup click listeners
-        binding.btnBack.setOnClickListener {
+        binding.btnBack.addPressEffect {
             findNavController().navigateUp()
         }
 
-        binding.btnAction.setOnClickListener {
+        binding.btnAction.addPressEffect {
             Toast.makeText(requireContext(), "Processing payment for: $selectedPlanId", Toast.LENGTH_SHORT).show()
         }
 
-        binding.btnRestore.setOnClickListener {
+        binding.btnRestore.addPressEffect {
             Toast.makeText(requireContext(), "Restoring purchase...", Toast.LENGTH_SHORT).show()
         }
     }

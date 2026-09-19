@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
@@ -38,14 +39,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.example.blurface.R
 import com.example.blurface.data.history.RecentEditsStore
+import com.example.blurface.databinding.DialogFullscreenVideoBinding
 import com.example.blurface.databinding.FragmentBlurredVideoResultBinding
 import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
 import com.example.blurface.utils.MediaSizeUtils
 import com.example.blurface.utils.VideoSaver
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class BlurredVideoResultFragment : Fragment() {
@@ -79,7 +84,7 @@ class BlurredVideoResultFragment : Fragment() {
             if (granted) saveToGallery() else {
                 Toast.makeText(
                     requireContext(),
-                    "Storage permission is needed to save the video.",
+                    getString(R.string.storage_permission_save_video),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -104,7 +109,7 @@ class BlurredVideoResultFragment : Fragment() {
 
         val path = viewModel.exportedVideoPath
         if (path == null || !File(path).exists()) {
-            Toast.makeText(requireContext(), "Exported video not found.", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), getString(R.string.exported_video_not_found), Toast.LENGTH_LONG).show()
             findNavController().navigateUp()
             return
         }
@@ -112,11 +117,17 @@ class BlurredVideoResultFragment : Fragment() {
 
         setUpPlayer(path)
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.actionSaveGallery.setOnClickListener {
+        // Same destination for both the in-app back button and the device
+        // back button/gesture, so behavior is consistent either way.
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            navigateToHome()
+        }
+
+        binding.btnBack.addPressEffect { navigateToHome() }
+        binding.actionSaveGallery.addPressEffect {
             val savedUri = viewModel.exportedVideoUri
             if (savedUri != null) {
-                Toast.makeText(requireContext(), "Video is already saved to your Gallery & Recents", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.video_saved_toast), Toast.LENGTH_SHORT).show()
                 val bundle = Bundle().apply {
                     putString("mediaUri", savedUri)
                     putBoolean("isVideo", true)
@@ -129,11 +140,15 @@ class BlurredVideoResultFragment : Fragment() {
                 onSaveClicked()
             }
         }
-        binding.actionShare.setOnClickListener { onShareClicked() }
-        binding.actionCopyLink.setOnClickListener { onCopyLinkClicked() }
-        binding.btnBackToHome.setOnClickListener {
+        binding.actionShare.addPressEffect { onShareClicked() }
+        binding.actionCopyLink.addPressEffect { onCopyLinkClicked() }
+        binding.btnBackToHome.addPressEffect {
             findNavController().popBackStack(findNavController().graph.startDestinationId, false)
         }
+    }
+
+    private fun navigateToHome() {
+        findNavController().navigate(R.id.homeFragment)
     }
 
     private fun setUpPlayer(path: String) {
@@ -158,14 +173,14 @@ class BlurredVideoResultFragment : Fragment() {
             override fun onPlayerError(error: PlaybackException) {
                 Toast.makeText(
                     requireContext(),
-                    "Couldn't play the exported video.",
+                    getString(R.string.could_not_play_video),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         })
 
-        binding.btnPlayPause.setOnClickListener { togglePlayback() }
-        binding.videoFrame.setOnClickListener { togglePlayback() }
+        binding.btnPlayPause.addPressEffect { togglePlayback() }
+        binding.videoFrame.addPressEffect { togglePlayback() }
 
         binding.seekVideoProgress.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
@@ -182,7 +197,7 @@ class BlurredVideoResultFragment : Fragment() {
             }
         })
 
-        binding.btnFullscreen.setOnClickListener { showFullscreenPlayer(path) }
+        binding.btnFullscreen.addPressEffect { showFullscreenPlayer(path) }
 
         progressHandler.post(progressTick)
     }
@@ -208,35 +223,23 @@ class BlurredVideoResultFragment : Fragment() {
         val dialog = Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        val container = android.widget.FrameLayout(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            setBackgroundColor(android.graphics.Color.BLACK)
-        }
-
-        val fullscreenPlayerView = PlayerView(requireContext()).apply {
-            layoutParams = android.widget.FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            useController = false
-            resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-        }
-
-        container.addView(fullscreenPlayerView)
-        dialog.setContentView(container)
+        val dialogBinding = DialogFullscreenVideoBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
 
         dialog.window?.let { window ->
             androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
 
-            ViewCompat.setOnApplyWindowInsetsListener(container) { v, insets ->
+            ViewCompat.setOnApplyWindowInsetsListener(dialogBinding.root) { v, insets ->
                 val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
-                v.updatePadding(top = statusBars.top)
+                val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+                dialogBinding.fullscreenHeader.updatePadding(top = statusBars.top + 10)
+                dialogBinding.fullscreenSeekRow.updatePadding(bottom = navBars.bottom + 12)
                 insets
             }
         }
+
+        dialogBinding.fullscreenPlayerView.useController = false
+        dialogBinding.fullscreenPlayerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
 
         val dialogPlayer = ExoPlayer.Builder(requireContext()).build().apply {
             setMediaItem(MediaItem.fromUri(Uri.fromFile(File(path))))
@@ -246,16 +249,91 @@ class BlurredVideoResultFragment : Fragment() {
             play()
         }
 
-        fullscreenPlayerView.player = dialogPlayer
+        dialogBinding.fullscreenPlayerView.player = dialogPlayer
 
         var lastKnownPosition = resumePosition
+        var isFullscreenUserSeeking = false
 
-        fullscreenPlayerView.setOnClickListener {
+        // Live clock in the header, ticks every second
+        val clockFormat = SimpleDateFormat("MMM d, yyyy  •  h:mm a", Locale.getDefault())
+        val clockHandler = Handler(Looper.getMainLooper())
+        val clockTick = object : Runnable {
+            override fun run() {
+                dialogBinding.tvFullscreenDateTime.text = clockFormat.format(Date())
+                clockHandler.postDelayed(this, 1000)
+            }
+        }
+        clockHandler.post(clockTick)
+
+        // Progress/seek bar synced to the fullscreen player
+        val fullscreenProgressHandler = Handler(Looper.getMainLooper())
+        val fullscreenProgressTick = object : Runnable {
+            override fun run() {
+                if (!isFullscreenUserSeeking && dialogPlayer.isPlaying) {
+                    val currentPos = dialogPlayer.currentPosition.toInt()
+                    dialogBinding.seekFullscreenProgress.progress = currentPos
+                    dialogBinding.tvFullscreenCurrentTime.text = formatMs(currentPos)
+                }
+                fullscreenProgressHandler.postDelayed(this, 500)
+            }
+        }
+        fullscreenProgressHandler.post(fullscreenProgressTick)
+
+        dialogPlayer.addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_READY) {
+                    val duration = dialogPlayer.duration.toInt()
+                    dialogBinding.seekFullscreenProgress.max = duration
+                    dialogBinding.tvFullscreenTotalTime.text = formatMs(duration)
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.could_not_play_video),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                dialogBinding.btnFullscreenPlayPause.visibility =
+                    if (isPlaying) View.GONE else View.VISIBLE
+            }
+        })
+
+        dialogBinding.seekFullscreenProgress.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (fromUser) dialogBinding.tvFullscreenCurrentTime.text = formatMs(progress)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                isFullscreenUserSeeking = true
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                isFullscreenUserSeeking = false
+                dialogPlayer.seekTo(seekBar.progress.toLong())
+            }
+        })
+
+        fun togglePlayback() {
+            if (dialogPlayer.isPlaying) dialogPlayer.pause() else dialogPlayer.play()
+        }
+
+        dialogBinding.fullscreenPlayerView.addPressEffect { togglePlayback() }
+        dialogBinding.btnFullscreenPlayPause.addPressEffect { togglePlayback() }
+
+        dialogBinding.btnCloseFullscreen.addPressEffect {
             lastKnownPosition = dialogPlayer.currentPosition
             dialog.dismiss()
         }
 
         dialog.setOnDismissListener {
+            clockHandler.removeCallbacks(clockTick)
+            fullscreenProgressHandler.removeCallbacks(fullscreenProgressTick)
+            lastKnownPosition = dialogPlayer.currentPosition
             dialogPlayer.release()
             exoPlayer?.seekTo(lastKnownPosition)
             if (wasPlaying) {
@@ -303,10 +381,10 @@ class BlurredVideoResultFragment : Fragment() {
             binding.actionSaveGallery.isEnabled = true
 
             if (uri != null) {
-                Toast.makeText(requireContext(), "Saved to gallery.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.saved_to_gallery), Toast.LENGTH_SHORT).show()
                 recordRecentEdit(uri)
             } else {
-                Toast.makeText(requireContext(), "Couldn't save the video.", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(), getString(R.string.could_not_save_video), Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -348,7 +426,7 @@ class BlurredVideoResultFragment : Fragment() {
             putExtra(Intent.EXTRA_STREAM, contentUri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        startActivity(Intent.createChooser(shareIntent, "Share video"))
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_video_title)))
     }
 
     private fun onCopyLinkClicked() {
@@ -358,7 +436,7 @@ class BlurredVideoResultFragment : Fragment() {
         clipboard.setPrimaryClip(ClipData.newPlainText("Exported video path", path))
         Toast.makeText(
             requireContext(),
-            "Local file path copied (not a shareable link).",
+            getString(R.string.local_path_copied),
             Toast.LENGTH_LONG
         ).show()
     }

@@ -1,0 +1,282 @@
+<resources>
+    <string name="app_name">Blur Face</string>
+    <string name="hello_blank_fragment">ہیلو، بلینک فریگمنٹ</string>
+
+    <string name="hero_title">پرائیویسی محفوظ کریں \nفوری طور پر چہرے دھندلا کریں</string>
+    <string name="hero_subtitle">AI چہروں کی شناخت کرتا ہے اور آپ کو ایک ٹیپ سے دھندلا کرنے دیتا ہے</string>
+    <string name="select_photo">تصویر/ویڈیو درآمد کریں</string>
+    <string name="quick_actions">فوری اقدامات</string>
+    <string name="blur_faces">چہرے دھندلا کریں</string>
+    <string name="blur_faces_subtitle">خودکار طور پر چہرے شناخت اور دھندلا کریں</string>
+    <string name="blur_background">پس منظر دھندلا کریں</string>
+    <string name="blur_background_subtitle">پس منظر کو دھندلا کریں</string>
+    <string name="blur_video">ویڈیو دھندلا کریں</string>
+    <string name="blur_video_subtitle">اپنی ویڈیو میں چہروں کی شناخت اور دھندلا کریں</string>
+    <string name="emoji_cover">ایموجی کور</string>
+    <string name="emoji_cover_subtitle">چہروں کو ایموجی سے ڈھانپیں</string>
+    <string name="no_recent_edits">آپ کی حالیہ ترمیم شدہ تصاویر یہاں ظاہر ہوں گی۔\nاس سیکشن میں اپنا کام دیکھنے کے لیے ترمیم شروع کریں۔</string>
+
+    <string name="recent_edits">حالیہ ترامیم</string>
+    <string name="see_all">سب دیکھیں</string>
+
+    <string name="detecting_subtitle">AI اسکین کر رہا ہے</string>
+    <string name="please_wait">براہ کرم تھوڑا انتظار کریں…</string>
+    <string name="ai_working_title">AI کام کر رہا ہے</string>
+    <string name="ai_working_subtitle">چہروں کی تعداد کے لحاظ سے اس میں چند سیکنڈ لگ سکتے ہیں۔</string>
+    <string name="privacy_note">آپ کی تصویر نجی ہے اور کبھی بھی آپ کے آلے سے باہر نہیں جاتی۔</string>
+    <string name="cd_back">واپس</string>
+    <string name="cd_selected_photo">منتخب کردہ تصویر</string>
+    <string name="no_face_title">کوئی چہرہ شناخت نہیں ہوا</string>
+    <string name="no_face_subtitle">ہم اس تصویر میں کسی چہرے کو خودکار طور پر شناخت نہیں کر سکے۔</string>
+    <string name="try_again">دوبارہ کوشش کریں</string>
+    <string name="select_face_manually_title">چہرہ دستی طور پر منتخب کریں</string>
+    <string name="select_face_manually_subtitle">چہروں کو خود منتخب کر کے دھندلا کریں</string>
+    <string name="choose_another_photo_title">دوسری تصویر منتخب کریں</string>
+    <string name="choose_another_photo_subtitle">اپنی گیلری سے مختلف تصویر منتخب کریں</string>
+
+    <string name="select_faces_title">چہرے منتخب کریں</string>
+    <string name="found_faces_subtitle">ہمیں اس تصویر میں %1$d چہرے ملے۔\nجن چہروں کو دھندلا کرنا ہے انہیں منتخب کریں۔</string>
+    <string name="detected_faces_count">شناخت شدہ چہرے (%1$d)</string>
+    <string name="select_all">سب منتخب کریں</string>
+    <string name="tap_to_preview">پیش نظارہ کے لیے ٹیپ کریں</string>
+    <string name="manual_select">دستی انتخاب</string>
+    <string name="continue_to_blur">دھندلانے کے لیے جاری رکھیں</string>
+
+    <string name="blur_editor_title_black">تصویر دھندلا</string>
+    <string name="blur_editor_title_purple">ایڈیٹر</string>
+    <string name="blur_editor_subtitle">دھندلاپن کی ترتیبات لاگو کریں</string>
+    <string name="effect_gaussian">گاؤسی</string>
+    <string name="effect_mosaic">موزیک</string>
+    <string name="effect_color">رنگ</string>
+    <string name="effect_emoji">ایموجی</string>
+    <string name="intensity_label">شدت</string>
+    <string name="reset_label">ری سیٹ</string>
+    <string name="selected_faces_count">منتخب چہرے (%1$d)</string>
+    <string name="clear_all">سب صاف کریں</string>
+    <string name="cd_remove_face">انتخاب سے چہرہ ہٹائیں</string>
+    <string name="cd_export">ایکسپورٹ</string>
+
+    <string name="save_export_title">محفوظ کریں اور ایکسپورٹ کریں</string>
+    <string name="choose_format_subtitle">فارمیٹ منتخب کریں</string>
+    <string name="jpeg_compressed_title">JPEG (کمپریسڈ)</string>
+    <string name="jpeg_compressed_subtitle">چھوٹا فائل سائز، شیئرنگ کے لیے بہتر اور زیادہ مطابقت پذیر۔</string>
+    <string name="jpeg_lossless_title">JPEG (لاس لیس)</string>
+    <string name="jpeg_lossless_subtitle">اعلیٰ معیار، تصویر کے معیار میں کوئی کمی نہیں۔ بڑا فائل سائز۔</string>
+    <string name="png_title">PNG</string>
+    <string name="png_subtitle">شفافیت کی سپورٹ کے ساتھ بہترین معیار۔ بڑا فائل سائز۔</string>
+    <string name="save_photo">تصویر محفوظ کریں</string>
+    <string name="saved_to_gallery">گیلری میں محفوظ ہو گئی</string>
+    <string name="storage_permission_needed">محفوظ کرنے کے لیے اسٹوریج کی اجازت درکار ہے</string>
+
+    <string name="manual_title">دستی</string>
+    <string name="selection_title">انتخاب</string>
+    <string name="manual_selection_subtitle">چہرے منتخب کریں اور شامل کریں۔</string>
+    <string name="drag_to_paint">پینٹ کرنے کے لیے گھسیٹیں</string>
+    <string name="add_face">چہرہ شامل کریں</string>
+    <string name="add_mode">شامل کریں</string>
+    <string name="remove_mode">ہٹائیں</string>
+    <string name="brush_size_label">برش کا سائز</string>
+    <string name="reset">ری سیٹ</string>
+
+
+    <string name="blur_editor_title_prefix">ویڈیو دھندلا </string>
+    <string name="blur_editor_title_suffix">ایڈیٹر</string>
+    <string name="blur_type_label">دھندلاپن کی قسم</string>
+    <string name="blur_type_gaussian">گاؤسی</string>
+    <string name="blur_type_gaussian_desc">ہموار دھندلاپن</string>
+    <string name="blur_type_mosaic">موزیک</string>
+    <string name="blur_type_mosaic_desc">چہروں کو پکسلیٹ کریں</string>
+    <string name="blur_type_color">رنگ</string>
+    <string name="blur_type_color_desc">رنگ کی تہہ</string>
+    <string name="blur_type_emoji">ایموجی</string>
+    <string name="blur_type_emoji_desc">ایموجی منتخب کریں</string>
+    <string name="feather_label">فیدر</string>
+    <string name="shape_label">شکل</string>
+    <string name="shape_auto">خودکار (چہرہ)</string>
+    <string name="shape_auto_desc">چہرے کی شکل کی پیروی کریں</string>
+    <string name="shape_circle">دائرہ</string>
+    <string name="shape_circle_desc">دائرہ نما دھندلاپن</string>
+    <string name="shape_rectangle">مستطیل</string>
+    <string name="shape_rectangle_desc">مستطیل دھندلاپن</string>
+    <string name="additional_settings_label">اضافی ترتیبات</string>
+    <string name="blur_entire_video_title">پوری ویڈیو دھندلا کریں</string>
+    <string name="blur_entire_video_desc">تمام فریمز پر دھندلاپن لاگو کریں (پس منظر + چہرے)۔</string>
+    <string name="blur_follow_info">چہرے آپ کی پوری ویڈیو میں دھندلے رہیں گے۔\n دھندلاپن ہر منظر میں منتخب چہروں کی پیروی کرے گا۔</string>
+    <string name="blur_faces_cta">ویڈیو میں چہرے دھندلا کریں  →</string>
+    <string name="privacy_footer">آپ کی ویڈیو نجی ہے اور کبھی بھی آپ کے آلے سے باہر نہیں جاتی۔</string>
+
+
+    <string name="result_title_prefix">آپ کی دھندلی </string>
+    <string name="result_title_highlight">ویڈیو</string>
+    <string name="result_title_suffix"></string>
+    <string name="result_subtitle">اپنی ویڈیو کا جائزہ لیں</string>
+    <string name="export_completed_title">ایکسپورٹ مکمل ہو گیا!</string>
+    <string name="export_completed_desc">آپ کی ویڈیو کامیابی سے دھندلی کر دی گئی ہے اور استعمال کے لیے تیار ہے۔</string>
+    <string name="what_next_label">آپ کیا کرنا چاہیں گے؟</string>
+    <string name="action_save_gallery">گیلری میں محفوظ کریں</string>
+    <string name="action_share_video">ویڈیو شیئر کریں</string>
+    <string name="action_copy_link">لنک کاپی کریں</string>
+    <string name="back_to_home">ہوم پر واپس جائیں</string>
+    <string name="cd_play_pause">ویڈیو چلائیں یا روکیں</string>
+    <string name="cd_fullscreen">فل اسکرین ٹوگل کریں</string>
+    <string name="toast_saved_gallery">گیلری میں محفوظ ہو گئی</string>
+    <string name="toast_save_failed">ویڈیو محفوظ نہیں ہو سکی</string>
+    <string name="toast_link_copied">ویڈیو لنک کاپی ہو گیا</string>
+    <string name="toast_no_video">کوئی ایکسپورٹ شدہ ویڈیو نہیں ملی</string>
+
+    <string name="cd_search">تلاش کریں</string>
+    <string name="cd_filter_sort">فلٹر اور ترتیب</string>
+
+    <!-- Settings & Premium -->
+    <string name="settings_title">سیٹنگز</string>
+    <string name="settings_subtitle">اپنا تجربہ حسب ضرورت بنائیں</string>
+    <string name="unlock_premium_title">پریمیئم انلاک کریں</string>
+    <string name="unlock_premium_subtitle">پریمیئم خصوصیات کے ساتھ بغیر کسی حد کے بلر کریں۔</string>
+    <string name="buy_now">ابھی خریدیں</string>
+    <string name="upgrade_to_premium">پریمیئم میں اپ گریڈ کریں</string>
+    <string name="unlock_premium_features_desc">لامحدود ایڈیٹنگ کے لیے پریمیئم خصوصیات انلاک کریں۔</string>
+    <string name="unlimited_edits">لامحدود ایڈیٹس</string>
+    <string name="premium_tools">پریمیئم ٹولز</string>
+    <string name="no_ads">کوئی اشتہارات نہیں</string>
+    <string name="choose_your_plan">اپنا پلان منتخب کریں</string>
+    <string name="seven_day_free_trial">7 دن کا مفت ٹرائل</string>
+    <string name="start_free_trial_cta">🔒 7 دن کا مفت ٹرائل شروع کریں</string>
+    <string name="billing_desc">7 دنوں کے بعد، آپ سے $19.99/سال چارج کیا جائے گا۔\nکسی بھی وقت منسوخ کریں۔</string>
+    <string name="restore_purchase">خریداری بحال کریں</string>
+    <string name="terms_of_use">استعمال کی شرائط</string>
+    <string name="privacy_policy">پرائیویسی پالیسی</string>
+
+    <!-- Home & Navigation -->
+    <string name="app_title_face">Face</string>
+    <string name="app_title_blur">Blur</string>
+    <string name="no_edits_yet">ابھی تک کوئی ایڈٹ نہیں</string>
+    <string name="no_edits_yet_desc">آپ کی بلر کردہ تصویریں اور ویڈیوز یہاں دکھائی دیں گی۔</string>
+
+    <!-- Recents & Filter -->
+    <string name="recents_title">حالیہ</string>
+    <string name="recents_subtitle">آپ کی حال ہی میں ایڈٹ شدہ تصاویر</string>
+    <string name="search_recents_hint">حالیہ تلاش کریں</string>
+    <string name="filter_all">سب</string>
+    <string name="filter_video">ویڈیو</string>
+    <string name="sort_by">ترتیب دیں</string>
+    <string name="sort_recently_updated">حال ہی میں اپ ڈیٹ شدہ</string>
+    <string name="sort_oldest_first">قدیم ترین پہلے</string>
+    <string name="sort_name">نام</string>
+    <string name="filter_date">تاریخ</string>
+    <string name="date_today">آج</string>
+    <string name="date_this_week">اس ہفتے</string>
+    <string name="date_this_month">اس مہینے</string>
+
+    <!-- Media Details & Preview -->
+    <string name="action_download">ڈاؤن لوڈ</string>
+    <string name="action_share">شیئر کریں</string>
+    <string name="action_delete">حذف کریں</string>
+    <string name="action_save">محفوظ کریں</string>
+    <string name="action_details">تفصیلات</string>
+    <string name="action_trash">ٹریش</string>
+    <string name="date_and_time">تاریخ اور وقت</string>
+    <string name="file_size">فائل کا سائز</string>
+    <string name="storage_path">اسٹوریج پاتھ</string>
+    <string name="cd_details">تفصیلات</string>
+
+    <!-- Video Analysis & Processing -->
+    <string name="analyzing_video_title">تجزیہ جاری ہے </string>
+    <string name="analyzing_video_subtitle">AI چہروں کو ٹریک کر رہا ہے۔</string>
+    <string name="extracting_video_layers">ویڈیو لیئرز حاصل کی جا رہی ہیں...</string>
+    <string name="tracking_faces_title">فریموں میں چہروں کی ٹریکنگ</string>
+    <string name="tracking_faces_desc">ویڈیو کی لمبائی اور چہروں کے لحاظ سے کچھ وقت لگ سکتا ہے۔</string>
+    <string name="video_privacy_note">آپ کی ویڈیو نجی ہے اور کبھی بھی آپ کے آلے سے باہر نہیں جاتی۔</string>
+    <string name="faces_found">چہرے مل گئے</string>
+    <string name="processed">پروسیس شدہ</string>
+    <string name="tracking">ٹریکنگ</string>
+    <string name="in_progress">جاری ہے</string>
+    <string name="select_video_to_analyze">تجزیہ کے لیے ویڈیو منتخب کریں</string>
+    <string name="detected_times_count">شناخت ہوا: %1$d بار</string>
+    <string name="analyzing_frame_count">فریم %1$s کا %2$s تجزیہ کیا جا رہا ہے</string>
+
+    <!-- Video Export -->
+    <string name="export_and_process_title">ایکسپورٹ اور </string>
+    <string name="export_process_subtitle">پروسیس</string>
+    <string name="set_export_options">ایکسپورٹ کے اختیارات سیٹ کریں</string>
+    <string name="export_settings">ایکسپورٹ سیٹنگز</string>
+    <string name="resolution">ریزولیوشن</string>
+    <string name="res_720p">720p</string>
+    <string name="res_1080p">1080p</string>
+    <string name="res_4k">4K</string>
+    <string name="res_hd">HD</string>
+    <string name="res_full_hd">Full HD</string>
+    <string name="res_ultra_hd">Ultra HD</string>
+    <string name="frame_rate">فریم ریٹ</string>
+    <string name="smoother_playback">ہموار پلے بیک</string>
+    <string name="fps_unit">%1$d fps</string>
+    <string name="format_label">فارمیٹ</string>
+    <string name="most_compatible_format">سب سے زیادہ مطابقت پذیر فارمیٹ</string>
+    <string name="format_mp4">MP4</string>
+    <string name="estimated_size">تخمینی سائز:</string>
+    <string name="exporting_status">ایکسپورٹ ہو رہا ہے…</string>
+    <string name="export_keep_app_open_hint">براہ کرم ایپ بند نہ کریں اور نہ ہی سکرین لاک کریں۔\nمکمل ہونے پر ہم آپ کو اطلاع دیں گے۔</string>
+    <string name="export_blurred_video_cta">بلر ویڈیو ایکسپورٹ کریں</string>
+
+    <!-- Common / Dialogs / Toasts -->
+    <string name="cancel">منسوخ کریں</string>
+    <string name="ok">ٹھیک ہے</string>
+    <string name="clear">صاف کریں</string>
+    <string name="choose_option_subtitle">اپنا پسندیدہ آپشن منتخب کریں</string>
+    <string name="clear_cache_title">کیشے صاف کریں</string>
+    <string name="clear_cache_message">یہ ایڈیٹنگ کے دوران بنائی گئی عارضی فائلوں کو ہٹا دیتا ہے۔ آپ کی محفوظ شدہ تصاویر اور ویڈیوز متاثر نہیں ہوں گی۔</string>
+    <string name="cache_cleared_toast">کیشے کامیابی کے ساتھ صاف کر دیا گیا</string>
+    <string name="video_saved_toast">ویڈیو پہلے سے ہی آپ کی گیلری اور حالیہ میں محفوظ ہے</string>
+    <string name="exported_video_not_found">ایکسپورٹ شدہ ویڈیو نہیں ملی۔</string>
+    <string name="could_not_play_video">ایکسپورٹ شدہ ویڈیو نہیں چلائی جا سکی۔</string>
+    <string name="could_not_save_video">ویڈیو محفوظ نہیں کی جا سکی۔</string>
+    <string name="storage_permission_save_video">ویڈیو محفوظ کرنے کے لیے اسٹوریج کی اجازت درکار ہے۔</string>
+    <string name="local_path_copied">مقامی فائل کا پاتھ کاپی ہو گیا (شیئر کرنے کے قابل لنک نہیں)۔</string>
+    <string name="share_video_title">ویڈیو شیئر کریں</string>
+    <string name="select_language_title">زبان منتخب کریں</string>
+    <string name="select_theme_title">تھیم منتخب کریں</string>
+    <string name="language_changed_toast">زبان تبدیل ہو کر %1$s ہو گئی ہے</string>
+
+    <!-- Settings Items & Categories -->
+    <string name="auto_face_detection">خودکار چہرے کی شناخت</string>
+    <string name="save_original_photo">اصل تصویر محفوظ کریں</string>
+    <string name="export_quality">ایکسپورٹ کی کوالٹی</string>
+    <string name="app_theme">ایپ کا تھیم</string>
+    <string name="language">زبان</string>
+    <string name="data_security">ڈیٹا تحفظ</string>
+    <string name="help_and_faq">مدد اور عمومی سوالات</string>
+    <string name="contact_us">ہم سے رابطہ کریں</string>
+    <string name="rate_us">درجہ بندی کریں</string>
+    <string name="category_preferences">ترجیحات</string>
+    <string name="category_privacy_security">رازداری اور تحفظ</string>
+    <string name="category_support">معاونت</string>
+    <string name="quality_low">کم</string>
+    <string name="quality_medium">درمیانہ</string>
+    <string name="quality_high">اعلیٰ</string>
+    <string name="theme_light">روشنی</string>
+    <string name="theme_dark">تاریک</string>
+    <string name="theme_system">سسٹم</string>
+    <string name="lang_english">English</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_french">Français</string>
+    <string name="lang_urdu">اردو</string>
+    <string name="no_email_app_found">کوئی ای میل ایپ نہیں ملی</string>
+    <string name="cannot_open_browser">براؤزر کا لنک نہیں کھول سکا</string>
+    <string name="choose_email_app">ای میل ایپ منتخب کریں</string>
+    <string name="no_source_video_found">کوئی اصل ویڈیو نہیں ملی۔</string>
+    <string name="format_mp4_only">فی الحال صرف MP4 فارمیٹ سپورٹڈ ہے۔</string>
+    <string name="ready_to_export">ایکسپورٹ کے لیے تیار</string>
+    <string name="status_done">مکمل</string>
+    <string name="status_failed">ناکام</string>
+    <string name="could_not_resolve_file_path">فائل کا راستہ معلوم نہیں ہو سکا۔</string>
+    <string name="delete_recent_edit_title">حالیہ ترمیم کو حذف کریں؟</string>
+    <string name="delete_recent_edit_message">کیا آپ واقعی اس فائل کو حذف کرنا چاہتے ہیں؟ یہ عمل منسوخ نہیں کیا جا سکتا۔</string>
+    <string name="status_deleted">حذف کر دیا گیا</string>
+    <string name="saved_to_downloads">ڈاؤن لوڈز میں محفوظ کر دیا گیا</string>
+    <string name="could_not_download">ڈاؤن لوڈ نہیں ہو سکا۔</string>
+    <string name="media_not_found">میڈیا نہیں ملا</string>
+    <string name="no_media_selected">کوئی میڈیا منتخب نہیں ہوا</string>
+    <string name="nothing_to_export_yet">ایکسپورٹ کے لیے کچھ نہیں ہے</string>
+    <string name="no_face_tracks_detected">کوئی لائیو چہرہ نہیں ملا۔</string>
+    <string name="premium_subtitle">پریمیئم خصوصیات کے ساتھ بغیر کسی حد کے بلر کریں۔</string>
+    <string name="btn_buy_now">ابھی خریدیں ←</string>
+</resources>

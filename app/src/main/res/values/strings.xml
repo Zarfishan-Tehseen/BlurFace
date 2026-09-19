@@ -126,4 +126,157 @@
 
     <string name="cd_search">Search</string>
     <string name="cd_filter_sort">Filter and sort</string>
+
+    <!-- Settings & Premium -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_subtitle">Customize your experience</string>
+    <string name="unlock_premium_title">Unlock Premium</string>
+    <string name="unlock_premium_subtitle">Blur without limits with premium features.</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="upgrade_to_premium">Upgrade to Premium</string>
+    <string name="unlock_premium_features_desc">Unlock premium features for unlimited editing.</string>
+    <string name="unlimited_edits">Unlimited Edits</string>
+    <string name="premium_tools">Premium Tools</string>
+    <string name="no_ads">No Ads</string>
+    <string name="choose_your_plan">Choose Your Plan</string>
+    <string name="seven_day_free_trial">7-Day Free Trial</string>
+    <string name="start_free_trial_cta">🔒 Start 7-Day Free Trial</string>
+    <string name="billing_desc">After 7-days, you\'ll be charged $19.99/year.\nCancel anytime.</string>
+    <string name="restore_purchase">Restore Purchase</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <!-- Home & Navigation -->
+    <string name="app_title_face">Face</string>
+    <string name="app_title_blur">Blur</string>
+    <string name="no_edits_yet">No edits yet</string>
+    <string name="no_edits_yet_desc">Photos and videos you blur will show up here.</string>
+
+    <!-- Recents & Filter -->
+    <string name="recents_title">Recents</string>
+    <string name="recents_subtitle">Your recently edited photos</string>
+    <string name="search_recents_hint">Search recents</string>
+    <string name="filter_all">All</string>
+    <string name="filter_video">Video</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_recently_updated">Recently Updated</string>
+    <string name="sort_oldest_first">Oldest First</string>
+    <string name="sort_name">Name</string>
+    <string name="filter_date">Date</string>
+    <string name="date_today">Today</string>
+    <string name="date_this_week">This Week</string>
+    <string name="date_this_month">This Month</string>
+
+    <!-- Media Details & Preview -->
+    <string name="action_download">Download</string>
+    <string name="action_share">Share</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_details">Details</string>
+    <string name="action_trash">Trash</string>
+    <string name="date_and_time">Date &amp; Time</string>
+    <string name="file_size">File Size</string>
+    <string name="storage_path">Storage Path</string>
+    <string name="cd_details">Details</string>
+
+    <!-- Video Analysis & Processing -->
+    <string name="analyzing_video_title">Analyzing </string>
+    <string name="analyzing_video_subtitle">AI tracking faces.</string>
+    <string name="extracting_video_layers">Extracting video layers...</string>
+    <string name="tracking_faces_title">Tracking faces across frames</string>
+    <string name="tracking_faces_desc">This may take a few moments depending on video length and faces.</string>
+    <string name="video_privacy_note">Your video is private and never leaves your device.</string>
+    <string name="faces_found">Faces Found</string>
+    <string name="processed">Processed</string>
+    <string name="tracking">Tracking</string>
+    <string name="in_progress">In Progress</string>
+    <string name="select_video_to_analyze">Select Video to Analyze</string>
+    <string name="detected_times_count">Detected: %1$d times</string>
+    <string name="analyzing_frame_count">Analyzing frame %1$s of %2$s</string>
+
+    <!-- Video Export -->
+    <string name="export_and_process_title">Export &amp; </string>
+    <string name="export_process_subtitle">Process</string>
+    <string name="set_export_options">Set export options</string>
+    <string name="export_settings">Export Settings</string>
+    <string name="resolution">Resolution</string>
+    <string name="res_720p">720p</string>
+    <string name="res_1080p">1080p</string>
+    <string name="res_4k">4K</string>
+    <string name="res_hd">HD</string>
+    <string name="res_full_hd">Full HD</string>
+    <string name="res_ultra_hd">Ultra HD</string>
+    <string name="frame_rate">Frame Rate</string>
+    <string name="smoother_playback">Smoother playback</string>
+    <string name="fps_unit">%1$d fps</string>
+    <string name="format_label">Format</string>
+    <string name="most_compatible_format">Most compatible format</string>
+    <string name="format_mp4">MP4</string>
+    <string name="estimated_size">Estimated Size:</string>
+    <string name="exporting_status">Exporting…</string>
+    <string name="export_keep_app_open_hint">Please don\'t close the app or lock your screen.\nWe\'ll notify you when it\'s done.</string>
+    <string name="export_blurred_video_cta">Export Blurred Video</string>
+
+    <!-- Common / Dialogs / Toasts -->
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="clear">Clear</string>
+    <string name="choose_option_subtitle">Choose your preferred option</string>
+    <string name="clear_cache_title">Clear Cache</string>
+    <string name="clear_cache_message">This removes temporary files created while editing. Your saved photos and videos are not affected.</string>
+    <string name="cache_cleared_toast">Cache cleared successfully</string>
+    <string name="video_saved_toast">Video is already saved to your Gallery &amp; Recents</string>
+    <string name="exported_video_not_found">Exported video not found.</string>
+    <string name="could_not_play_video">Couldn\'t play the exported video.</string>
+    <string name="could_not_save_video">Couldn\'t save the video.</string>
+    <string name="storage_permission_save_video">Storage permission is needed to save the video.</string>
+    <string name="local_path_copied">Local file path copied (not a shareable link).</string>
+    <string name="share_video_title">Share video</string>
+    <string name="select_language_title">Select Language</string>
+    <string name="select_theme_title">Select Theme</string>
+    <string name="language_changed_toast">Language changed to %1$s</string>
+
+    <!-- Settings Items & Categories -->
+    <string name="auto_face_detection">Auto Face Detection</string>
+    <string name="save_original_photo">Save Original Photo</string>
+    <string name="export_quality">Export Quality</string>
+    <string name="app_theme">App Theme</string>
+    <string name="language">Language</string>
+    <string name="data_security">Data Security</string>
+    <string name="help_and_faq">Help &amp; FAQ</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="category_preferences">PREFERENCES</string>
+    <string name="category_privacy_security">PRIVACY &amp; SECURITY</string>
+    <string name="category_support">SUPPORT</string>
+    <string name="quality_low">Low</string>
+    <string name="quality_medium">Medium</string>
+    <string name="quality_high">High</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+    <string name="lang_english">English</string>
+    <string name="lang_spanish">Spanish</string>
+    <string name="lang_french">French</string>
+    <string name="lang_urdu">Urdu</string>
+    <string name="no_email_app_found">No email application found</string>
+    <string name="cannot_open_browser">Cannot open browser link</string>
+    <string name="choose_email_app">Choose Email App</string>
+    <string name="no_source_video_found">No source video found.</string>
+    <string name="format_mp4_only">Only MP4 format is supported for export right now.</string>
+    <string name="ready_to_export">Ready to export</string>
+    <string name="status_done">Done</string>
+    <string name="status_failed">Failed</string>
+    <string name="could_not_resolve_file_path">Could not resolve file pathway location.</string>
+    <string name="delete_recent_edit_title">Delete Recent Edit?</string>
+    <string name="delete_recent_edit_message">Are you sure you want to delete this file? This action cannot be undone.</string>
+    <string name="status_deleted">Deleted</string>
+    <string name="saved_to_downloads">Saved to Downloads</string>
+    <string name="could_not_download">Could not download.</string>
+    <string name="media_not_found">Media not found</string>
+    <string name="no_media_selected">No media selected</string>
+    <string name="nothing_to_export_yet">Nothing to export yet</string>
+    <string name="no_face_tracks_detected">No stable face tracks detected.</string>
+    <string name="premium_subtitle">Blur without limits with premium features.</string>
+    <string name="btn_buy_now">Buy Now →</string>
 </resources>

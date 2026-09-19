@@ -1,0 +1,282 @@
+<resources>
+    <string name="app_name">Blur Face</string>
+    <string name="hello_blank_fragment">Bonjour, fragment vide</string>
+
+    <string name="hero_title">Protégez votre Vie Privée \nFloutez les Visages Instantanément</string>
+    <string name="hero_subtitle">L\'IA détecte les visages et vous permet de les flouter d\'un simple geste</string>
+    <string name="select_photo">Importer Image/Vidéo</string>
+    <string name="quick_actions">Actions Rapides</string>
+    <string name="blur_faces">Flouter les Visages</string>
+    <string name="blur_faces_subtitle">Détecte et floute les visages automatiquement</string>
+    <string name="blur_background">Flouter l\'Arrière-plan</string>
+    <string name="blur_background_subtitle">Floute l\'arrière-plan</string>
+    <string name="blur_video">Flouter la Vidéo</string>
+    <string name="blur_video_subtitle">Détecte et floute les visages dans toute votre vidéo</string>
+    <string name="emoji_cover">Couvrir avec Emoji</string>
+    <string name="emoji_cover_subtitle">Couvre les visages avec des emojis</string>
+    <string name="no_recent_edits">Vos photos récemment modifiées apparaîtront ici.\nCommencez à modifier pour voir votre travail dans cette section.</string>
+
+    <string name="recent_edits">Modifications Récentes</string>
+    <string name="see_all">Voir Tout</string>
+
+    <string name="detecting_subtitle">L\'IA Analyse</string>
+    <string name="please_wait">Veuillez patienter…</string>
+    <string name="ai_working_title">L\'IA travaille</string>
+    <string name="ai_working_subtitle">Cela peut prendre quelques secondes selon le nombre de visages.</string>
+    <string name="privacy_note">Votre photo est privée et ne quitte jamais votre appareil.</string>
+    <string name="cd_back">Retour</string>
+    <string name="cd_selected_photo">Photo sélectionnée</string>
+    <string name="no_face_title">Aucun Visage Détecté</string>
+    <string name="no_face_subtitle">Nous n\'avons pas pu détecter automatiquement de visage sur cette photo.</string>
+    <string name="try_again">Réessayer</string>
+    <string name="select_face_manually_title">Sélectionner un Visage Manuellement</string>
+    <string name="select_face_manually_subtitle">Floutez les visages en les sélectionnant vous-même</string>
+    <string name="choose_another_photo_title">Choisir une Autre Photo</string>
+    <string name="choose_another_photo_subtitle">Sélectionnez une photo différente dans votre galerie</string>
+
+    <string name="select_faces_title">Sélectionner les Visages</string>
+    <string name="found_faces_subtitle">Nous avons trouvé %1$d visages sur cette photo.\nSélectionnez les visages que vous souhaitez flouter.</string>
+    <string name="detected_faces_count">Visages Détectés (%1$d)</string>
+    <string name="select_all">Tout Sélectionner</string>
+    <string name="tap_to_preview">Touchez pour prévisualiser</string>
+    <string name="manual_select">Sélection Manuelle</string>
+    <string name="continue_to_blur">Continuer vers le Flou</string>
+
+    <string name="blur_editor_title_black">Flou d\'Image</string>
+    <string name="blur_editor_title_purple">Éditeur</string>
+    <string name="blur_editor_subtitle">Appliquer les réglages de flou</string>
+    <string name="effect_gaussian">Gaussien</string>
+    <string name="effect_mosaic">Mosaïque</string>
+    <string name="effect_color">Couleur</string>
+    <string name="effect_emoji">Emoji</string>
+    <string name="intensity_label">Intensité</string>
+    <string name="reset_label">Réinitialiser</string>
+    <string name="selected_faces_count">Visages Sélectionnés (%1$d)</string>
+    <string name="clear_all">Tout Effacer</string>
+    <string name="cd_remove_face">Retirer le visage de la sélection</string>
+    <string name="cd_export">Exporter</string>
+
+    <string name="save_export_title">Enregistrer et Exporter</string>
+    <string name="choose_format_subtitle">Choisissez un format</string>
+    <string name="jpeg_compressed_title">JPEG (Compressé)</string>
+    <string name="jpeg_compressed_subtitle">Fichier plus léger, idéal pour le partage et plus compatible.</string>
+    <string name="jpeg_lossless_title">JPEG (Sans Perte)</string>
+    <string name="jpeg_lossless_subtitle">Haute qualité, aucune perte de qualité d\'image. Fichier plus volumineux.</string>
+    <string name="png_title">PNG</string>
+    <string name="png_subtitle">Meilleure qualité avec support de la transparence. Fichier plus volumineux.</string>
+    <string name="save_photo">Enregistrer la Photo</string>
+    <string name="saved_to_gallery">Enregistré dans la galerie</string>
+    <string name="storage_permission_needed">Autorisation de stockage nécessaire pour enregistrer</string>
+
+    <string name="manual_title">Manuel</string>
+    <string name="selection_title">Sélection</string>
+    <string name="manual_selection_subtitle">Sélectionnez et ajoutez des visages.</string>
+    <string name="drag_to_paint">Glissez pour peindre</string>
+    <string name="add_face">Ajouter un Visage</string>
+    <string name="add_mode">Ajouter</string>
+    <string name="remove_mode">Retirer</string>
+    <string name="brush_size_label">Taille du Pinceau</string>
+    <string name="reset">Réinitialiser</string>
+
+
+    <string name="blur_editor_title_prefix">Flou Vidéo </string>
+    <string name="blur_editor_title_suffix">Éditeur</string>
+    <string name="blur_type_label">Type de Flou</string>
+    <string name="blur_type_gaussian">Gaussien</string>
+    <string name="blur_type_gaussian_desc">Flou doux</string>
+    <string name="blur_type_mosaic">Mosaïque</string>
+    <string name="blur_type_mosaic_desc">Pixelise les visages</string>
+    <string name="blur_type_color">Couleur</string>
+    <string name="blur_type_color_desc">Superposition de couleur</string>
+    <string name="blur_type_emoji">Emoji</string>
+    <string name="blur_type_emoji_desc">Sélectionner des emojis</string>
+    <string name="feather_label">Dégradé</string>
+    <string name="shape_label">Forme</string>
+    <string name="shape_auto">Auto (Visage)</string>
+    <string name="shape_auto_desc">Suit la forme du visage</string>
+    <string name="shape_circle">Cercle</string>
+    <string name="shape_circle_desc">Flou circulaire</string>
+    <string name="shape_rectangle">Rectangle</string>
+    <string name="shape_rectangle_desc">Flou rectangulaire</string>
+    <string name="additional_settings_label">Paramètres Supplémentaires</string>
+    <string name="blur_entire_video_title">Flouter Toute la Vidéo</string>
+    <string name="blur_entire_video_desc">Applique le flou à toutes les images (arrière-plan + visages).</string>
+    <string name="blur_follow_info">Les visages seront floutés tout au long de votre vidéo.\n Le flou suivra les visages sélectionnés dans chaque scène.</string>
+    <string name="blur_faces_cta">Flouter les Visages dans la Vidéo  →</string>
+    <string name="privacy_footer">Votre vidéo est privée et ne quitte jamais votre appareil.</string>
+
+
+    <string name="result_title_prefix">Votre Vidéo </string>
+    <string name="result_title_highlight">Floutée</string>
+    <string name="result_title_suffix"></string>
+    <string name="result_subtitle">Vérifiez votre vidéo</string>
+    <string name="export_completed_title">Exportation Terminée !</string>
+    <string name="export_completed_desc">Votre vidéo a été floutée avec succès et est prête à l\'emploi.</string>
+    <string name="what_next_label">Que souhaitez-vous faire ?</string>
+    <string name="action_save_gallery">Enregistrer dans la Galerie</string>
+    <string name="action_share_video">Partager la Vidéo</string>
+    <string name="action_copy_link">Copier le Lien</string>
+    <string name="back_to_home">Retour à l\'Accueil</string>
+    <string name="cd_play_pause">Lire ou mettre en pause la vidéo</string>
+    <string name="cd_fullscreen">Basculer en plein écran</string>
+    <string name="toast_saved_gallery">Enregistré dans la Galerie</string>
+    <string name="toast_save_failed">Impossible d\'enregistrer la vidéo</string>
+    <string name="toast_link_copied">Lien vidéo copié</string>
+    <string name="toast_no_video">Aucune vidéo exportée trouvée</string>
+
+    <string name="cd_search">Rechercher</string>
+    <string name="cd_filter_sort">Filtrer et trier</string>
+
+    <!-- Settings & Premium -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_subtitle">Personnalisez votre expérience</string>
+    <string name="unlock_premium_title">Débloquer Premium</string>
+    <string name="unlock_premium_subtitle">Floutez sans limites avec les fonctionnalités premium.</string>
+    <string name="buy_now">Acheter maintenant</string>
+    <string name="upgrade_to_premium">Passer à Premium</string>
+    <string name="unlock_premium_features_desc">Débloquez les fonctionnalités premium pour une édition illimitée.</string>
+    <string name="unlimited_edits">Modifications illimitées</string>
+    <string name="premium_tools">Outils Premium</string>
+    <string name="no_ads">Sans publicité</string>
+    <string name="choose_your_plan">Choisissez votre forfait</string>
+    <string name="seven_day_free_trial">Essai gratuit de 7 jours</string>
+    <string name="start_free_trial_cta">🔒 Démarrer l\'essai gratuit de 7 jours</string>
+    <string name="billing_desc">Après 7 jours, vous serez facturé 19,99 $/an.\nAnnulez à tout moment.</string>
+    <string name="restore_purchase">Restaurer l\'achat</string>
+    <string name="terms_of_use">Conditions d\'utilisation</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+
+    <!-- Home & Navigation -->
+    <string name="app_title_face">Face</string>
+    <string name="app_title_blur">Blur</string>
+    <string name="no_edits_yet">Aucune modification</string>
+    <string name="no_edits_yet_desc">Les photos et vidéos que vous floutez apparaîtront ici.</string>
+
+    <!-- Recents & Filter -->
+    <string name="recents_title">Récents</string>
+    <string name="recents_subtitle">Vos photos récemment modifiées</string>
+    <string name="search_recents_hint">Rechercher dans les récents</string>
+    <string name="filter_all">Tous</string>
+    <string name="filter_video">Vidéo</string>
+    <string name="sort_by">Trier par</string>
+    <string name="sort_recently_updated">Récemment mis à jour</string>
+    <string name="sort_oldest_first">Plus anciens en premier</string>
+    <string name="sort_name">Nom</string>
+    <string name="filter_date">Date</string>
+    <string name="date_today">Aujourd\'hui</string>
+    <string name="date_this_week">Cette semaine</string>
+    <string name="date_this_month">Ce mois-ci</string>
+
+    <!-- Media Details & Preview -->
+    <string name="action_download">Télécharger</string>
+    <string name="action_share">Partager</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_details">Détails</string>
+    <string name="action_trash">Corbeille</string>
+    <string name="date_and_time">Date et heure</string>
+    <string name="file_size">Taille du fichier</string>
+    <string name="storage_path">Chemin de stockage</string>
+    <string name="cd_details">Détails</string>
+
+    <!-- Video Analysis & Processing -->
+    <string name="analyzing_video_title">Analyse de </string>
+    <string name="analyzing_video_subtitle">IA suit les visages.</string>
+    <string name="extracting_video_layers">Extraction des calques vidéo...</string>
+    <string name="tracking_faces_title">Suivi des visages sur les images</string>
+    <string name="tracking_faces_desc">Cela peut prendre quelques instants selon la durée de la vidéo et les visages.</string>
+    <string name="video_privacy_note">Votre vidéo est privée et ne quitte jamais votre appareil.</string>
+    <string name="faces_found">Visages détectés</string>
+    <string name="processed">Traitées</string>
+    <string name="tracking">Suivi</string>
+    <string name="in_progress">En cours</string>
+    <string name="select_video_to_analyze">Sélectionner une vidéo à analyser</string>
+    <string name="detected_times_count">Détecté : %1$d fois</string>
+    <string name="analyzing_frame_count">Analyse de l\'image %1$s sur %2$s</string>
+
+    <!-- Video Export -->
+    <string name="export_and_process_title">Exporter et </string>
+    <string name="export_process_subtitle">Traiter</string>
+    <string name="set_export_options">Définir les options d\'exportation</string>
+    <string name="export_settings">Paramètres d\'exportation</string>
+    <string name="resolution">Résolution</string>
+    <string name="res_720p">720p</string>
+    <string name="res_1080p">1080p</string>
+    <string name="res_4k">4K</string>
+    <string name="res_hd">HD</string>
+    <string name="res_full_hd">Full HD</string>
+    <string name="res_ultra_hd">Ultra HD</string>
+    <string name="frame_rate">Fréquence d\'images</string>
+    <string name="smoother_playback">Lecture plus fluide</string>
+    <string name="fps_unit">%1$d fps</string>
+    <string name="format_label">Format</string>
+    <string name="most_compatible_format">Format le plus compatible</string>
+    <string name="format_mp4">MP4</string>
+    <string name="estimated_size">Taille estimée :</string>
+    <string name="exporting_status">Exportation en cours…</string>
+    <string name="export_keep_app_open_hint">Veuillez ne pas fermer l\'application ni verrouiller votre écran.\nNous vous informerons lorsqu\'elle sera terminée.</string>
+    <string name="export_blurred_video_cta">Exporter la vidéo floutée</string>
+
+    <!-- Common / Dialogs / Toasts -->
+    <string name="cancel">Annuler</string>
+    <string name="ok">OK</string>
+    <string name="clear">Effacer</string>
+    <string name="choose_option_subtitle">Choisissez votre option préférée</string>
+    <string name="clear_cache_title">Vider le cache</string>
+    <string name="clear_cache_message">Cela supprime les fichiers temporaires créés lors de la modification. Vos photos et vidéos enregistrées ne sont pas affectées.</string>
+    <string name="cache_cleared_toast">Cache vidé avec succès</string>
+    <string name="video_saved_toast">La vidéo est déjà enregistrée dans votre Galerie et Récents</string>
+    <string name="exported_video_not_found">Vidéo exportée introuvable.</string>
+    <string name="could_not_play_video">Impossible de lire la vidéo exportée.</string>
+    <string name="could_not_save_video">Impossible d\'enregistrer la vidéo.</string>
+    <string name="storage_permission_save_video">Une autorisation de stockage est nécessaire pour enregistrer la vidéo.</string>
+    <string name="local_path_copied">Chemin du fichier local copié (pas un lien partageable).</string>
+    <string name="share_video_title">Partager la vidéo</string>
+    <string name="select_language_title">Sélectionner la langue</string>
+    <string name="select_theme_title">Sélectionner le thème</string>
+    <string name="language_changed_toast">Langue changée en %1$s</string>
+
+    <!-- Settings Items & Categories -->
+    <string name="auto_face_detection">Détection automatique des visages</string>
+    <string name="save_original_photo">Enregistrer la photo d\'origine</string>
+    <string name="export_quality">Qualité d\'exportation</string>
+    <string name="app_theme">Thème de l\'application</string>
+    <string name="language">Langue</string>
+    <string name="data_security">Sécurité des données</string>
+    <string name="help_and_faq">Aide &amp; FAQ</string>
+    <string name="contact_us">Nous contacter</string>
+    <string name="rate_us">Évaluer l\'application</string>
+    <string name="category_preferences">PRÉFÉRENCES</string>
+    <string name="category_privacy_security">CONFIDENTIALITÉ ET SÉCURITÉ</string>
+    <string name="category_support">SUPPORT</string>
+    <string name="quality_low">Basse</string>
+    <string name="quality_medium">Moyenne</string>
+    <string name="quality_high">Haute</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_system">Système</string>
+    <string name="lang_english">English</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_french">Français</string>
+    <string name="lang_urdu">Urdu</string>
+    <string name="no_email_app_found">Aucune application de messagerie trouvée</string>
+    <string name="cannot_open_browser">Impossible d\'ouvrir le lien dans le navigateur</string>
+    <string name="choose_email_app">Choisir l\'application de messagerie</string>
+    <string name="no_source_video_found">Aucune vidéo source trouvée.</string>
+    <string name="format_mp4_only">Seul le format MP4 est pris en charge pour l\'exportation pour le moment.</string>
+    <string name="ready_to_export">Prêt à exporter</string>
+    <string name="status_done">Terminé</string>
+    <string name="status_failed">Échec</string>
+    <string name="could_not_resolve_file_path">Impossible de résoudre l\'emplacement du fichier.</string>
+    <string name="delete_recent_edit_title">Supprimer la modification récente ?</string>
+    <string name="delete_recent_edit_message">Voulez-vous vraiment supprimer ce fichier ? Cette action est irréversible.</string>
+    <string name="status_deleted">Supprimé</string>
+    <string name="saved_to_downloads">Enregistré dans les téléchargements</string>
+    <string name="could_not_download">Impossible de télécharger.</string>
+    <string name="media_not_found">Fichier introuvable</string>
+    <string name="no_media_selected">Aucun fichier sélectionné</string>
+    <string name="nothing_to_export_yet">Rien à exporter pour le moment</string>
+    <string name="no_face_tracks_detected">Aucun visage stable détecté.</string>
+    <string name="premium_subtitle">Floutez sans limites grâce aux fonctionnalités premium.</string>
+    <string name="btn_buy_now">Acheter maintenant →</string>
+</resources>

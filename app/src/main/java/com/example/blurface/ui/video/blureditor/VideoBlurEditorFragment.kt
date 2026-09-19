@@ -40,6 +40,7 @@ import com.example.blurface.domain.repository.VideoRepositoryImpl
 import com.example.blurface.domain.usecase.ProcessAndClusterVideoUseCase
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
 import com.example.blurface.utils.VideoFaceEffectProcessor
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 
 class VideoBlurEditorFragment : Fragment() {
@@ -84,7 +85,7 @@ class VideoBlurEditorFragment : Fragment() {
 
         selectedPeople = viewModel.selectedPeopleForBlur()
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
 
         setupSelectedFacesList()
         setupBlurTypeCards()
@@ -92,7 +93,7 @@ class VideoBlurEditorFragment : Fragment() {
         setupSliders()
         applyBlurSettingsToUi(viewModel.blurSettings.value)
 
-        binding.btnBlurFacesInVideo.setOnClickListener { onBlurFacesClicked() }
+        binding.btnBlurFacesInVideo.addPressEffect { onBlurFacesClicked() }
 
         // Render an initial live preview so the strip reflects real settings from the
         // start, not just the raw face crops.

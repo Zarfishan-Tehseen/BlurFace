@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.databinding.ItemRecentEditHeaderBinding
 import com.example.blurface.databinding.ItemRecentEditRowBinding
 import com.example.blurface.domain.model.RecentEdit
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -132,7 +133,7 @@ class RecentEditsAdapter(
             } else {
                 runCatching { binding.ivThumbnail.setImageURI(mediaUri) }
             }
-            binding.root.setOnClickListener { onItemClicked(edit) }
+            binding.root.addPressEffect { onItemClicked(edit) }
             binding.btnMore.setOnClickListener { onMoreClicked(edit, it) }
         }
 

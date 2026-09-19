@@ -37,7 +37,7 @@
                 android:id="@+id/tvtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Export &amp; "
+                android:text="@string/export_and_process_title"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Process"
+                android:text="@string/export_process_subtitle"
                 android:textColor="@color/purple_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Set export options"
+                android:text="@string/set_export_options"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/tvtitle"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
-            android:text="Export Settings"
+            android:text="@string/export_settings"
             android:textColor="@color/text_secondary"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Resolution"
+                    android:text="@string/resolution"
                     android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="HD"
+                        android:text="@string/res_hd"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -173,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Full HD"
+                        android:text="@string/res_full_hd"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -204,7 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Ultra HD"
+                        android:text="@string/res_ultra_hd"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -242,7 +242,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Frame Rate"
+                        android:text="@string/frame_rate"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -250,7 +250,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Smoother playback"
+                        android:text="@string/smoother_playback"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -304,7 +304,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Format"
+                        android:text="@string/format_label"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -312,7 +312,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Most compatible format"
+                        android:text="@string/most_compatible_format"
                         android:textColor="@color/text_secondary"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -353,7 +353,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Estimated Size:"
+                android:text="@string/estimated_size"
                 android:textColor="@color/text_primary"
                 android:textSize="13sp" />
 
@@ -368,7 +368,6 @@
                 tools:text="~ 85 MB" />
         </LinearLayout>
 
-        <!-- Progress ring -->
         <FrameLayout
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -389,8 +388,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -407,7 +407,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Exporting…"
+                    android:text="@string/exporting_status"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -419,7 +419,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="Please don't close the app or lock your screen.\nWe'll notify you when it's done."
+            android:text="@string/export_keep_app_open_hint"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
 
@@ -430,7 +430,7 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_button_filled_pill"
             android:paddingVertical="16dp"
-            android:text="Export Blurred Video"
+            android:text="@string/export_blurred_video_cta"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:textStyle="bold"

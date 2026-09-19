@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -37,6 +39,7 @@ class SettingsFragment : Fragment() {
 
     private val viewModel: SettingsViewModel by viewModels()
     private lateinit var adapter: SettingsAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,25 +101,36 @@ class SettingsFragment : Fragment() {
             "premium_banner" -> handlePremiumBannerClicked()
 
             "export_quality" -> showSingleChoiceDialog(
-                title = "Export Quality",
+                title = getString(R.string.export_quality),
                 iconRes = R.drawable.ic_hd,
-                options = ExportQuality.entries.map { it.label },
-                currentIndex = ExportQuality.entries.indexOfFirst { it.label == item.subtitle }
+                options = ExportQuality.entries.map { it.getLabel(requireContext()) },
+                currentIndex = ExportQuality.entries.indexOfFirst { it.getLabel(requireContext()) == item.subtitle }
             ) { index -> viewModel.setExportQuality(ExportQuality.entries[index]) }
 
             "app_theme" -> showSingleChoiceDialog(
-                title = "App Theme",
+                title = getString(R.string.select_theme_title),
                 iconRes = R.drawable.ic_sliders, // or your theme icon
-                options = AppTheme.entries.map { it.label },
-                currentIndex = AppTheme.entries.indexOfFirst { it.label == item.subtitle }
+                options = AppTheme.entries.map { it.getLabel(requireContext()) },
+                currentIndex = AppTheme.entries.indexOfFirst { it.getLabel(requireContext()) == item.subtitle }
             ) { index -> viewModel.setAppTheme(AppTheme.entries[index]) }
 
-            "language" -> showSingleChoiceDialog(
-                title = "Language",
-                iconRes = R.drawable.ic_language,
-                options = LANGUAGES,
-                currentIndex = LANGUAGES.indexOf(item.subtitle).coerceAtLeast(0)
-            ) { index -> viewModel.setLanguage(LANGUAGES[index]) }
+            "language" -> {
+                val languages = AppLanguage.entries
+                val currentLang = viewModel.state.value.language
+                val currentIndex = languages.indexOf(currentLang).coerceAtLeast(0)
+
+                showSingleChoiceDialog(
+                    title = getString(R.string.select_language_title),
+                    iconRes = R.drawable.ic_language,
+                    options = languages.map { it.getLabel(requireContext()) },
+                    currentIndex = currentIndex
+                ) { index ->
+                    val selectedLang = languages[index]
+                    viewModel.setLanguage(selectedLang)
+                    val localeList = LocaleListCompat.forLanguageTags(selectedLang.tag)
+                    AppCompatDelegate.setApplicationLocales(localeList)
+                }
+            }
 
             "privacy_policy" -> openPrivacyPolicy()
             "data_security" -> openUrl("https://example.com/security")
@@ -167,7 +181,7 @@ class SettingsFragment : Fragment() {
                 if (isSelected) R.drawable.bg_option_card_selected else R.drawable.bg_option_card_unselected
             )
 
-            container.setOnClickListener {
+            container.addPressEffect {
                 selectedIndex = index
                 for (i in 0 until dialogBinding.radioGroupOptions.childCount) {
                     val child = dialogBinding.radioGroupOptions.getChildAt(i)
@@ -183,11 +197,11 @@ class SettingsFragment : Fragment() {
             dialogBinding.radioGroupOptions.addView(itemView)
         }
 
-        dialogBinding.btnCancel.setOnClickListener {
+        dialogBinding.btnCancel.addPressEffect {
             dialog.dismiss()
         }
 
-        dialogBinding.btnOk.setOnClickListener {
+        dialogBinding.btnOk.addPressEffect {
             if (selectedIndex != -1) {
                 onSelected(selectedIndex)
             }
@@ -208,15 +222,14 @@ class SettingsFragment : Fragment() {
             )
         }
 
-        dialogBinding.tvDialogTitle.text = "Clear Cache"
-        dialogBinding.tvDialogMessage.text =
-            "This removes temporary files created while editing. Your saved photos and videos are not affected."
+        dialogBinding.tvDialogTitle.text = getString(R.string.clear_cache_title)
+        dialogBinding.tvDialogMessage.text = getString(R.string.clear_cache_message)
 
-        dialogBinding.btnCancel.setOnClickListener {
+        dialogBinding.btnCancel.addPressEffect {
             dialog.dismiss()
         }
 
-        dialogBinding.btnConfirm.setOnClickListener {
+        dialogBinding.btnConfirm.addPressEffect {
             viewModel.clearCache()
             dialog.dismiss()
         }
@@ -231,9 +244,9 @@ class SettingsFragment : Fragment() {
         }
 
         try {
-            startActivity(Intent.createChooser(intent, "Choose Email App"))
+            startActivity(Intent.createChooser(intent, getString(R.string.choose_email_app)))
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "No email application found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.no_email_app_found), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -243,7 +256,7 @@ class SettingsFragment : Fragment() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(privacyUrl))
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Cannot open browser link", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.cannot_open_browser), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -276,9 +289,5 @@ class SettingsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private val LANGUAGES = listOf("English", "Spanish", "French", "Urdu")
     }
 }

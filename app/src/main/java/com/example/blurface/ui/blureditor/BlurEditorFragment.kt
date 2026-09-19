@@ -32,6 +32,7 @@ import com.example.blurface.databinding.FragmentBlurEditorBinding
 import com.example.blurface.domain.model.FaceEffect
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.utils.BitmapUtils
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -65,8 +66,8 @@ class BlurEditorFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.btnExport.setOnClickListener {
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
+        binding.btnExport.addPressEffect {
             com.example.blurface.ui.export.ExportBottomSheetFragment()
                 .show(childFragmentManager, "export_sheet")
         }
@@ -136,7 +137,7 @@ class BlurEditorFragment : Fragment() {
         )
         binding.rvSelectedFaces.adapter = chipAdapter
 
-        binding.btnClearAll.setOnClickListener { sharedViewModel.setAllSelected(false) }
+        binding.btnClearAll.addPressEffect { sharedViewModel.setAllSelected(false) }
     }
 
     private fun observeViewModel() {

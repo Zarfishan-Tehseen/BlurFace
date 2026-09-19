@@ -29,6 +29,7 @@ import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.ui.viewmodel.SaveState
 import com.example.blurface.utils.MediaSizeUtils
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 
 class ExportBottomSheetFragment : BottomSheetDialogFragment() {
@@ -82,21 +83,21 @@ class ExportBottomSheetFragment : BottomSheetDialogFragment() {
 
         updateFormatSelection()
 
-        binding.rowJpegCompressed.setOnClickListener {
+        binding.rowJpegCompressed.addPressEffect {
             selectedFormat = ExportFormat.JPEG_COMPRESSED
             updateFormatSelection()
         }
-        binding.rowJpegLossless.setOnClickListener {
+        binding.rowJpegLossless.addPressEffect {
             selectedFormat = ExportFormat.JPEG_LOSSLESS
             updateFormatSelection()
         }
-        binding.rowPng.setOnClickListener {
+        binding.rowPng.addPressEffect {
             selectedFormat = ExportFormat.PNG
             updateFormatSelection()
         }
 
-        binding.btnSavePhoto.setOnClickListener { requestSave() }
-        binding.btnClose.setOnClickListener {
+        binding.btnSavePhoto.addPressEffect { requestSave() }
+        binding.btnClose.addPressEffect {
             dismiss()
         }
 

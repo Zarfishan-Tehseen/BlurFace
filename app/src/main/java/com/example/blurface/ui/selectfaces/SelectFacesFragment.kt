@@ -21,6 +21,7 @@ import com.example.blurface.databinding.FragmentSelectFacesBinding
 import com.example.blurface.domain.model.DetectedFace
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.utils.BitmapUtils
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,7 +53,7 @@ class SelectFacesFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { navigateHome() }
+        binding.btnBack.addPressEffect { navigateHome() }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navigateHome()
@@ -64,16 +65,16 @@ class SelectFacesFragment : Fragment() {
         )
         binding.rvFaces.adapter = adapter
 
-        binding.btnSelectAll.setOnClickListener {
+        binding.btnSelectAll.addPressEffect {
             val allSelected = sharedViewModel.faces.value.all { it.isSelected }
             sharedViewModel.setAllSelected(!allSelected)
         }
 
-        binding.btnContinue.setOnClickListener {
+        binding.btnContinue.addPressEffect {
             findNavController().navigate(R.id.blurEditorFragment)
         }
 
-        binding.btnManualSelect.setOnClickListener {
+        binding.btnManualSelect.addPressEffect {
             findNavController().navigate(R.id.manualSelectionFragment)
         }
 

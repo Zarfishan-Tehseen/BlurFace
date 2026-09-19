@@ -35,6 +35,7 @@ import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
 import com.example.blurface.utils.MediaSizeUtils
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -64,8 +65,8 @@ class BackgroundBlurFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.btnExport.setOnClickListener { exportCurrentImage() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
+        binding.btnExport.addPressEffect { exportCurrentImage() }
         setUpMaskPeekGesture()
 
         setUpBlurTypeChips()
@@ -97,9 +98,9 @@ class BackgroundBlurFragment : Fragment() {
     }
 
     private fun setUpBlurTypeChips() {
-        binding.chipRadial.setOnClickListener { viewModel.setBlurType(BackgroundBlurType.RADIAL) }
-        binding.chipGaussian.setOnClickListener { viewModel.setBlurType(BackgroundBlurType.GAUSSIAN) }
-        binding.btnReset.setOnClickListener { viewModel.resetAll() }
+        binding.chipRadial.addPressEffect { viewModel.setBlurType(BackgroundBlurType.RADIAL) }
+        binding.chipGaussian.addPressEffect { viewModel.setBlurType(BackgroundBlurType.GAUSSIAN) }
+        binding.btnReset.addPressEffect { viewModel.resetAll() }
     }
 
     private fun updateBlurTypeSelection(selected: BackgroundBlurType) {
@@ -115,10 +116,10 @@ class BackgroundBlurFragment : Fragment() {
     }
 
     private fun setUpFilterThumbnails() {
-        binding.filterNone.setOnClickListener { viewModel.setFilter(BackgroundFilter.NONE) }
-        binding.filterOriginal.setOnClickListener { viewModel.setFilter(BackgroundFilter.ORIGINAL) }
-        binding.filterWarm.setOnClickListener { viewModel.setFilter(BackgroundFilter.WARM) }
-        binding.filterCool.setOnClickListener { viewModel.setFilter(BackgroundFilter.COOL) }
+        binding.filterNone.addPressEffect { viewModel.setFilter(BackgroundFilter.NONE) }
+        binding.filterOriginal.addPressEffect { viewModel.setFilter(BackgroundFilter.ORIGINAL) }
+        binding.filterWarm.addPressEffect { viewModel.setFilter(BackgroundFilter.WARM) }
+        binding.filterCool.addPressEffect { viewModel.setFilter(BackgroundFilter.COOL) }
     }
 
     private fun updateFilterSelection(selected: BackgroundFilter) {
@@ -229,7 +230,7 @@ class BackgroundBlurFragment : Fragment() {
     private fun exportCurrentImage() {
         val bitmap = viewModel.editedBitmap.value
         if (bitmap == null) {
-            Toast.makeText(requireContext(), "Nothing to export yet", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.nothing_to_export_yet), Toast.LENGTH_SHORT).show()
             return
         }
 

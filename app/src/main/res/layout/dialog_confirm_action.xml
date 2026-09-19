@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Clear Cache"
+        android:text="@string/clear_cache_title"
         android:textColor="#101828"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -40,7 +40,7 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:lineSpacingExtra="3dp"
-        android:text="This removes temporary files created while editing. Your saved photos and videos are not affected."
+        android:text="@string/clear_cache_message"
         android:textColor="#667085"
         android:textSize="14sp" />
 
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_btn_cancel"
             android:gravity="center"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="#475467"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -70,9 +70,9 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="?selectableItemBackground"
+            android:background="@drawable/bg_btn_cancel"
             android:gravity="center"
-            android:text="Clear"
+            android:text="@string/clear"
             android:textColor="#FF4D4D"
             android:textSize="15sp"
             android:textStyle="bold" />

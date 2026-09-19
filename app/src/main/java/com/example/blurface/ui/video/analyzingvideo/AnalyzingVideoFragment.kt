@@ -26,6 +26,7 @@ import com.example.blurface.domain.usecase.ProcessAndClusterVideoUseCase
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
 import com.example.blurface.ui.viewmodel.FaceUiState
 import com.example.blurface.utils.FilePathUtil
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,7 +67,7 @@ class AnalyzingVideoFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
         binding.shimmerAnalyzing.startShimmer()
 
         val videoUriString = arguments?.getString("videoUri")
@@ -85,7 +86,7 @@ class AnalyzingVideoFragment : Fragment() {
         val context = requireContext()
         val inputPath = FilePathUtil.getActualPath(context, videoUri)
         if (inputPath == null) {
-            Toast.makeText(context, "Could not resolve file pathway location.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.could_not_resolve_file_path), Toast.LENGTH_SHORT).show()
             findNavController().navigateUp()
             return
         }
@@ -140,7 +141,7 @@ class AnalyzingVideoFragment : Fragment() {
         binding.progressAnalyzing.setProgressCompat(state.progress, true)
         if (state.totalFrames > 0) {
             binding.tvFrameProgress.text =
-                "Analyzing frame ${format(state.currentFrame)} of ${format(state.totalFrames)}"
+                getString(R.string.analyzing_frame_count, format(state.currentFrame), format(state.totalFrames))
             binding.tvFramesProcessedValue.text = format(state.currentFrame)
         } else {
             binding.tvFrameProgress.text = state.logMessage

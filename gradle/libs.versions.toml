@@ -45,4 +45,4 @@ shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shi
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+androidx-navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.R
 import com.example.blurface.databinding.ItemPremiumPlanBinding
 import com.example.blurface.domain.model.PremiumPlan
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 
 class PremiumPlansAdapter(
     private val plans: List<PremiumPlan>,
@@ -56,7 +57,7 @@ class PremiumPlansAdapter(
             }
 
             // Click listener for entire item card
-            root.setOnClickListener {
+            root.addPressEffect {
                 if (selectedPosition != holder.adapterPosition) {
                     val previousSelected = selectedPosition
                     selectedPosition = holder.adapterPosition

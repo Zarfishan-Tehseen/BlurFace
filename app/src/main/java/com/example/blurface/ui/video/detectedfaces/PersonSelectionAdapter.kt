@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blurface.databinding.ItemDetectedVideoFaceBinding
 import com.example.blurface.domain.model.Person
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 
 class PersonSelectionAdapter(
     private val fps: Int,
@@ -48,11 +49,11 @@ class PersonSelectionAdapter(
             val endSec = (frameIds.maxOrNull() ?: 0) / fps
             binding.tvTimeRange.text = "${formatTime(startSec)} - ${formatTime(endSec)}"
 
-            binding.cbSelected.setOnClickListener {
+            binding.cbSelected.addPressEffect {
                 person.shouldBlur = binding.cbSelected.isChecked
                 onToggle(person)
             }
-            binding.root.setOnClickListener { onRowClicked(person) }
+            binding.root.addPressEffect { onRowClicked(person) }
         }
 
         private fun formatTime(totalSeconds: Int): String {

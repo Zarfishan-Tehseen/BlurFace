@@ -20,6 +20,7 @@ import com.example.blurface.R
 import com.example.blurface.databinding.FragmentDetectingFacesBinding
 import com.example.blurface.ui.viewmodel.DetectionState
 import com.example.blurface.ui.viewmodel.PhotoEditViewModel
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 
 class DetectingFacesFragment : Fragment() {
@@ -48,16 +49,16 @@ class DetectingFacesFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener {
+        binding.btnBack.addPressEffect {
             findNavController().navigateUp()
         }
-        binding.btnTryAgain.setOnClickListener {
+        binding.btnTryAgain.addPressEffect {
             sharedViewModel.retryDetection()
         }
-        binding.actionSelectManually.setOnClickListener {
+        binding.actionSelectManually.addPressEffect {
             // TODO: navigate to the manual face-selection screen once it exists.
         }
-        binding.actionChooseAnotherPhoto.setOnClickListener {
+        binding.actionChooseAnotherPhoto.addPressEffect {
             // Re-uses whatever picker flow got the user here in the first place.
             findNavController().navigateUp()
         }

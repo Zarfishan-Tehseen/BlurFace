@@ -21,9 +21,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.blurface.R
 import com.example.blurface.databinding.FragmentRecentsBinding
 import com.example.blurface.databinding.PopupRecentsFilterBinding
 import com.example.blurface.domain.model.RecentEdit
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,7 +63,7 @@ class RecentsFragment : Fragment() {
         binding.rvRecentEdits.adapter = adapter
 
         setUpFilterChips()
-        binding.btnFilterSort.setOnClickListener { showFilterPopup(it) }
+        binding.btnFilterSort.addPressEffect { showFilterPopup(binding.btnFilterSort) }
         setUpSearch()
 
         observeViewModel()
@@ -74,8 +76,8 @@ class RecentsFragment : Fragment() {
     }
 
     private fun setUpSearch() {
-        binding.btnSearch.setOnClickListener { openSearch() }
-        binding.btnCloseSearch.setOnClickListener { closeSearch() }
+        binding.btnSearch.addPressEffect { openSearch() }
+        binding.btnCloseSearch.addPressEffect { closeSearch() }
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -104,10 +106,10 @@ class RecentsFragment : Fragment() {
     }
 
     private fun setUpFilterChips() {
-        binding.filterAll.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.ALL) }
-        binding.filterBlurFaces.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_FACES) }
-        binding.filterBlurBackground.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_BACKGROUND) }
-        binding.filterVideo.setOnClickListener { viewModel.setTypeFilter(RecentsTypeFilter.VIDEO) }
+        binding.filterAll.addPressEffect { viewModel.setTypeFilter(RecentsTypeFilter.ALL) }
+        binding.filterBlurFaces.addPressEffect { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_FACES) }
+        binding.filterBlurBackground.addPressEffect { viewModel.setTypeFilter(RecentsTypeFilter.BLUR_BACKGROUND) }
+        binding.filterVideo.addPressEffect { viewModel.setTypeFilter(RecentsTypeFilter.VIDEO) }
     }
 
     private fun updateFilterChipSelection(selected: RecentsTypeFilter) {
@@ -170,17 +172,17 @@ class RecentsFragment : Fragment() {
         }
 
         // Retain icon and buttons layout structure while updating content text
-        dialogBinding.tvDialogTitle.text = "Delete Recent Edit?"
-        dialogBinding.tvDialogMessage.text = "Are you sure you want to delete this file? This action cannot be undone."
-        dialogBinding.btnConfirm.text = "Delete"
+        dialogBinding.tvDialogTitle.text = getString(R.string.delete_recent_edit_title)
+        dialogBinding.tvDialogMessage.text = getString(R.string.delete_recent_edit_message)
+        dialogBinding.btnConfirm.text = getString(R.string.action_delete)
 
-        dialogBinding.btnCancel.setOnClickListener {
+        dialogBinding.btnCancel.addPressEffect {
             dialog.dismiss()
         }
 
-        dialogBinding.btnConfirm.setOnClickListener {
+        dialogBinding.btnConfirm.addPressEffect {
             viewModel.delete(edit)
-            Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.status_deleted), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -197,7 +199,7 @@ class RecentsFragment : Fragment() {
                     )
                 }.getOrNull()
             }
-            val message = if (saved != null) "Saved to Downloads" else "Could not download"
+            val message = if (saved != null) getString(R.string.saved_to_downloads) else getString(R.string.could_not_download)
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
@@ -220,22 +222,22 @@ class RecentsFragment : Fragment() {
         }
         refreshSelections()
 
-        popupBinding.sortRecentlyUpdated.setOnClickListener {
+        popupBinding.sortRecentlyUpdated.addPressEffect {
             viewModel.setSortOption(SortOption.RECENTLY_UPDATED); refreshSelections()
         }
-        popupBinding.sortOldestFirst.setOnClickListener {
+        popupBinding.sortOldestFirst.addPressEffect {
             viewModel.setSortOption(SortOption.OLDEST_FIRST); refreshSelections()
         }
-        popupBinding.sortName.setOnClickListener {
+        popupBinding.sortName.addPressEffect {
             viewModel.setSortOption(SortOption.NAME); refreshSelections()
         }
-        popupBinding.dateToday.setOnClickListener {
+        popupBinding.dateToday.addPressEffect {
             viewModel.setDateFilter(DateFilter.TODAY); refreshSelections()
         }
-        popupBinding.dateThisWeek.setOnClickListener {
+        popupBinding.dateThisWeek.addPressEffect {
             viewModel.setDateFilter(DateFilter.THIS_WEEK); refreshSelections()
         }
-        popupBinding.dateThisMonth.setOnClickListener {
+        popupBinding.dateThisMonth.addPressEffect {
             viewModel.setDateFilter(DateFilter.THIS_MONTH); refreshSelections()
         }
 

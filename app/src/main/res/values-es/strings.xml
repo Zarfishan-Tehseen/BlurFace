@@ -1,0 +1,282 @@
+<resources>
+    <string name="app_name">Blur Face</string>
+    <string name="hello_blank_fragment">Hola, fragmento en blanco</string>
+
+    <string name="hero_title">Protege tu Privacidad \nDesenfoca Rostros al Instante</string>
+    <string name="hero_subtitle">La IA detecta rostros y te permite desenfocarlos con un toque</string>
+    <string name="select_photo">Importar Imagen/Video</string>
+    <string name="quick_actions">Acciones Rápidas</string>
+    <string name="blur_faces">Desenfocar Rostros</string>
+    <string name="blur_faces_subtitle">Detecta y desenfoca rostros automáticamente</string>
+    <string name="blur_background">Desenfocar Fondo</string>
+    <string name="blur_background_subtitle">Desenfoca el fondo</string>
+    <string name="blur_video">Desenfocar Video</string>
+    <string name="blur_video_subtitle">Detecta y desenfoca rostros en todo tu video</string>
+    <string name="emoji_cover">Cubrir con Emoji</string>
+    <string name="emoji_cover_subtitle">Cubre rostros con emojis</string>
+    <string name="no_recent_edits">Tus fotos editadas recientemente aparecerán aquí.\nComienza a editar para ver tu trabajo en esta sección.</string>
+
+    <string name="recent_edits">Ediciones Recientes</string>
+    <string name="see_all">Ver Todo</string>
+
+    <string name="detecting_subtitle">La IA está Escaneando</string>
+    <string name="please_wait">Espera un momento…</string>
+    <string name="ai_working_title">La IA está trabajando</string>
+    <string name="ai_working_subtitle">Esto puede tardar unos segundos según la cantidad de rostros.</string>
+    <string name="privacy_note">Tu foto es privada y nunca sale de tu dispositivo.</string>
+    <string name="cd_back">Atrás</string>
+    <string name="cd_selected_photo">Foto seleccionada</string>
+    <string name="no_face_title">No se Detectó Ningún Rostro</string>
+    <string name="no_face_subtitle">No pudimos detectar automáticamente ningún rostro en esta foto.</string>
+    <string name="try_again">Intentar de Nuevo</string>
+    <string name="select_face_manually_title">Seleccionar Rostro Manualmente</string>
+    <string name="select_face_manually_subtitle">Desenfoca rostros seleccionándolos tú mismo</string>
+    <string name="choose_another_photo_title">Elegir Otra Foto</string>
+    <string name="choose_another_photo_subtitle">Selecciona una foto diferente de tu galería</string>
+
+    <string name="select_faces_title">Seleccionar Rostros</string>
+    <string name="found_faces_subtitle">Encontramos %1$d rostros en esta foto.\nSelecciona los rostros que deseas desenfocar.</string>
+    <string name="detected_faces_count">Rostros Detectados (%1$d)</string>
+    <string name="select_all">Seleccionar Todo</string>
+    <string name="tap_to_preview">Toca para previsualizar</string>
+    <string name="manual_select">Selección Manual</string>
+    <string name="continue_to_blur">Continuar a Desenfocar</string>
+
+    <string name="blur_editor_title_black">Desenfoque de Imagen</string>
+    <string name="blur_editor_title_purple">Editor</string>
+    <string name="blur_editor_subtitle">Aplicar configuración de desenfoque</string>
+    <string name="effect_gaussian">Gaussiano</string>
+    <string name="effect_mosaic">Mosaico</string>
+    <string name="effect_color">Color</string>
+    <string name="effect_emoji">Emoji</string>
+    <string name="intensity_label">Intensidad</string>
+    <string name="reset_label">Restablecer</string>
+    <string name="selected_faces_count">Rostros Seleccionados (%1$d)</string>
+    <string name="clear_all">Borrar Todo</string>
+    <string name="cd_remove_face">Quitar rostro de la selección</string>
+    <string name="cd_export">Exportar</string>
+
+    <string name="save_export_title">Guardar y Exportar</string>
+    <string name="choose_format_subtitle">Elige un formato</string>
+    <string name="jpeg_compressed_title">JPEG (Comprimido)</string>
+    <string name="jpeg_compressed_subtitle">Tamaño de archivo más pequeño, ideal para compartir y más compatible.</string>
+    <string name="jpeg_lossless_title">JPEG (Sin Pérdida)</string>
+    <string name="jpeg_lossless_subtitle">Alta calidad, sin pérdida en la calidad de imagen. Archivo más grande.</string>
+    <string name="png_title">PNG</string>
+    <string name="png_subtitle">Mejor calidad con soporte de transparencia. Archivo más grande.</string>
+    <string name="save_photo">Guardar Foto</string>
+    <string name="saved_to_gallery">Guardado en la galería</string>
+    <string name="storage_permission_needed">Se necesita permiso de almacenamiento para guardar</string>
+
+    <string name="manual_title">Manual</string>
+    <string name="selection_title">Selección</string>
+    <string name="manual_selection_subtitle">Selecciona y añade rostros.</string>
+    <string name="drag_to_paint">Arrastra para pintar</string>
+    <string name="add_face">Añadir Rostro</string>
+    <string name="add_mode">Añadir</string>
+    <string name="remove_mode">Quitar</string>
+    <string name="brush_size_label">Tamaño del Pincel</string>
+    <string name="reset">Restablecer</string>
+
+
+    <string name="blur_editor_title_prefix">Desenfoque de Video </string>
+    <string name="blur_editor_title_suffix">Editor</string>
+    <string name="blur_type_label">Tipo de Desenfoque</string>
+    <string name="blur_type_gaussian">Gaussiano</string>
+    <string name="blur_type_gaussian_desc">Desenfoque suave</string>
+    <string name="blur_type_mosaic">Mosaico</string>
+    <string name="blur_type_mosaic_desc">Pixela rostros</string>
+    <string name="blur_type_color">Color</string>
+    <string name="blur_type_color_desc">Superposición de color</string>
+    <string name="blur_type_emoji">Emoji</string>
+    <string name="blur_type_emoji_desc">Selecciona emojis</string>
+    <string name="feather_label">Difuminado</string>
+    <string name="shape_label">Forma</string>
+    <string name="shape_auto">Automático (Rostro)</string>
+    <string name="shape_auto_desc">Sigue la forma del rostro</string>
+    <string name="shape_circle">Círculo</string>
+    <string name="shape_circle_desc">Desenfoque circular</string>
+    <string name="shape_rectangle">Rectángulo</string>
+    <string name="shape_rectangle_desc">Desenfoque rectangular</string>
+    <string name="additional_settings_label">Configuración Adicional</string>
+    <string name="blur_entire_video_title">Desenfocar Todo el Video</string>
+    <string name="blur_entire_video_desc">Aplica desenfoque a todos los fotogramas (fondo + rostros).</string>
+    <string name="blur_follow_info">Los rostros se desenfocarán en todo tu video.\n El desenfoque seguirá a los rostros seleccionados en cada escena.</string>
+    <string name="blur_faces_cta">Desenfocar Rostros en el Video  →</string>
+    <string name="privacy_footer">Tu video es privado y nunca sale de tu dispositivo.</string>
+
+
+    <string name="result_title_prefix">Tu Video </string>
+    <string name="result_title_highlight">Desenfocado</string>
+    <string name="result_title_suffix"></string>
+    <string name="result_subtitle">Revisa tu video</string>
+    <string name="export_completed_title">¡Exportación Completada!</string>
+    <string name="export_completed_desc">Tu video ha sido desenfocado exitosamente y está listo para usar.</string>
+    <string name="what_next_label">¿Qué te gustaría hacer?</string>
+    <string name="action_save_gallery">Guardar en Galería</string>
+    <string name="action_share_video">Compartir Video</string>
+    <string name="action_copy_link">Copiar Enlace</string>
+    <string name="back_to_home">Volver al Inicio</string>
+    <string name="cd_play_pause">Reproducir o pausar video</string>
+    <string name="cd_fullscreen">Alternar pantalla completa</string>
+    <string name="toast_saved_gallery">Guardado en la Galería</string>
+    <string name="toast_save_failed">No se pudo guardar el video</string>
+    <string name="toast_link_copied">Enlace de video copiado</string>
+    <string name="toast_no_video">No se encontró ningún video exportado</string>
+
+    <string name="cd_search">Buscar</string>
+    <string name="cd_filter_sort">Filtrar y ordenar</string>
+
+    <!-- Settings & Premium -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_subtitle">Personaliza tu experiencia</string>
+    <string name="unlock_premium_title">Desbloquear Premium</string>
+    <string name="unlock_premium_subtitle">Desenfoca sin límites con funciones premium.</string>
+    <string name="buy_now">Comprar ahora</string>
+    <string name="upgrade_to_premium">Actualizar a Premium</string>
+    <string name="unlock_premium_features_desc">Desbloquea funciones premium para edición ilimitada.</string>
+    <string name="unlimited_edits">Ediciones ilimitadas</string>
+    <string name="premium_tools">Herramientas Premium</string>
+    <string name="no_ads">Sin anuncios</string>
+    <string name="choose_your_plan">Elige tu plan</string>
+    <string name="seven_day_free_trial">Prueba gratis de 7 días</string>
+    <string name="start_free_trial_cta">🔒 Iniciar prueba gratis de 7 días</string>
+    <string name="billing_desc">Después de 7 días, se cobrarán $19.99/año.\nCancela en cualquier momento.</string>
+    <string name="restore_purchase">Restaurar compra</string>
+    <string name="terms_of_use">Términos de uso</string>
+    <string name="privacy_policy">Política de privacidad</string>
+
+    <!-- Home & Navigation -->
+    <string name="app_title_face">Face</string>
+    <string name="app_title_blur">Blur</string>
+    <string name="no_edits_yet">Sin ediciones aún</string>
+    <string name="no_edits_yet_desc">Las fotos y videos que desenfoques aparecerán aquí.</string>
+
+    <!-- Recents & Filter -->
+    <string name="recents_title">Recientes</string>
+    <string name="recents_subtitle">Tus fotos editadas recientemente</string>
+    <string name="search_recents_hint">Buscar recientes</string>
+    <string name="filter_all">Todos</string>
+    <string name="filter_video">Video</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="sort_recently_updated">Recientemente actualizado</string>
+    <string name="sort_oldest_first">Más antiguos primero</string>
+    <string name="sort_name">Nombre</string>
+    <string name="filter_date">Fecha</string>
+    <string name="date_today">Hoy</string>
+    <string name="date_this_week">Esta semana</string>
+    <string name="date_this_month">Este mes</string>
+
+    <!-- Media Details & Preview -->
+    <string name="action_download">Descargar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_details">Detalles</string>
+    <string name="action_trash">Papelera</string>
+    <string name="date_and_time">Fecha y hora</string>
+    <string name="file_size">Tamaño de archivo</string>
+    <string name="storage_path">Ruta de almacenamiento</string>
+    <string name="cd_details">Detalles</string>
+
+    <!-- Video Analysis & Processing -->
+    <string name="analyzing_video_title">Analizando </string>
+    <string name="analyzing_video_subtitle">IA rastreando rostros.</string>
+    <string name="extracting_video_layers">Extrayendo capas de video...</string>
+    <string name="tracking_faces_title">Rastreando rostros en fotogramas</string>
+    <string name="tracking_faces_desc">Esto puede tardar unos momentos según la duración del video y los rostros.</string>
+    <string name="video_privacy_note">Tu video es privado y nunca sale de tu dispositivo.</string>
+    <string name="faces_found">Rostros encontrados</string>
+    <string name="processed">Procesados</string>
+    <string name="tracking">Rastreando</string>
+    <string name="in_progress">En progreso</string>
+    <string name="select_video_to_analyze">Seleccionar video para analizar</string>
+    <string name="detected_times_count">Detectado: %1$d veces</string>
+    <string name="analyzing_frame_count">Analizando fotograma %1$s de %2$s</string>
+
+    <!-- Video Export -->
+    <string name="export_and_process_title">Exportar y </string>
+    <string name="export_process_subtitle">Procesar</string>
+    <string name="set_export_options">Configurar opciones de exportación</string>
+    <string name="export_settings">Ajustes de exportación</string>
+    <string name="resolution">Resolución</string>
+    <string name="res_720p">720p</string>
+    <string name="res_1080p">1080p</string>
+    <string name="res_4k">4K</string>
+    <string name="res_hd">HD</string>
+    <string name="res_full_hd">Full HD</string>
+    <string name="res_ultra_hd">Ultra HD</string>
+    <string name="frame_rate">Tasa de fotogramas</string>
+    <string name="smoother_playback">Reproducción más fluida</string>
+    <string name="fps_unit">%1$d fps</string>
+    <string name="format_label">Formato</string>
+    <string name="most_compatible_format">Formato más compatible</string>
+    <string name="format_mp4">MP4</string>
+    <string name="estimated_size">Tamaño estimado:</string>
+    <string name="exporting_status">Exportando…</string>
+    <string name="export_keep_app_open_hint">Por favor no cierres la app ni bloquees la pantalla.\nTe avisaremos cuando termine.</string>
+    <string name="export_blurred_video_cta">Exportar video desenfocado</string>
+
+    <!-- Common / Dialogs / Toasts -->
+    <string name="cancel">Cancelar</string>
+    <string name="ok">Aceptar</string>
+    <string name="clear">Borrar</string>
+    <string name="choose_option_subtitle">Elige tu opción preferida</string>
+    <string name="clear_cache_title">Borrar caché</string>
+    <string name="clear_cache_message">Esto elimina los archivos temporales creados al editar. Tus fotos y videos guardados no se verán afectados.</string>
+    <string name="cache_cleared_toast">Caché borrada con éxito</string>
+    <string name="video_saved_toast">El video ya está guardado en tu Galería y Recientes</string>
+    <string name="exported_video_not_found">Video exportado no encontrado.</string>
+    <string name="could_not_play_video">No se pudo reproducir el video exportado.</string>
+    <string name="could_not_save_video">No se pudo guardar el video.</string>
+    <string name="storage_permission_save_video">Se requiere permiso de almacenamiento para guardar el video.</string>
+    <string name="local_path_copied">Ruta de archivo local copiada (no es un enlace compartible).</string>
+    <string name="share_video_title">Compartir video</string>
+    <string name="select_language_title">Seleccionar idioma</string>
+    <string name="select_theme_title">Seleccionar tema</string>
+    <string name="language_changed_toast">Idioma cambiado a %1$s</string>
+
+    <!-- Settings Items & Categories -->
+    <string name="auto_face_detection">Detección automática de rostros</string>
+    <string name="save_original_photo">Guardar foto original</string>
+    <string name="export_quality">Calidad de exportación</string>
+    <string name="app_theme">Tema de la aplicación</string>
+    <string name="language">Idioma</string>
+    <string name="data_security">Seguridad de datos</string>
+    <string name="help_and_faq">Ayuda y preguntas frecuentes</string>
+    <string name="contact_us">Contáctenos</string>
+    <string name="rate_us">Califícanos</string>
+    <string name="category_preferences">PREFERENCIAS</string>
+    <string name="category_privacy_security">PRIVACIDAD Y SEGURIDAD</string>
+    <string name="category_support">SOPORTE</string>
+    <string name="quality_low">Baja</string>
+    <string name="quality_medium">Media</string>
+    <string name="quality_high">Alta</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="theme_system">Sistema</string>
+    <string name="lang_english">English</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_french">Français</string>
+    <string name="lang_urdu">Urdu</string>
+    <string name="no_email_app_found">No se encontró ninguna aplicación de correo</string>
+    <string name="cannot_open_browser">No se puede abrir el enlace del navegador</string>
+    <string name="choose_email_app">Elegir aplicación de correo</string>
+    <string name="no_source_video_found">No se encontró ningún video de origen.</string>
+    <string name="format_mp4_only">Solo el formato MP4 es compatible para exportar en este momento.</string>
+    <string name="ready_to_export">Listo para exportar</string>
+    <string name="status_done">Hecho</string>
+    <string name="status_failed">Fallido</string>
+    <string name="could_not_resolve_file_path">No se pudo resolver la ubicación de la ruta del archivo.</string>
+    <string name="delete_recent_edit_title">¿Eliminar edición reciente?</string>
+    <string name="delete_recent_edit_message">¿Estás seguro de que deseas eliminar este archivo? Esta acción no se puede deshacer.</string>
+    <string name="status_deleted">Eliminado</string>
+    <string name="saved_to_downloads">Guardado en descargas</string>
+    <string name="could_not_download">No se pudo descargar.</string>
+    <string name="media_not_found">Archivo no encontrado</string>
+    <string name="no_media_selected">Ningún archivo seleccionado</string>
+    <string name="nothing_to_export_yet">Nada para exportar aún</string>
+    <string name="no_face_tracks_detected">No se detectaron rostros estables.</string>
+    <string name="premium_subtitle">Desenfoca sin límites con funciones premium.</string>
+    <string name="btn_buy_now">Comprar ahora →</string>
+</resources>

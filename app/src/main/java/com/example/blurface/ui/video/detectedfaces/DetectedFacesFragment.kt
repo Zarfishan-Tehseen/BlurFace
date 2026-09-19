@@ -24,6 +24,7 @@ import com.example.blurface.domain.usecase.ProcessAndClusterVideoUseCase
 import com.example.blurface.ui.video.detectedfaces.PersonSelectionAdapter
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
 import com.example.blurface.ui.viewmodel.FaceUiState
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 
 class DetectedFacesFragment : Fragment() {
@@ -62,7 +63,7 @@ class DetectedFacesFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { navigateHome() }
+        binding.btnBack.addPressEffect { navigateHome() }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             navigateHome()
         }
@@ -74,15 +75,15 @@ class DetectedFacesFragment : Fragment() {
         )
         binding.rvFaces.adapter = adapter
 
-        binding.ivSelectAll.setOnClickListener {
+        binding.ivSelectAll.addPressEffect {
             val newState = !isAllSelected()
             currentPeople.forEach { it.shouldBlur = newState }
             adapter.notifyDataSetChanged()
             updateSelectAllState()
         }
-        binding.btnDetectAgain.setOnClickListener { findNavController().navigateUp() }
+        binding.btnDetectAgain.addPressEffect { findNavController().navigateUp() }
 
-        binding.btnContinue.setOnClickListener {
+        binding.btnContinue.addPressEffect {
             findNavController().navigate(R.id.videoBlurEditorFragment)
         }
         observeState()

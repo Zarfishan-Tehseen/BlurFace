@@ -20,6 +20,7 @@ import com.example.blurface.R
 import com.example.blurface.databinding.FragmentExportProcessBinding
 import com.example.blurface.domain.model.VideoResolution
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,17 +62,17 @@ class ExportProcessFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
 
         setUpResolutionCards()
         setUpFrameRateRow()
         setUpFormatRow()
 
-        binding.btnExport.setOnClickListener {
+        binding.btnExport.addPressEffect {
             val path = faceClusterViewModel.videoPath
             if (path == null) {
-                Toast.makeText(requireContext(), "No source video found.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                Toast.makeText(requireContext(), getString(R.string.no_source_video_found), Toast.LENGTH_SHORT).show()
+                return@addPressEffect
             }
             exportViewModel.startExport(
                 context = requireContext(),
@@ -93,7 +94,7 @@ class ExportProcessFragment : Fragment() {
             binding.card4k to VideoResolution.UHD_4K
         )
         cards.forEach { (view, resolution) ->
-            view.setOnClickListener {
+            view.addPressEffect {
                 exportViewModel.setResolution(resolution)
                 updateSizeEstimate()
             }
@@ -107,7 +108,7 @@ class ExportProcessFragment : Fragment() {
     }
 
     private fun setUpFrameRateRow() {
-        binding.rowFrameRate.setOnClickListener {
+        binding.rowFrameRate.addPressEffect {
             val current = exportViewModel.frameRate.value
             val currentIndex = frameRateOptions.indexOf(current).coerceAtLeast(0)
             val nextFps = frameRateOptions[(currentIndex + 1) % frameRateOptions.size]
@@ -117,10 +118,10 @@ class ExportProcessFragment : Fragment() {
     }
 
     private fun setUpFormatRow() {
-        binding.rowFormat.setOnClickListener {
+        binding.rowFormat.addPressEffect {
             Toast.makeText(
                 requireContext(),
-                "Only MP4 is supported for export right now",
+                getString(R.string.format_mp4_only),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -168,7 +169,7 @@ class ExportProcessFragment : Fragment() {
                 }
                 launch {
                     exportViewModel.frameRate.collect { fps ->
-                        binding.tvFrameRateValue.text = "$fps fps"
+                        binding.tvFrameRateValue.text = getString(R.string.fps_unit, fps)
                         updateSizeEstimate()
                     }
                 }
@@ -184,19 +185,19 @@ class ExportProcessFragment : Fragment() {
             is ExportState.Idle -> {
                 binding.exportProgressRing.progress = 0
                 binding.tvExportPercent.text = "0%"
-                binding.tvExportStatus.text = "Ready to export"
+                binding.tvExportStatus.text = getString(R.string.ready_to_export)
                 binding.btnExport.isEnabled = true
             }
             is ExportState.Exporting -> {
                 binding.exportProgressRing.setProgressCompat(state.progress, true)
                 binding.tvExportPercent.text = "${state.progress}%"
-                binding.tvExportStatus.text = "Exporting…"
+                binding.tvExportStatus.text = getString(R.string.exporting_status)
                 binding.btnExport.isEnabled = false
             }
             is ExportState.Done -> {
                 binding.exportProgressRing.setProgressCompat(100, true)
                 binding.tvExportPercent.text = "100%"
-                binding.tvExportStatus.text = "Done"
+                binding.tvExportStatus.text = getString(R.string.status_done)
                 binding.btnExport.isEnabled = true
 
                 if (!hasNavigatedToResult) {
@@ -207,7 +208,7 @@ class ExportProcessFragment : Fragment() {
                 }
             }
             is ExportState.Error -> {
-                binding.tvExportStatus.text = "Failed"
+                binding.tvExportStatus.text = getString(R.string.status_failed)
                 binding.btnExport.isEnabled = true
                 Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
             }

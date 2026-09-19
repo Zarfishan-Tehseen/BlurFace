@@ -94,7 +94,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date &amp; Time"
+                android:text="@string/date_and_time"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp" />
 
@@ -134,7 +134,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="File Size"
+                android:text="@string/file_size"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp" />
 
@@ -174,7 +174,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Storage Path"
+                android:text="@string/storage_path"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp" />
 

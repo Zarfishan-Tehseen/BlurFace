@@ -19,10 +19,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.blurface.R
 import com.example.blurface.databinding.FragmentMediaPreviewBinding
 import com.example.blurface.domain.model.EditType
 import com.example.blurface.domain.model.RecentEdit
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -96,8 +98,8 @@ class MediaPreviewFragment : Fragment() {
             insets
         }
 
-        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
-        binding.btnDetails.setOnClickListener { showDetailsBottomSheet() }
+        binding.btnBack.addPressEffect { findNavController().navigateUp() }
+        binding.btnDetails.addPressEffect { showDetailsBottomSheet() }
 
         setupHeaderAndDetails()
         setupMediaView()
@@ -115,7 +117,7 @@ class MediaPreviewFragment : Fragment() {
 
     private fun setupMediaView() {
         if (mediaUriString.isEmpty()) {
-            Toast.makeText(requireContext(), "Media not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.media_not_found), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -147,12 +149,12 @@ class MediaPreviewFragment : Fragment() {
         }
 
         binding.videoPlayer.setOnErrorListener { _, _, _ ->
-            Toast.makeText(requireContext(), "Could not play video", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.could_not_play_video), Toast.LENGTH_SHORT).show()
             true
         }
 
-        binding.ivPlayPauseOverlay.setOnClickListener { togglePlayback() }
-        binding.btnPlayPause.setOnClickListener { togglePlayback() }
+        binding.ivPlayPauseOverlay.addPressEffect { togglePlayback() }
+        binding.btnPlayPause.addPressEffect { togglePlayback() }
 
         binding.seekVideoProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -256,30 +258,30 @@ class MediaPreviewFragment : Fragment() {
     private fun setupActions() {
         val dummyEdit = createRecentEditModel()
 
-        binding.actionShare.setOnClickListener {
+        binding.actionShare.addPressEffect {
             RecentEditActionsHelper.share(requireContext(), dummyEdit)
         }
 
-        binding.actionSave.setOnClickListener {
+        binding.actionSave.addPressEffect {
             viewLifecycleOwner.lifecycleScope.launch {
                 val saved = withContext(Dispatchers.IO) {
                     runCatching {
                         RecentEditActionsHelper.copyToDownloads(requireContext(), dummyEdit)
                     }.getOrNull()
                 }
-                val msg = if (saved != null) "Saved to Downloads" else "Could not save media"
+                val msg = if (saved != null) getString(R.string.saved_to_downloads) else getString(R.string.could_not_download)
                 Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             }
         }
 
-        binding.actionDetails.setOnClickListener {
+        binding.actionDetails.addPressEffect {
             showDetailsBottomSheet()
         }
 
-        binding.actionDelete.setOnClickListener {
+        binding.actionDelete.addPressEffect {
             showDeleteConfirmationDialog(requireContext()) {
                 recentsViewModel.delete(dummyEdit)
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.status_deleted), Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
         }

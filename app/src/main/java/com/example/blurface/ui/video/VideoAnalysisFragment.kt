@@ -13,11 +13,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.blurface.R
 import com.example.blurface.databinding.FragmentVideoAnalysisBinding
 import com.example.blurface.ui.video.PersonClusterAdapter
 import com.example.blurface.ui.viewmodel.FaceClusterViewModel
 import com.example.blurface.ui.viewmodel.FaceUiState
 import com.example.blurface.utils.FilePathUtil
+import com.webscare.prescriptionscanner.common.Utils.addPressEffect
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -74,8 +76,7 @@ class VideoAnalysisFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnSelectVideo.setOnClickListener {
-            // Limit content picking parameters cleanly to video targets only
+        binding.btnSelectVideo.addPressEffect {
             videoPickerLauncher.launch("video/*")
         }
     }
@@ -86,7 +87,7 @@ class VideoAnalysisFragment : Fragment() {
         // Resolve absolute hardware filesystem references for FrameExtractor safely
         val inputPath = FilePathUtil.getActualPath(context, videoUri)
         if (inputPath == null) {
-            Toast.makeText(context, "Could not resolve file pathway location.", Toast.LENGTH_SHORT)
+            Toast.makeText(context, getString(R.string.could_not_resolve_file_path), Toast.LENGTH_SHORT)
                 .show()
             return
         }
@@ -123,7 +124,7 @@ class VideoAnalysisFragment : Fragment() {
                             if (uiState.clusteredPeople.isEmpty()) {
                                 Toast.makeText(
                                     context,
-                                    "No stable face tracks detected.",
+                                    getString(R.string.no_face_tracks_detected),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }

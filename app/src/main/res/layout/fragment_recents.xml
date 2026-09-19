@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Recents"
+                android:text="@string/recents_title"
                 android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your recently edited photos"
+                android:text="@string/recents_subtitle"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="@id/tvRecent"
@@ -68,7 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="12dp"
             android:background="@drawable/bg_icon_circle_light"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -90,7 +89,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="Search recents"
+                android:hint="@string/search_recents_hint"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
@@ -106,7 +105,7 @@
                 android:focusable="true"
                 android:padding="2dp"
                 android:src="@drawable/ic_cross"
-                app:tint="@color/text_primary" />
+                app:tint="@color/text_secondary" />
 
         </LinearLayout>
 
@@ -147,7 +146,7 @@
                         android:focusable="true"
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="9dp"
-                        android:text="All"
+                        android:text="@string/filter_all"
                         android:textColor="@color/filter_pill_text_color"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -162,7 +161,7 @@
                         android:focusable="true"
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="9dp"
-                        android:text="Blur Faces"
+                        android:text="@string/blur_faces"
                         android:textColor="@color/filter_pill_text_color"
                         android:textSize="13sp" />
 
@@ -176,7 +175,7 @@
                         android:focusable="true"
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="9dp"
-                        android:text="Blur Background"
+                        android:text="@string/blur_background"
                         android:textColor="@color/filter_pill_text_color"
                         android:textSize="13sp" />
 
@@ -189,7 +188,7 @@
                         android:focusable="true"
                         android:paddingHorizontal="18dp"
                         android:paddingVertical="9dp"
-                        android:text="Video"
+                        android:text="@string/filter_video"
                         android:textColor="@color/filter_pill_text_color"
                         android:textSize="13sp" />
 
@@ -252,7 +251,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No edits yet"
+            android:text="@string/no_edits_yet"
             android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -261,7 +260,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Photos and videos you blur will show up here."
+            android:text="@string/no_edits_yet_desc"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
